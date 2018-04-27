@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "655957070117",
+    "firebase_url": "https://treeki-19818.firebaseio.com",
+    "project_id": "treeki-19818",
+    "storage_bucket": "treeki-19818.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:655957070117:android:6ad7a9773da9ca25",
+        "android_client_info": {
+          "package_name": "com.treeki.treeki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "655957070117-j5e81dgqs68532hfruknob8qnetg66f1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.treeki.treeki",
+            "certificate_hash": "a9e6dfb167ae6c0978903c8ca94e676ba42062c5"
+          }
+        },
+        {
+          "client_id": "655957070117-c46p0h4esn63gbhuv1kap582rp0qoq0e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2oiA4LWXZOOlzYC1YQe4f52czkxdgaZc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "655957070117-c46p0h4esn63gbhuv1kap582rp0qoq0e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
