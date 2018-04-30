@@ -1,4 +1,4 @@
-package com.treeki.treeki;
+package com.treeki.treekii;
 
 import org.junit.Test;
 
