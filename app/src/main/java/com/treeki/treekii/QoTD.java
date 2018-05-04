@@ -19,18 +19,21 @@ public class QoTD extends AppCompatActivity {
     private TextView QoTD;
 //    private EditText answer;
     private DatabaseReference mDatabase;
+    private static final String TAG = "QoTD_Activity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
+        //get date
+        final String date = "0101";
 
         QoTD = findViewById(R.id.QoTD);
 //        answer = findViewById(R.id.answer);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Questions").child("01-01").addListenerForSingleValueEvent(
+        mDatabase.child("Questions").child("1").child("1").addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -39,6 +42,7 @@ public class QoTD extends AppCompatActivity {
 
                         //error handling
                         if (question == null) {
+                            Log.e(TAG, "Question at"+date+" is unexpectedly null");
                             Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
                         }
                         //if no err, change the question
@@ -50,7 +54,7 @@ public class QoTD extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.w(TAG, "get Question onCancelled", databaseError.toException());
                     }
                 }
         );

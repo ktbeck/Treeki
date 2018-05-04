@@ -2,14 +2,23 @@ package com.treeki.treekii;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
+
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        String month;
+        String day;
+        int total_days = 0;
+        int cur_q = 0;
         String[] questions = {"What is your favorite food?",
                 "What is your favorite song?",
                 "What is one thing that happened today that you’re thankful for?",
@@ -316,6 +325,102 @@ public class MainActivity extends AppCompatActivity {
                 "What was the last gift you gave? Received?",
                 "Outside or inside? Why?",
                 "What is your most cherished memory of this year?",
+                "When you are old, what do you think children will ask you to tell stories about?",
+                "Where do you get your news?",
+                "What movie can you watch over and over without ever getting tired of?",
+                "If you couldn’t be convicted of any one type of crime, what criminal charge would you like to be immune to?",
+                "In the past people were buried with the items they would need in the afterlife, what would you want buried with you so you could use it in the afterlife?",
+                "What food have you never eaten but would really like to try?",
+                "What would a world populated by clones of you be like?",
+                "What is your #1 most important rule when going on a date?",
+                "What outdoor activity haven’t you tried, but would like to?",
+                "If you were moving to another country, but could only pack one carry-on sized bag, what would you pack?",
+                "What about the opposite sex confuses you the most?",
+                "What kinds of things do you like to cook or are good at cooking?",
+                "If you could hack into any one computer, which computer would you choose?",
+                "What’s about to get much better?",
+                "What did you Google last?",
+                "If you had a HUD that showed three stats about any person you looked at, what three stats would you want it to show?",
+                "What does your ideal world look like?",
+                "When was your last all-nighter? Why'd you stay up all night?",
+                "If you owned a restaurant, what kind of food would it serve?",
+                "What topic could you spend hours talking about?",
+                "What do you do to make the world a better place?",
+                "What do you need help with most often?",
+                "What values are most important to you?",
+                "What do you think you do better than 90% of people?",
+                "What’s your favorite drink?",
+                "What songs have you completely memorized?",
+                "Are you usually early or late? Why?",
+                "Do you eat breakfast regularly? Lunch? Dinner?",
+                "Do you prefer to be alone or be around friends?",
+                "What do you drink most everyday?",
+                "What’s something you like to do the old-fashioned way?",
+                "What takes up too much of your time?",
+                "How often do you people watch?",
+                "What’s worth spending more on to get the best?",
+                "What amazing thing did you do that no one was around to see?",
+                "How different was your life one year ago?",
+                "What’s the best way to start the day?",
+                "What would you rate 10/10?",
+                "What do you hope never changes?",
+                "What’s the best way a person can spend their time?",
+                "What are you looking forward to in the coming months?",
+                "What website do you visit most often?",
+                "Where would you spend all your time if you could?",
+                "How do you hope you’ll change as a person in the future?",
+                "What keeps you up at night?",
+                "What are you most insecure about?",
+                "How do you get in the way of your own success?",
+                "What’s one thing you did that you really wish you could go back and undo?",
+                "What's your spirit animal?",
+                "What’s the best and worst thing about getting older?",
+                "Among your friends or family, what are you well-known for?",
+                "What are the top three things you want to accomplish before you die? How close are you to accomplishing them?",
+                "What’s one responsibility you really wish you didn’t have?",
+                "What are some of your personal “rules” that you never break?",
+                "What have you created that you are most proud of?",
+                "What’s the title of the current chapter of your life?",
+                "What would a mirror opposite of yourself be like?",
+                "What stat for your life would you most like to see?",
+                "When do you feel truly “alive”?",
+                "What makes a good life?"
         };
+
+        for (int i = 1; i <= 12; i++){
+            switch(i) {
+                case 1: total_days = 31;
+                    break;
+                case 2: total_days = 29;
+                    break;
+                case 3: total_days = 31;
+                    break;
+                case 4: total_days = 30;
+                    break;
+                case 5: total_days = 31;
+                    break;
+                case 6: total_days = 30;
+                    break;
+                case 7: total_days = 31;
+                    break;
+                case 8: total_days = 31;
+                    break;
+                case 9: total_days = 30;
+                    break;
+                case 10: total_days = 31;
+                    break;
+                case 11: total_days = 30;
+                    break;
+                case 12: total_days = 31;
+                    break;
+            }
+            for (int j = 1; j <= total_days; j++){
+                month = Integer.toString(i);
+                day = Integer.toString(j);
+
+                mDatabase.child("Questions").child(month).child(day).setValue(questions[cur_q]);
+                cur_q++;
+            }
+        }
     }
 }
