@@ -20,7 +20,8 @@ public class QoTD extends AppCompatActivity {
 
     //initialize
     private TextView QoTD;
-//    private EditText answer;
+    private EditText answer_edit;
+    private String answer;
     private DatabaseReference mDatabase;
     private static final String TAG = "QoTD_Activity";
 
@@ -34,7 +35,7 @@ public class QoTD extends AppCompatActivity {
         final String day = Integer.toString(cal.get(Calendar.DATE));
 
         QoTD = findViewById(R.id.QoTD);
-//        answer = findViewById(R.id.answer);
+        answer = findViewById(R.id.answer);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -64,5 +65,9 @@ public class QoTD extends AppCompatActivity {
                     }
                 }
         );
+
+        //Save the answer
+        answer = answer_edit.getText().toString();
+        
     }
 }
