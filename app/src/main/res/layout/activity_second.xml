@@ -6,11 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.treeki.treekii.SecondActivity">
 
-    <TextView
-        android:id="@+id/tv..."
-        android:layout_width="wrap_content"
-        android:layout_height="15dp"
-        android:text="This is the login page"
-        tools:layout_editor_absoluteX="121dp"
-        tools:layout_editor_absoluteY="177dp" />
+
+
+
 </android.support.constraint.ConstraintLayout>

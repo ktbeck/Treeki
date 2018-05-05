@@ -28,25 +28,38 @@ public class MainActivity extends AppCompatActivity {
         info = (TextView)findViewById(R.id.tvInfo);
 
         info.setText("No of attempts remaining:5");
+//        calling the login page with the button
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                validate(name.getText().toString(),password.getText().toString());
+                signinFunc();
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this,SignupActivity.class);
+//                validate(name.getText().toString(),password.getText().toString());
+                startActivity(intent);
             }
         });
     }
 
-    private void validate(String userName, String userPassword){
-        if((userName.equals("Admin")) && (userPassword.equals("0"))){
-            Intent intent = new Intent(MainActivity.this,SecondActivity.class);
-            startActivity(intent);
-        }else{
-            counter--;
+//    check with login
+    public void
 
-            info.setText("No of attempts remaining:" + String.valueOf(counter));
-            if (counter == 0) {
-                signin.setEnabled(false);
-            }
-        }
-    }
+//    private void validate(String userName, String userPassword){
+//        if((userName.equals("Admin")) && (userPassword.equals("0"))){
+//            Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+//            startActivity(intent);
+//        }else{
+//            counter--;
+//
+//            info.setText("No of attempts remaining:" + String.valueOf(counter));
+//            if (counter == 0) {
+//                signin.setEnabled(false);
+//            }
+//        }
+//    }
 }
