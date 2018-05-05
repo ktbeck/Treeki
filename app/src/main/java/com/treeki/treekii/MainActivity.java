@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +16,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     private EditText editTextEmail;
     private EditText editTextPassword;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //attaching listener to button
         buttonSignup.setOnClickListener(this);
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
     }
 
     private void registerUser(){
@@ -82,9 +90,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
 
     }
+//    private void signIn(){
+//        String email = editTextEmail.getText().toString().trim();
+//        String password  = editTextPassword.getText().toString().trim();
+//        firebaseAuth.signInWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+////                        Log.e(TAG, "Login unsuccessful: " + task.getException().getMessage());
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Toast.makeText(MainActivity.this,"Successfully logged in", Toast.LENGTH_LONG).show();
+//                            FirebaseUser user = firebaseAuth.getCurrentUser();
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Toast.makeText(MainActivity.this,"Login Failed", Toast.LENGTH_LONG).show();
+//                        }
+//
+//                        // ...
+//                    }
+//                });
+//
+//    }
+
+
+
     @Override
     public void onClick(View view) {
         //calling register method on click
-        registerUser();
+      registerUser();
+//        signIn();
     }
 }
