@@ -47,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 //    check with login
-    public void
+    public void signinFunc(){
+        
+    }
 
 //    private void validate(String userName, String userPassword){
 //        if((userName.equals("Admin")) && (userPassword.equals("0"))){
