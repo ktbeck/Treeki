@@ -58,7 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(signinPassword)){
             Toast.makeText(this,"Please enter a valid password.",Toast.LENGTH_SHORT).show();
-            return;
+        }
+        else{
+            Intent intent = new Intent(MainActivity.this,SecondActivity.class);
+//                validate(name.getText().toString(),password.getText().toString());
+            startActivity(intent);
         }
 
     }
