@@ -35,7 +35,7 @@ public class QoTD extends AppCompatActivity {
         final String day = Integer.toString(cal.get(Calendar.DATE));
 
         QoTD = findViewById(R.id.QoTD);
-        answer = findViewById(R.id.answer);
+        answer_edit = findViewById(R.id.answer);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
