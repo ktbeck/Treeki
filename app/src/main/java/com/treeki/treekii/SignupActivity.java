@@ -1,6 +1,8 @@
 package com.treeki.treekii;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +12,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SignupActivity extends AppCompatActivity {
     private TextView registration;
     private EditText email;
@@ -17,6 +25,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText password2;
     private Button signin;
     private Button register;
+    private ProgressDialog progressDialog;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,12 +39,14 @@ public class SignupActivity extends AppCompatActivity {
         password2 = (EditText) findViewById(R.id.Password4Confirm);
         signin = (Button) findViewById(R.id.btnBacktoLogin);
         register = (Button) findViewById(R.id.btnRegister);
+        progressDialog = new ProgressDialog(this);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         // calling the login page with the button
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                Intent intent = new Intent(SignupActivity.this, SignInRegister.class);
                 startActivity(intent);
             }
         });
@@ -76,9 +88,32 @@ public class SignupActivity extends AppCompatActivity {
         }
 
         else{
-            Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-            startActivity(intent);
+
+            progressDialog.setMessage("Registering Please Wait...");
+            progressDialog.show();
+
+
+            //creating a new user
+            firebaseAuth.createUserWithEmailAndPassword(regEmail, regPassword)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            //checking if success
+                            if(task.isSuccessful()){
+                                //display some message here
+                                Toast.makeText(SignupActivity.this,"Successfully registered", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(SignupActivity.this,SignInRegister.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                //display some message here
+                                Toast.makeText(SignupActivity.this,"Registration Error",Toast.LENGTH_LONG).show();
+                            }
+                            progressDialog.dismiss();
+                        }
+                    });
         }
     }
+
 }
 
