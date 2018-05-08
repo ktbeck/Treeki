@@ -84,7 +84,7 @@
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="48dp"
         android:background="#3E50B4"
-        android:text="Rigister"
+        android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
