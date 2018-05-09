@@ -1,12 +1,16 @@
 package com.treeki.treekii;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,16 +27,22 @@ public class QoTD extends AppCompatActivity {
     private EditText answer_edit;
     private String answer;
     private DatabaseReference mDatabase;
+    private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
+    String month;
+    String day;
+    String year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
+        user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
-        final String month = Integer.toString(cal.get(Calendar.MONTH)+1);
-        final String day = Integer.toString(cal.get(Calendar.DATE));
+        month = Integer.toString(cal.get(Calendar.MONTH)+1);
+        day = Integer.toString(cal.get(Calendar.DATE));
+        year = Integer.toString(cal.get(Calendar.YEAR));
 
         QoTD = findViewById(R.id.QoTD);
         answer_edit = findViewById(R.id.answer);
@@ -66,8 +76,22 @@ public class QoTD extends AppCompatActivity {
                 }
         );
 
+    }
+
+    public void submit(View view) {
+        if (month.length() == 1) month = "0"+month;
+        if (day.length() == 1) day = "0"+day;
+        String date = month+"-"+day+"-"+year;
+
         //Save the answer
         answer = answer_edit.getText().toString();
-        
+        if (answer != null) {
+            mDatabase.child("Users").child(user.getUid()).child("Journals").child(date).setValue(answer);
+            Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
