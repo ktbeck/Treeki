@@ -59,14 +59,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "655957070117-jf8hs312gc2pjlad3kh3nk7sr9pljodh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.treeki.treekii",
-            "certificate_hash": "6428359053549f836ff59c84a72964b639ebeea7"
-          }
-        },
-        {
           "client_id": "655957070117-g8ums7g35d0p3vrqcukn1oosm6vg39v0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
