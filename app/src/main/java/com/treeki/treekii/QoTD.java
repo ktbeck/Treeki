@@ -86,7 +86,7 @@ public class QoTD extends AppCompatActivity {
         //Save the answer
         answer = answer_edit.getText().toString();
         if (answer != null) {
-            mDatabase.child("Users").child(user.getUid()).child("Journals").child(date).setValue(answer);
+            mDatabase.child("Users").child(user.getUid()).child("QoTD").child(date).setValue(answer);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
         }
         else {
