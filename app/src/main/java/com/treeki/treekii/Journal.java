@@ -1,6 +1,5 @@
 package com.treeki.treekii;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,11 +18,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
+public class Journal extends AppCompatActivity {
 
-public class QoTD extends AppCompatActivity {
-
-    //initialize
-    private TextView QoTD;
     private EditText answer_edit;
     private String answer;
     private DatabaseReference mDatabase;
@@ -33,10 +29,9 @@ public class QoTD extends AppCompatActivity {
     String day;
     String year;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qotd);
+        setContentView(R.layout.activity_journal);
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
@@ -44,38 +39,10 @@ public class QoTD extends AppCompatActivity {
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
 
-        QoTD = findViewById(R.id.QoTD);
         answer_edit = findViewById(R.id.answer);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
-        mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //get question at /Questions/0101
-                        String question = dataSnapshot.getValue(String.class);
-
-                        //error handling
-                        if (question == null) {
-                            Log.e(TAG, "Question at"+month+"/"+day+" is unexpectedly null");
-                            Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
-                        }
-                        //if no err, change the question
-                        else {
-                            //change question
-                            QoTD.setText(question);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "get Question onCancelled", databaseError.toException());
-                    }
-                }
-        );
-
     }
 
     public void submit(View view) {
@@ -85,15 +52,13 @@ public class QoTD extends AppCompatActivity {
 
         //Save the answer
         answer = answer_edit.getText().toString();
-        if (!answer.equals("")){
-            mDatabase.child("Users").child(user.getUid()).child("QoTD").child(date).setValue(answer);
-            Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+        if (!answer.equals("")) {
+            mDatabase.child("Users").child(user.getUid()).child("Journal").child(date).setValue(answer);
+            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
 
-        Intent journal = new Intent(this,Journal.class);
-        startActivity(journal);
     }
 }

@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Treeki</string>
     <string name="skip">Skip</string>
+    <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="answer">Answer</string>
     <string name="question_of_the_day">Question of the Day</string>
+    <string name="journal">Journal</string>
+
 </resources>
