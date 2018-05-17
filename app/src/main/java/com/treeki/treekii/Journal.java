@@ -53,7 +53,7 @@ public class Journal extends AppCompatActivity {
         //Save the answer
         answer = answer_edit.getText().toString();
         if (!answer.equals("")) {
-            mDatabase.child("Users").child(user.getUid()).child("Journal").child(date).setValue(answer);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
         }
         else {
