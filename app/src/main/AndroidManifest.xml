@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Journal" />
-        <activity android:name=".FriendsList"></activity>
+        <activity android:name=".FriendsList" />
+        <activity android:name=".friendsList"></activity>
     </application>
 
 </manifest>
