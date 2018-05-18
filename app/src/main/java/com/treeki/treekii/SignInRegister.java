@@ -138,6 +138,7 @@ public class SignInRegister extends AppCompatActivity{
     }
 
     private void goToNextActivity() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"Signed in: "+user.getUid());
 
         mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").addListenerForSingleValueEvent(
