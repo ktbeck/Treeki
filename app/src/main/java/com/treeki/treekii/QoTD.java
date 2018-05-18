@@ -103,11 +103,15 @@ public class QoTD extends AppCompatActivity {
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+            startJournal();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    private void startJournal() {
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }

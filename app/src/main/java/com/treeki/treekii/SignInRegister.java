@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignInRegister extends AppCompatActivity{
     private FirebaseAuth firebaseAuth;
@@ -37,6 +38,11 @@ public class SignInRegister extends AppCompatActivity{
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            Log.i(TAG,"Signed in: "+user.getUid());
+            startQoTD();
+        }
 
 
 //        calling the login page with the button
@@ -84,8 +90,7 @@ public class SignInRegister extends AppCompatActivity{
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Toast.makeText(SignInRegister.this,"Successfully logged in", Toast.LENGTH_LONG).show();
-                                Intent intent = new Intent(SignInRegister.this,QoTD.class);
-                                startActivity(intent);
+                                startQoTD();
                                 finish();
                             } else {
                                 Log.e(TAG, "Login unsuccessful: " + task.getException().getMessage());
@@ -100,4 +105,8 @@ public class SignInRegister extends AppCompatActivity{
 
     }
 
+    private void startQoTD() {
+        Intent intent = new Intent(SignInRegister.this,QoTD.class);
+        startActivity(intent);
+    }
 }
