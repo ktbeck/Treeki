@@ -31,7 +31,6 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Calendar cal = Calendar.getInstance();
