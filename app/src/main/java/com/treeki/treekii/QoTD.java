@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 public class QoTD extends AppCompatActivity {
 
-    //initialize
+    //initialize Kyler
     private TextView QoTD;
     private EditText answer_edit;
     private String answer;
