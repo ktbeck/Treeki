@@ -1,11 +1,15 @@
 package com.treeki.treekii;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +33,21 @@ public class QoTD extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
+    private Spinner spinner;
     String month;
     String day;
     String year;
 
+    private void startJournal() {
+        Intent journal = new Intent(this,Journal.class);
+        startActivity(journal);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
+
+        spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
@@ -50,6 +61,12 @@ public class QoTD extends AppCompatActivity {
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.rating, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
         mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -78,21 +95,26 @@ public class QoTD extends AppCompatActivity {
 
     }
 
-    //submits the QoTD
     public void submit(View view) {
         if (month.length() == 1) month = "0"+month;
         if (day.length() == 1) day = "0"+day;
         String date = month+"-"+day+"-"+year;
+        String mood = String.valueOf(spinner.getSelectedItem());
 
         //Save the answer
         answer = answer_edit.getText().toString();
-        if (answer != null) {
-            mDatabase.child("Users").child(user.getUid()).child("Journals").child(date).setValue(answer);
+        if (!answer.equals("")){
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+            startJournal();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
+        startJournal();
 
     }
+
+
 }

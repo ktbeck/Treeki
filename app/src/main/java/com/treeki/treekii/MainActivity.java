@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
         mListView = (ListView) findViewById(R.id.listView);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treeki-19818.firebaseio.com/Journals");
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReferenceFromUrl("https://treeki-19818.firebaseio.com/Users/EWjIw3tshHgDiOtNlmDTK5JET922/05-18-2018/Journal");
 
         FirebaseListAdapter<String> firebaseListAdapter = new FirebaseListAdapter<String>(
                 this,
@@ -35,7 +35,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void populateView(View v, String model, int position) {
                 TextView textView = (TextView) v.findViewById(android.R.id.text1);
-                textView.setText(model);
+                //position.Journal.getDate();
+                String sub = model.substring(0, Math.min(model.length(), 40));
+                String ok = ref.getParent().getKey();
+                String show = ok + "\n" + sub + "...";
+                textView.setText(show);
             }
         };
         //final ListView lv = (ListView) findViewById(R.id.listView);
