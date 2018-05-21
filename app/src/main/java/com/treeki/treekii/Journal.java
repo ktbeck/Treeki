@@ -21,7 +21,10 @@ import java.util.Calendar;
 public class Journal extends AppCompatActivity {
 
     private EditText answer_edit;
+    private EditText tags_edit;
     private String answer;
+    private String tag_string;
+    private String[] tags;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
@@ -40,6 +43,7 @@ public class Journal extends AppCompatActivity {
         year = Integer.toString(cal.get(Calendar.YEAR));
 
         answer_edit = findViewById(R.id.answer);
+        tags_edit = findViewById(R.id.tags);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -49,16 +53,22 @@ public class Journal extends AppCompatActivity {
         if (month.length() == 1) month = "0"+month;
         if (day.length() == 1) day = "0"+day;
         String date = month+"-"+day+"-"+year;
-
-        //Save the answer
+//
+//        //Save the answer
         answer = answer_edit.getText().toString();
-        if (!answer.equals("")) {
-            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
-            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+        tag_string = tags_edit.getText().toString();
+        tags = tag_string.split("\\s*,\\s*");
+        for (int i = 0; i < tags.length; i++) {
+            Log.i(TAG,"Tags: "+tags[i]);
         }
-        else {
-            Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
-        }
+        Log.i(TAG,"Answer: "+answer);
+//        if (!answer.equals("")) {
+//            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
+//            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+//        }
+//        else {
+//            Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
+//        }
 
     }
 }
