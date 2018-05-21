@@ -35,6 +35,7 @@ public class QoTD extends AppCompatActivity {
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
     private Spinner spinner;
+    String question;
     String month;
     String day;
     String year;
@@ -58,37 +59,15 @@ public class QoTD extends AppCompatActivity {
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        question = getIntent().getStringExtra("question");
+        Log.i(TAG,"QoTD: "+question);
+        QoTD.setText(question);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.rating, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-        mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //get question at /Questions/0101
-                        String question = dataSnapshot.getValue(String.class);
-
-                        //error handling
-                        if (question == null) {
-                            Log.e(TAG, "Question at"+month+"/"+day+" is unexpectedly null");
-                            Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
-                        }
-                        //if no err, change the question
-                        else {
-                            //change question
-                            QoTD.setText(question);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "get Question onCancelled", databaseError.toException());
-                    }
-                }
-        );
 
     }
 

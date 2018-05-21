@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public class SplashActivity extends Activity {
     private FirebaseUser user;
     private static final String TAG = "SplashActivity";
 
+    String question;
     String month;
     String day;
     String year;
@@ -37,8 +39,6 @@ public class SplashActivity extends Activity {
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        if (month.length() == 1) month = "0"+month;
-        if (day.length() == 1) day = "0"+day;
         date = month+"-"+day+"-"+year;
 
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -47,12 +47,37 @@ public class SplashActivity extends Activity {
         }
     }
     private void startQoTD() {
-        Intent intent = new Intent(SplashActivity.this,QoTD.class);
-        startActivity(intent);
+        mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //get question at /Questions/date
+                        question = dataSnapshot.getValue(String.class);
+
+                        //error handling
+                        if (question == null) {
+                            Log.e(TAG, "Question at "+month+"/"+day+" is unexpectedly null");
+                            Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
+                        }
+                        //if no err, send question
+                        else {
+                            Log.i(TAG, "Question at"+month+"/"+day+" is: "+question);
+                            Intent QoTD = new Intent(SplashActivity.this,QoTD.class);
+                            QoTD.putExtra("question",question);
+                            startActivity(QoTD);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                    }
+                }
+        );
     }
     private void startJournal() {
-        Intent intent = new Intent(SplashActivity.this,Journal.class);
-        startActivity(intent);
+        Intent Journal = new Intent(SplashActivity.this,Journal.class);
+        startActivity(Journal);
     }
 
     private void goToNextActivity() {
