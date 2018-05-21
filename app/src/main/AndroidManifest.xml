@@ -14,10 +14,6 @@
         <activity android:name=".QoTD" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
-        </activity>
-        <activity android:name=".Journal" />
-        <activity android:name=".SplashActivity"
-            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,6 +21,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".Journal" />
+        <activity android:name=".SplashActivity"
+            android:theme="@style/AppTheme.Launcher">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
         <!--<activity android:name=".FriendsList" />-->
         <!--<activity android:name=".friendsList"></activity>-->
     </application>
