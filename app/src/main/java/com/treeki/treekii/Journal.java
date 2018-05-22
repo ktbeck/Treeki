@@ -50,8 +50,6 @@ public class Journal extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        if (month.length() == 1) month = "0"+month;
-        if (day.length() == 1) day = "0"+day;
         String date = month+"-"+day+"-"+year;
 //
 //        //Save the answer
@@ -62,7 +60,7 @@ public class Journal extends AppCompatActivity {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
-                    mDatabase.child("Users").child(user.getUid()).child(tags[i]).child(date).setValue(true);
+                    mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
                 }
             }
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
