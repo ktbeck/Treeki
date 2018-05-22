@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".QoTD" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
@@ -19,11 +24,6 @@
         <activity android:name=".Journal" />
         <activity android:name=".SplashActivity"
             android:theme="@style/AppTheme.Launcher">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--<activity android:name=".FriendsList" />-->
         <!--<activity android:name=".friendsList"></activity>-->
