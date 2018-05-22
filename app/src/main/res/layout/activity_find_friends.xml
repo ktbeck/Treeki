@@ -24,7 +24,7 @@ android:layout_marginTop="15dp">
     android:layout_alignParentRight="true"
     android:layout_marginEnd="8dp"
     android:layout_marginStart="8dp"
-    android:text="Usesearchbartofindfriendswithusername(email)."/>
+    android:text="Use search bar to find friends with username(email)."/>
 
 <EditText
     android:id="@+id/search_box_input"
