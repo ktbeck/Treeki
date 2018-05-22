@@ -23,7 +23,7 @@
         <activity android:name=".Journal" />
         <activity android:name=".FriendsList" />
         <activity android:name=".friendsList" />
-        <activity android:name=".FindFriendsActivity"></activity>
+        <activity android:name=".FindFriendsActivity" />
     </application>
 
 </manifest>

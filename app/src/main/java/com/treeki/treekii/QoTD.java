@@ -100,4 +100,9 @@ public class QoTD extends AppCompatActivity {
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }
+
+    public void friends(View view) {
+        Intent intent = new Intent(this,FindFriendsActivity.class);
+        startActivity(intent);
+    }
 }
