@@ -58,17 +58,18 @@ public class Journal extends AppCompatActivity {
         answer = answer_edit.getText().toString();
         tag_string = tags_edit.getText().toString();
         tags = tag_string.split("\\s*,\\s*");
-        for (int i = 0; i < tags.length; i++) {
-            Log.i(TAG,"Tags: "+tags[i]);
+        if (!answer.equals("")) {
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
+            if(tags.length>0) {
+                for (int i = 0; i < tags.length; i++) {
+                    mDatabase.child("Users").child(user.getUid()).child(tags[i]).child(date).setValue(true);
+                }
+            }
+            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
         }
-        Log.i(TAG,"Answer: "+answer);
-//        if (!answer.equals("")) {
-//            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
-//            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
-//        }
-//        else {
-//            Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
-//        }
+        else {
+            Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 }
