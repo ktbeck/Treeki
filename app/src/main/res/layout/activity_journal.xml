@@ -31,7 +31,8 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:text="@string/cancel"
+            android:onClick="skipJournal"
+            android:text="@string/skip_journal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.17"
@@ -46,12 +47,12 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
+            android:onClick="skipJournal"
             android:text="@string/submit"
-            android:onClick="submit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.765"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/QoTD"
@@ -88,7 +89,7 @@
                 android:id="@+id/answer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/answer" />
+                android:hint="@string/journal_answer" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView

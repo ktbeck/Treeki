@@ -89,10 +89,15 @@ public class QoTD extends AppCompatActivity {
 
     }
 
+    public void skipQoTD(View view){
+        startJournal();
+    }
+
     private void startJournal() {
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar

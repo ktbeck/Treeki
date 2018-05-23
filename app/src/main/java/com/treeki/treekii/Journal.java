@@ -1,5 +1,6 @@
 package com.treeki.treekii;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -64,10 +65,24 @@ public class Journal extends AppCompatActivity {
                 }
             }
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+            startMainMenu();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
 
     }
+    private void startMainMenu() {
+        Intent menu = new Intent(this, MainMenuTest.class);
+        startActivity(menu);
+    }
+
+    public void skipJourn(View view){
+        startMainMenu();
+    }
+
+    public void skipJournal(View view){
+        startMainMenu();
+    }
+
 }
