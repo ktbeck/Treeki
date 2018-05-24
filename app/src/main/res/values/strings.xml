@@ -11,6 +11,7 @@
     <string name="today">How was your day?</string>
     <string name="tags">Tags:</string>
     <string name="comma_separated">Comma separated</string>
+    <string name="priv">private</string>
 
     <string-array name="rating">
         <item>1</item>

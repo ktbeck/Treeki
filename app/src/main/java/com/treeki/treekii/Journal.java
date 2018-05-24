@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,8 @@ public class Journal extends AppCompatActivity {
     private EditText answer_edit;
     private EditText tags_edit;
     private String answer;
+    private CheckBox priv;
+    private boolean checked;
     private String tag_string;
     private String[] tags;
     private DatabaseReference mDatabase;
@@ -55,20 +58,30 @@ public class Journal extends AppCompatActivity {
 
         answer_edit = findViewById(R.id.answer);
         tags_edit = findViewById(R.id.tags);
+        priv = (CheckBox) findViewById(R.id.checkBox);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     public void submit(View view) {
+        if (priv.isChecked()) checked = true;
+        else checked = false;
+
         String date = month+"-"+day+"-"+year;
-//
+
 //        //Save the answer
         answer = answer_edit.getText().toString();
         tag_string = tags_edit.getText().toString();
+        tag_string = tag_string.replaceAll("[\\/\\#\\[\\]\\$\\.]","");
         tags = tag_string.split("\\s*,\\s*");
+        Log.i(TAG,"Tags: ");
+        for (int i = 0; i < tags.length; i++) {
+            Log.i(TAG,tags[i]);
+        }
         if (!answer.equals("")) {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(checked);
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
                     mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
