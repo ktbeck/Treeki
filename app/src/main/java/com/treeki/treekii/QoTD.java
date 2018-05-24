@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,6 +39,8 @@ public class QoTD extends AppCompatActivity {
     private TextView QoTD;
     private EditText answer_edit;
     private String answer;
+    private CheckBox priv;
+    private boolean checked;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
@@ -52,6 +55,7 @@ public class QoTD extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
 
+        priv = (CheckBox) findViewById(R.id.checkBox);
         spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
@@ -80,6 +84,9 @@ public class QoTD extends AppCompatActivity {
     }
 
     public void submit(View view) {
+        if (priv.isChecked()) checked = true;
+        else checked = false;
+
         String date = month+"-"+day+"-"+year;
         String mood = String.valueOf(spinner.getSelectedItem());
 
@@ -88,6 +95,7 @@ public class QoTD extends AppCompatActivity {
         if (!answer.equals("")){
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(checked);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
             goToNextActivity();
         }
