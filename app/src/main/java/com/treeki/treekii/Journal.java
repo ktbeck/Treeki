@@ -84,7 +84,7 @@ public class Journal extends AppCompatActivity {
         startActivity(menu);
     }
 
-    public void skipJournal(View view){
+    public void skip(View view){
         showNotification("Treeki", "Don't forget to come back and fill in your daily question/journal.");
         startMainMenu();
     }

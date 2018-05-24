@@ -59,12 +59,6 @@ public class SignInRegister extends AppCompatActivity{
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            goToNextActivity();
-        }
-
 
 //        calling the login page with the button
         signin.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +190,9 @@ public class SignInRegister extends AppCompatActivity{
                                             //if no err, change the question
                                             else {
                                                 //GOTO MAIN MENU
-                                                //TODO: MAIN MENU INTENT GOES HERE
+                                                Intent mainmenuIntent = new Intent(SignInRegister.this,MainMenuTest.class);
+                                                startActivity(mainmenuIntent);
+                                                finish();
                                             }
                                         }
 
