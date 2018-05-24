@@ -11,6 +11,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -109,6 +112,35 @@ public class Journal extends AppCompatActivity {
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pi);
         mNotificationManager.notify(0, mBuilder.build());
+    }
+    //logout button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        // the menu being referenced here is the menu.xml from res/menu/menu.xml
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+
+    }
+
+    /* Here is the event handler for the menu button that I forgot in class.
+    The value returned by item.getItemID() is
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, String.format("" + item.getItemId()));
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getApplicationContext(),"Signed out", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(this, SignInRegister.class);
+                startActivity(i);
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 
 }
