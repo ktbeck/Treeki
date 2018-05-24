@@ -60,6 +60,7 @@ public class QoTD extends AppCompatActivity {
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
 
+
         QoTD = findViewById(R.id.QoTD);
         answer_edit = findViewById(R.id.answer);
 
@@ -88,13 +89,44 @@ public class QoTD extends AppCompatActivity {
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
-            startJournal();
+            goToNextActivity();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
 
     }
+
+    private void goToNextActivity() {
+        String date = month+"-"+day+"-"+year;
+        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").addListenerForSingleValueEvent(
+            new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //get question at /Questions/0101
+                    String answer = dataSnapshot.getValue(String.class);
+
+                    //error handling
+                    if (answer == null) {
+                        Log.i(TAG,"User did not journal");
+                        startJournal();
+                    }
+                    //if no err, change the question
+                    else {
+                        //GOTO MAIN MENU
+                        Log.i(TAG,"User did journal, going to main");
+                        Intent mainmenuIntent = new Intent(QoTD.this,MainMenuTest.class);
+                        startActivity(mainmenuIntent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
+                }
+            }
+    );}
 
     public void skipQoTD(View view){
         showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");

@@ -125,7 +125,9 @@ public class SplashActivity extends Activity {
                                             //if no err, change the question
                                             else {
                                                 //GOTO MAIN MENU
-                                                //TODO: MAIN MENU INTENT GOES HERE
+                                                Intent mainmenuIntent = new Intent(SplashActivity.this,MainMenuTest.class);
+                                                startActivity(mainmenuIntent);
+                                                finish();
                                             }
                                         }
 
