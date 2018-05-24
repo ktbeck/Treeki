@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".QoTD" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".SignInRegister"></activity>
+        <activity android:name=".SignInRegister" />
         <activity android:name=".Journal" />
         <activity
             android:name=".SplashActivity"
@@ -26,7 +26,8 @@
         </activity>
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
+        <activity android:name=".JournalDetail"></activity>
     </application>
 
 </manifest>

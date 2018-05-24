@@ -30,9 +30,16 @@ public class Journal extends AppCompatActivity {
     String day;
     String year;
 
+    /*
     public String getDate(){
         String date = this.month+"-"+this.day+"-"+this.year;
         return date;
+    }
+    */
+
+    private void mainActivity() {
+        Intent main = new Intent(this,MainActivity.class);
+        startActivity(main);
     }
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +68,14 @@ public class Journal extends AppCompatActivity {
         if (!answer.equals("")) {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+            mainActivity();
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
         }
+        mainActivity();
 
     }
 
-    private void mainActivity() {
-        Intent main = new Intent(this,MainActivity.class);
-        startActivity(main);
-    }
+
 }
