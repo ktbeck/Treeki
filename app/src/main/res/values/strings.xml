@@ -14,6 +14,7 @@
     <string name="priv">private</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="save">Save</string>
 
 
     <string-array name="rating">

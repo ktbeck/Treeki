@@ -7,22 +7,36 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
 public class JournalDetail extends AppCompatActivity {
     private CheckBox priv;
     private String TAG = "JournalDetail";
+    private DatabaseReference mDatabase;
+    private FirebaseUser user;
     String month;
     String day;
     String year;
     String today;
+    String date;
+    String content;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal_detail);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Calendar cal = Calendar.getInstance();
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
@@ -33,8 +47,8 @@ public class JournalDetail extends AppCompatActivity {
         today = month+"-"+day+"-"+year;
 
         Intent i = getIntent();
-        String content = i.getStringExtra("content");
-        String date = i.getStringExtra("date");
+        content = i.getStringExtra("content");
+        date = i.getStringExtra("date");
         Boolean checked = i.getBooleanExtra("private",false);
 
         TextView c = (TextView) findViewById(R.id.jourContent);
@@ -44,7 +58,25 @@ public class JournalDetail extends AppCompatActivity {
 
         priv = (CheckBox) findViewById(R.id.priv);
         priv.setChecked(checked);
-        priv.setEnabled(false);
+        priv.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            //set onclick handler for checkbox
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
+            {
+                Button save = (Button) findViewById(R.id.save);
+                save.setVisibility(View.VISIBLE);
+
+                //onclick handler for save button
+                save.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    v.setVisibility(View.INVISIBLE);
+                    mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
+                }
+            });
+
+            }
+        });
 
         Button edit = (Button) findViewById(R.id.edit);
         Button delete = (Button) findViewById(R.id.delete);
@@ -52,5 +84,9 @@ public class JournalDetail extends AppCompatActivity {
             edit.setVisibility(View.INVISIBLE);
             delete.setVisibility(View.INVISIBLE);
         }
+
+        //TODO: Add edit and delete button funcitnoality
+
+        //Todo: Make it so private/public is editable whenever.
     }
 }
