@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,6 +24,16 @@ public class JournalDetail extends AppCompatActivity {
     private String TAG = "JournalDetail";
     private DatabaseReference mDatabase;
     private FirebaseUser user;
+
+    ViewSwitcher switcher;
+    Button delete;
+    Button edit;
+    Button save;
+
+    TextView c;
+    TextView d;
+    EditText edit_content;
+
     String month;
     String day;
     String year;
@@ -51,8 +63,9 @@ public class JournalDetail extends AppCompatActivity {
         date = i.getStringExtra("date");
         Boolean checked = i.getBooleanExtra("private",false);
 
-        TextView c = (TextView) findViewById(R.id.jourContent);
-        TextView d = (TextView) findViewById(R.id.dateView);
+        save = (Button) findViewById(R.id.save);
+        c = (TextView) findViewById(R.id.content);
+        d = (TextView) findViewById(R.id.dateView);
         c.setText(content);
         d.setText(date);
 
@@ -64,29 +77,64 @@ public class JournalDetail extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
             {
-                Button save = (Button) findViewById(R.id.save);
                 save.setVisibility(View.VISIBLE);
 
                 //onclick handler for save button
                 save.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    v.setVisibility(View.INVISIBLE);
-                    mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
-                }
-            });
+                    public void onClick(View v) {
+                        v.setVisibility(View.INVISIBLE);
+                        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
+                    }
+                });
 
             }
         });
 
-        Button edit = (Button) findViewById(R.id.edit);
-        Button delete = (Button) findViewById(R.id.delete);
+        edit = (Button) findViewById(R.id.edit);
+        delete = (Button) findViewById(R.id.delete);
+        //if journal isn't from today, don't let them edit/delete
         if (!date.equals(today)){
             edit.setVisibility(View.INVISIBLE);
             delete.setVisibility(View.INVISIBLE);
         }
+        else {
+            //edit onclick listener
+            edit.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //make buttons disappear, make save appear
+                    v.setVisibility(View.INVISIBLE);
+                    delete.setVisibility(View.INVISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                    //switch viewText to editText, prepopulate
+                    switcher = (ViewSwitcher) findViewById(R.id.switcher);
+                    switcher.showNext();
+                    edit_content = (EditText) switcher.findViewById(R.id.editContent);
+                    edit_content.setText(content);
 
-        //TODO: Add edit and delete button funcitnoality
+                    //save onclick handler
+                    save.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            //make save button disappear, make others reappear
+                            v.setVisibility(View.INVISIBLE);
+                            delete.setVisibility(View.VISIBLE);
+                            edit.setVisibility(View.VISIBLE);
+                            //switch editText to textView, with proper info
+                            switcher.showNext();
+                            save();
+                        }
+                    });
+                }
+            });
+        }
 
-        //Todo: Make it so private/public is editable whenever.
+    }
+    public void save(){
+        //TODO: make it so the save button isn't wonky with private/public and edit
+        String new_content = edit_content.getText().toString();
+        c.setText(new_content);
+        //save to db
+        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(new_content);
+        content = new_content;
+
     }
 }
