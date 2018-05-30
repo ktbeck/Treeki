@@ -49,6 +49,7 @@ public class QoTD extends AppCompatActivity {
     String month;
     String day;
     String year;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +66,7 @@ public class QoTD extends AppCompatActivity {
         year = Integer.toString(cal.get(Calendar.YEAR));
         if (month.length() == 1) month = "0"+month;
         if (day.length() == 1) day = "0"+day;
+        date = month+"-"+day+"-"+year;
 
 
         QoTD = findViewById(R.id.QoTD);
@@ -89,7 +91,6 @@ public class QoTD extends AppCompatActivity {
         if (priv.isChecked()) checked = true;
         else checked = false;
 
-        String date = month+"-"+day+"-"+year;
         String mood = String.valueOf(spinner.getSelectedItem());
 
         //Save the answer
@@ -108,7 +109,6 @@ public class QoTD extends AppCompatActivity {
     }
 
     private void goToNextActivity() {
-        String date = month+"-"+day+"-"+year;
         mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").addListenerForSingleValueEvent(
             new ValueEventListener() {
                 @Override

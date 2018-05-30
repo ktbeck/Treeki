@@ -39,9 +39,6 @@ public class SplashActivity extends Activity {
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        if (month.length() == 1) month = "0"+month;
-        if (day.length() == 1) day = "0"+day;
-        date = month+"-"+day+"-"+year;
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -94,6 +91,9 @@ public class SplashActivity extends Activity {
         finish();
     }
     private void goToNextActivity() {
+        if (month.length() == 1) month = "0"+month;
+        if (day.length() == 1) day = "0"+day;
+        date = month+"-"+day+"-"+year;
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"Signed in: "+user.getUid());
 
