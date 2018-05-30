@@ -55,6 +55,8 @@ public class Journal extends AppCompatActivity {
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
+        if (month.length() == 1) month = "0"+month;
+        if (day.length() == 1) day = "0"+day;
 
         answer_edit = findViewById(R.id.answer);
         tags_edit = findViewById(R.id.tags);

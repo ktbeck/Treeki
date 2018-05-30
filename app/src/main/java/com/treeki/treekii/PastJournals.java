@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +22,7 @@ public class PastJournals extends AppCompatActivity {
     private ListView mListView;
     private FirebaseUser user;
     private String TAG = "PastJournals";
+    private ArrayList<String> entries_ = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,7 @@ public class PastJournals extends AppCompatActivity {
         setContentView(R.layout.activity_past_journals);
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.i(TAG,"User: "+user.getUid());
 
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -36,8 +39,27 @@ public class PastJournals extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                            String clubkey = childSnapshot.getKey();
-                            Log.i(TAG,"key: "+clubkey);
+                            String display;
+                            String date = childSnapshot.getKey();
+//                            Log.i(TAG,"key: "+date);
+                            String journal = childSnapshot.child("Journal").child("answer").getValue(String.class);
+//                            Log.i(TAG,"journal: "+journal);
+                            if (journal != null) {
+                                if (journal.length() < 40) {
+                                    display = date + "\n" + journal;
+                                } else {
+                                    display = date + "\n" + journal.substring(0, 40)+"...";
+                                }
+                                Log.i(TAG, "entry: \n" + display);
+                                entries_.add(display);
+                                String[] entries = new String[entries_.size()];
+                                for(int i = 0; i < entries_.size(); i++) {
+                                    entries[i] = entries_.get(i);
+                                }
+                                ArrayAdapter adapter = new ArrayAdapter(PastJournals.this, android.R.layout.simple_list_item_1,entries);
+                                mListView.setAdapter(adapter);
+                            }
+
                         }
 
                     }
