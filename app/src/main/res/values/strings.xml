@@ -12,6 +12,9 @@
     <string name="tags">Tags:</string>
     <string name="comma_separated">Comma separated</string>
     <string name="priv">private</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
 
     <string-array name="rating">
         <item>1</item>
