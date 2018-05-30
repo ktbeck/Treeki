@@ -77,16 +77,7 @@ public class JournalDetail extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
             {
-                save.setVisibility(View.VISIBLE);
-
-                //onclick handler for save button
-                save.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        v.setVisibility(View.INVISIBLE);
-                        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
-                    }
-                });
-
+                mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
             }
         });
 
@@ -120,21 +111,16 @@ public class JournalDetail extends AppCompatActivity {
                             edit.setVisibility(View.VISIBLE);
                             //switch editText to textView, with proper info
                             switcher.showNext();
-                            save();
+                            String new_content = edit_content.getText().toString();
+                            c.setText(new_content);
+                            //save to db
+                            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(new_content);
+                            content = new_content;
                         }
                     });
                 }
             });
         }
-
-    }
-    public void save(){
-        //TODO: make it so the save button isn't wonky with private/public and edit
-        String new_content = edit_content.getText().toString();
-        c.setText(new_content);
-        //save to db
-        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(new_content);
-        content = new_content;
 
     }
 }
