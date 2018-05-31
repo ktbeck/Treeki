@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <!-- the title attribute "action_favorite" needs to be added in the strings.xml file -->
+    <item
+
+        android:id="@+id/action_favorite"
+        android:title="@string/action_favorite"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:showAsAction="always"
+
+        />
+
+
+
+</menu>

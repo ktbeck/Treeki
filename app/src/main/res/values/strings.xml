@@ -6,5 +6,6 @@
     <string name="answer">Answer</string>
     <string name="question_of_the_day">Question of the Day</string>
     <string name="journal">Journal</string>
+    <string name="action_favorite">Add</string>
 
 </resources>

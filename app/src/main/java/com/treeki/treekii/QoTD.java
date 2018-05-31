@@ -102,7 +102,7 @@ public class QoTD extends AppCompatActivity {
     }
 
     public void friends(View view) {
-        Intent intent = new Intent(this,FindFriendsActivity.class);
+        Intent intent = new Intent(this,SearchFriends.class);
         startActivity(intent);
     }
 }
