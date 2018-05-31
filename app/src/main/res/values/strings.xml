@@ -11,10 +11,11 @@
     <string name="today">How was your day?</string>
     <string name="tags">Tags:</string>
     <string name="comma_separated">Comma separated</string>
-    <string name="priv">private</string>
+    <string name="priv">Private</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
+    <string name="fav">Favorite</string>
 
 
     <string-array name="rating">

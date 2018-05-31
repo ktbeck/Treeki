@@ -21,6 +21,8 @@ import java.util.Calendar;
 
 public class JournalDetail extends AppCompatActivity {
     private CheckBox priv;
+    private CheckBox fav;
+
     private String TAG = "JournalDetail";
     private DatabaseReference mDatabase;
     private FirebaseUser user;
@@ -81,6 +83,21 @@ public class JournalDetail extends AppCompatActivity {
             }
         });
 
+
+        fav = (CheckBox) findViewById(R.id.fav);
+        fav.setChecked(checked);
+        fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            //set onclick handler for checkbox
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
+            {
+                mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("favorite").setValue(isChecked);
+            }
+        });
+
+
+
         edit = (Button) findViewById(R.id.edit);
         delete = (Button) findViewById(R.id.delete);
         //if journal isn't from today, don't let them edit/delete
@@ -120,7 +137,19 @@ public class JournalDetail extends AppCompatActivity {
                     });
                 }
             });
+
+            delete.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    back();
+                }
+            });
         }
 
+    }
+    private void back() {
+        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").removeValue();
+        Intent PastJournals = new Intent(JournalDetail.this, PastJournals.class);
+        startActivity(PastJournals);
+        finish();
     }
 }
