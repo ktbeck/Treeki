@@ -26,5 +26,6 @@
         <item>10</item>
     </string-array>
     <string name="title_activity_main_menu_test">MainMenuTest</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
 
 </resources>

@@ -142,7 +142,7 @@ public class QoTD extends AppCompatActivity {
     }
 
     private void startJournal() {
-        Intent journal = new Intent(this,Journal.class);
+        Intent journal = new Intent(this, Journal.class);
         startActivity(journal);
     }
 
