@@ -74,7 +74,6 @@ public class SearchFriends extends AppCompatActivity {
                 ListData ld = new ListData();
                 try {
                     ld.firstText = ja.getJSONObject(i).getString("first");
-                    ld.secondText = ja.getJSONObject(i).getString("second");
                 } catch (JSONException e1) {
                     e1.printStackTrace();
                 }
@@ -97,25 +96,24 @@ public class SearchFriends extends AppCompatActivity {
 
             // Set an OnItemClickListener for each of the list items
             final Context context = this;
-            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    ListData selected = aList.get(position);
-
-                    // Create an Intent to reference our new activity, then call startActivity
-                    // to transition into the new Activity.
-                    Intent detailIntent = new Intent(context, DetailActivity.class);
-
-                    // pass some key value pairs to the next Activity (via the Intent)
-                    detailIntent.putExtra("first", selected.firstText);
-                    detailIntent.putExtra("second", selected.secondText);
-
-                    startActivity(detailIntent);
-                }
-
-            });
+//            list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//                    ListData selected = aList.get(position);
+//
+//                    // Create an Intent to reference our new activity, then call startActivity
+//                    // to transition into the new Activity.
+//                    Intent detailIntent = new Intent(context, DetailActivity.class);
+//
+//                    // pass some key value pairs to the next Activity (via the Intent)
+//                    detailIntent.putExtra("first", selected.firstText);
+//
+//                    startActivity(detailIntent);
+//                }
+//
+//            });
         }
         catch(IOException e){
             // There's no JSON file that exists, so don't

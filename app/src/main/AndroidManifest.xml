@@ -23,7 +23,6 @@
         <activity android:name=".Journal" />
         <activity android:name=".SearchFriends" />
         <activity android:name=".ListData" />
-        <activity android:name=".DetailActivity" />
         <activity android:name=".AddText" />
     </application>
 

@@ -27,8 +27,8 @@ public class AddText extends AppCompatActivity {
         setContentView(R.layout.activity_add_text);
 
         final EditText first = findViewById(R.id.editText);
-        final EditText second = findViewById(R.id.editText2);
-        Button b = findViewById(R.id.button);
+        Button b = findViewById(R.id.btn_add);
+        Button c = (Button)findViewById(R.id.btnBack);
 
         // Read the file
 
@@ -72,12 +72,10 @@ public class AddText extends AppCompatActivity {
         b.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
                 String firstText = first.getText().toString();
-                String secondText = second.getText().toString();
 
                 JSONObject temp = new JSONObject();
                 try {
                     temp.put("first", firstText);
-                    temp.put("second", secondText);
                 }
                 catch(JSONException j){
                     j.printStackTrace();
@@ -102,6 +100,14 @@ public class AddText extends AppCompatActivity {
                 //pop the activity off the stack
                 Intent i = new Intent(AddText.this, SearchFriends.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+        c.setOnClickListener(new Button.OnClickListener(){
+            public void onClick(View v){
+
+                //pop the activity off the stack
+                Intent i = new Intent(AddText.this, SearchFriends.class);
                 startActivity(i);
             }
         });
