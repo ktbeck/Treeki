@@ -28,6 +28,7 @@ public class PastQoTD extends AppCompatActivity {
     private ArrayList<String> entries_ = new ArrayList<>();
     String qotd;
     String date;
+    int num = 0;
 
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
@@ -58,56 +59,58 @@ public class PastQoTD extends AppCompatActivity {
                                 String day_ = date.split("-")[1];
 
                                 entries_.add(date+"\n"+qotd);
-//                                ref.child("Questions").child(month_).child(day_).addValueEventListener(new ValueEventListener() {
-//                                    @Override
-//                                    public void onDataChange(DataSnapshot dataSnapshot) {
-//                                        // This method is called once with the initial value and again
-//                                        // whenever data at this location is updated.
-//                                        String question = dataSnapshot.getValue(String.class);
-//                                        if (question.length() > 31)
-//                                            question = question.substring(0, 31) + "...";
-//                                        Log.i(TAG, "Question: " + question);
+                                ref.child("Questions").child(month_).child(day_).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        // This method is called once with the initial value and again
+                                        // whenever data at this location is updated.
+                                        String question = dataSnapshot.getValue(String.class);
+                                        if (question.length() > 35)
+                                            question = question.substring(0, 35) + "...";
+                                        Log.i(TAG, "Question: " + question);
+
+                                        String[] parts = entries_.get(num).split("\n");
+                                        entries_.set(num,parts[0]+" "+question+"\n"+parts[1]);
+                                        Log.i(TAG, "entry: " + entries_.get(num));
+                                        num += 1;
+
+
+                                        String[] entries = new String[entries_.size()]; //arraylist -> array
+                                        for (int i = 0; i < entries_.size(); i++) {
+                                            entries[i] = entries_.get(i);
+                                        }
+                                        ArrayAdapter adapter = new ArrayAdapter(PastQoTD.this, android.R.layout.simple_list_item_1,entries); //set listview
+                                        mListView.setAdapter(adapter);
+//                                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
+//                                            @Override
+//                                            public void onItemClick(AdapterView<?> parent, View view, int position,
+//                                                                    long id) {
 //
-//                                        int len = entries_.size() - 1;
-//                                        String[] parts = entries_.get(len).split("\n");
-//                                        entries_.set(len, parts[0]+" "+question+"\n"+parts[1]);
-//                                        Log.i(TAG, "entry: " + entries_.get(len));
-//                                    }
+//                                                String date = ((TextView)view).getText().toString().split("\\n")[0];
+//                                                //Log.i(TAG,"date: "+date);
 //
-//                                    @Override
-//                                    public void onCancelled(DatabaseError error) {
-//                                        // Failed to read value
-//                                        Log.w(TAG, "Failed to read value.", error.toException());
-//                                    }
-//                                });
+//                                                Intent QoTDDetail = new Intent(PastQoTD.this,QoTDDetail.class);
+//                                                String content = dataSnapshot.child(date).child("QoTD").child("answer").getValue(String.class);
+//                                                Boolean checked = dataSnapshot.child(date).child("QoTD").child("private").getValue(Boolean.class);
+//                                                Boolean faved = dataSnapshot.child(date).child("QoTD").child("favorite").getValue(Boolean.class);
+//                                                QoTDDetail.putExtra("date",date);
+//                                                QoTDDetail.putExtra("content",content);
+//                                                QoTDDetail.putExtra("private",checked);
+//                                                QoTDDetail.putExtra("favorite",faved);
+//                                                startActivity(QoTDDetail);
+//                                            }
+//                                        });
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError error) {
+                                        // Failed to read value
+                                        Log.w(TAG, "Failed to read value.", error.toException());
+                                    }
+                                });
                             }
                         }
 
-                        String[] entries = new String[entries_.size()]; //arraylist -> array
-                        for (int i = 0; i < entries_.size(); i++) {
-                            entries[i] = entries_.get(i);
-                        }
-                        ArrayAdapter adapter = new ArrayAdapter(PastQoTD.this, android.R.layout.simple_list_item_1,entries); //set listview
-                        mListView.setAdapter(adapter);
-                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                                    long id) {
-
-                                String date = ((TextView)view).getText().toString().split("\\n")[0];
-                                //Log.i(TAG,"date: "+date);
-
-                                Intent QoTDDetail = new Intent(PastQoTD.this,QoTDDetail.class);
-                                String content = dataSnapshot.child(date).child("QoTD").child("answer").getValue(String.class);
-                                Boolean checked = dataSnapshot.child(date).child("QoTD").child("private").getValue(Boolean.class);
-                                Boolean faved = dataSnapshot.child(date).child("QoTD").child("favorite").getValue(Boolean.class);
-                                QoTDDetail.putExtra("date",date);
-                                QoTDDetail.putExtra("content",content);
-                                QoTDDetail.putExtra("private",checked);
-                                QoTDDetail.putExtra("favorite",faved);
-                                startActivity(QoTDDetail);
-                            }
-                        });
                     }
 
                     @Override
