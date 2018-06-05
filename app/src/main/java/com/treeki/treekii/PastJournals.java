@@ -76,9 +76,11 @@ public class PastJournals extends AppCompatActivity {
                                 Intent JournalDetail = new Intent(PastJournals.this,JournalDetail.class);
                                 String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
                                 Boolean checked = dataSnapshot.child(date).child("Journal").child("private").getValue(Boolean.class);
+                                Boolean faved = dataSnapshot.child(date).child("Journal").child("favorite").getValue(Boolean.class);
                                 JournalDetail.putExtra("date",date);
                                 JournalDetail.putExtra("content",content);
                                 JournalDetail.putExtra("private",checked);
+                                JournalDetail.putExtra("favorite",faved);
                                 startActivity(JournalDetail);
                             }
                         });

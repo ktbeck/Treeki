@@ -17,8 +17,7 @@
         <activity android:name=".Journal" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme.Launcher">
-        </activity>
+            android:theme="@style/AppTheme.Launcher" />
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
         <activity
@@ -33,6 +32,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".PastQoTD" >
+        </activity>
+        <activity android:name=".QoTDDetail"></activity>
     </application>
 
 </manifest>

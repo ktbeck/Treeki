@@ -19,11 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class JournalDetail extends AppCompatActivity {
+public class QoTDDetail extends AppCompatActivity {
     private CheckBox priv;
     private CheckBox fav;
 
-    private String TAG = "JournalDetail";
+    private String TAG = "QoTDDetail";
     private DatabaseReference mDatabase;
     private FirebaseUser user;
 
@@ -47,7 +47,7 @@ public class JournalDetail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_journal_detail);
+        setContentView(R.layout.activity_qotd_detail);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -80,7 +80,7 @@ public class JournalDetail extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
             {
-                mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(isChecked);
+                mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(isChecked);
             }
         });
 
@@ -93,7 +93,7 @@ public class JournalDetail extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
             {
-                mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("favorite").setValue(isChecked);
+                mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(isChecked);
             }
         });
 
@@ -101,7 +101,7 @@ public class JournalDetail extends AppCompatActivity {
 
         edit = (Button) findViewById(R.id.edit);
         delete = (Button) findViewById(R.id.delete);
-        //if journal isn't from today, don't let them edit/delete
+        //if QoTD isn't from today, don't let them edit/delete
         if (!date.equals(today)){
             edit.setVisibility(View.INVISIBLE);
             delete.setVisibility(View.INVISIBLE);
@@ -132,7 +132,7 @@ public class JournalDetail extends AppCompatActivity {
                             String new_content = edit_content.getText().toString();
                             c.setText(new_content);
                             //save to db
-                            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(new_content);
+                            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(new_content);
                             content = new_content;
                         }
                     });
@@ -148,9 +148,9 @@ public class JournalDetail extends AppCompatActivity {
 
     }
     private void back() {
-        mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").removeValue();
-        Intent PastJournals = new Intent(JournalDetail.this, PastJournals.class);
-        startActivity(PastJournals);
+        mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").removeValue();
+        Intent PastQoTDs = new Intent(QoTDDetail.this, PastQoTD.class);
+        startActivity(PastQoTDs);
         finish();
     }
 }
