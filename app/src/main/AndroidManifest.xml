@@ -17,7 +17,8 @@
         <activity android:name=".Journal" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme.Launcher" />
+            android:theme="@style/AppTheme.Launcher" >
+        </activity>
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
         <activity
