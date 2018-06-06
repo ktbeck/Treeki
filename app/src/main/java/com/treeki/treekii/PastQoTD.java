@@ -28,6 +28,8 @@ public class PastQoTD extends AppCompatActivity {
     private ArrayList<String> entries_ = new ArrayList<>();
     String qotd;
     String date;
+    Boolean priv;
+    Boolean faved;
     int num = 0;
 
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -59,6 +61,8 @@ public class PastQoTD extends AppCompatActivity {
                                 String day_ = date.split("-")[1];
 
                                 entries_.add(date+"\n"+qotd);
+                                priv = childSnapshot.child("QoTD").child("private").getValue(Boolean.class);
+                                faved = childSnapshot.child("QoTD").child("favorite").getValue(Boolean.class);
                                 ref.child("Questions").child(month_).child(day_).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot2) {
@@ -89,26 +93,24 @@ public class PastQoTD extends AppCompatActivity {
                                             public void onItemClick(AdapterView<?> parent, View view, int position,
                                                                     long id) {
 
-                                                String[] line = ((TextView)view).getText().toString().split("\n|\\| ");
+                                                String[] line = ((TextView)view).getText().toString().split("\n| \\| ");
                                                 String date = line[0];
                                                 String question = line[1];
                                                 String ans = line[2];
                                                 //Log.i(TAG,"date: "+date);
 
                                                 Intent QoTDDetail = new Intent(PastQoTD.this,QoTDDetail.class);
-                                                Boolean checked = childSnapshot.child("QoTD").child("private").getValue(Boolean.class);
-                                                Boolean faved = childSnapshot.child("QoTD").child("favorite").getValue(Boolean.class);
                                                 Log.i(TAG,"click: question: "+question);
                                                 Log.i(TAG,"click: date: "+date);
                                                 Log.i(TAG,"click: ans: "+ans);
-                                                Log.i(TAG,"click: checked: "+checked);
+                                                Log.i(TAG,"click: checked: "+priv);
                                                 Log.i(TAG,"click: faved: "+faved);
-//                                                QoTDDetail.putExtra("question",question);
-//                                                QoTDDetail.putExtra("date",date);
-//                                                QoTDDetail.putExtra("content",ans);
-//                                                QoTDDetail.putExtra("private",checked);
-//                                                QoTDDetail.putExtra("favorite",faved);
-//                                                startActivity(QoTDDetail);
+                                                QoTDDetail.putExtra("question",question);
+                                                QoTDDetail.putExtra("date",date);
+                                                QoTDDetail.putExtra("content",ans);
+                                                QoTDDetail.putExtra("private",priv);
+                                                QoTDDetail.putExtra("favorite",faved);
+                                                startActivity(QoTDDetail);
                                             }
                                         });
                                     }

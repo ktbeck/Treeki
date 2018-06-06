@@ -34,8 +34,10 @@ public class QoTDDetail extends AppCompatActivity {
 
     TextView c;
     TextView d;
+    TextView q;
     EditText edit_content;
 
+    String question;
     String month;
     String day;
     String year;
@@ -56,21 +58,23 @@ public class QoTDDetail extends AppCompatActivity {
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        if (month.length() == 1) month = "0"+month;
-        if (day.length() == 1) day = "0"+day;
         today = month+"-"+day+"-"+year;
 
         Intent i = getIntent();
+
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
+        question = i.getStringExtra("question");
         Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
 
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
         d = (TextView) findViewById(R.id.dateView);
+        q = (TextView) findViewById(R.id.question);
         c.setText(content);
         d.setText(date);
+        q.setText(question);
 
         priv = (CheckBox) findViewById(R.id.priv);
         priv.setChecked(checked);
