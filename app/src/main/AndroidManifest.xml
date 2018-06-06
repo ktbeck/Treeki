@@ -12,13 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".QoTD">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister" />
-        <activity android:name=".Journal"></activity>
+        <activity android:name=".Journal" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme.Launcher"></activity>
+            android:theme="@style/AppTheme.Launcher" />
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
         <activity
@@ -26,17 +31,12 @@
             android:label="@string/title_activity_main_menu_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".JournalDetail" />
-        <activity android:name=".PastJournals"></activity>
-        <activity android:name=".PastQoTD">
-        </activity>
+        <activity android:name=".PastJournals" />
+        <activity android:name=".PastQoTD"></activity>
         <activity android:name=".QoTDDetail" />
         <activity android:name=".Favorites">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+        <activity android:name=".answeredQoTD"></activity>
     </application>
 
 </manifest>
