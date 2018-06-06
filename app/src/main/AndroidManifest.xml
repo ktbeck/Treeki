@@ -31,6 +31,8 @@
         </activity>
         <activity android:name=".QoTDDetail" />
         <activity android:name=".Favorites">
+        </activity>
+        <activity android:name=".Tags">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
