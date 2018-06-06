@@ -40,7 +40,9 @@ public class QoTD extends AppCompatActivity {
     private EditText answer_edit;
     private String answer;
     private CheckBox priv;
-    private boolean checked;
+    private CheckBox fav;
+    private boolean priv_check;
+    private boolean fav_check;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
@@ -56,7 +58,8 @@ public class QoTD extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
 
-        priv = (CheckBox) findViewById(R.id.checkBox);
+        priv = (CheckBox) findViewById(R.id.priv);
+        fav = (CheckBox) findViewById(R.id.fav);
         spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
@@ -86,8 +89,8 @@ public class QoTD extends AppCompatActivity {
     }
 
     public void submit(View view) {
-        if (priv.isChecked()) checked = true;
-        else checked = false;
+        priv_check = priv.isChecked();
+        fav_check = fav.isChecked();
 
         String mood = String.valueOf(spinner.getSelectedItem());
 
@@ -96,7 +99,8 @@ public class QoTD extends AppCompatActivity {
         if (!answer.equals("")){
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
-            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(checked);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(priv_check);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(fav_check);
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
             goToNextActivity();
         }
