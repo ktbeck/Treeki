@@ -13,7 +13,7 @@ We have also included a friends list so that you can share your answers/journals
 Made by:
 1. Kyler Beck
 2. Sota Nakajima
-3. Tanny Wang
+3. Tangni Wang
 4. Vienna Chan
 5. Joey Sandmeyer
 

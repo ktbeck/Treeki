@@ -34,6 +34,7 @@ public class SignInRegister extends AppCompatActivity{
     private EditText password;
     private Button signin;
     private Button signup;
+    String question;
     String month;
     String day;
     String year;
@@ -54,18 +55,10 @@ public class SignInRegister extends AppCompatActivity{
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        if (month.length() == 1) month = "0"+month;
-        if (day.length() == 1) day = "0"+day;
         date = month+"-"+day+"-"+year;
 
         //initializing firebase auth object
         firebaseAuth = FirebaseAuth.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            goToNextActivity();
-        }
-
 
 //        calling the login page with the button
         signin.setOnClickListener(new View.OnClickListener() {
@@ -128,9 +121,36 @@ public class SignInRegister extends AppCompatActivity{
     }
 
     private void startQoTD() {
-        Intent intent = new Intent(SignInRegister.this,QoTD.class);
-        startActivity(intent);
+        mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //get question at /Questions/date
+                        question = dataSnapshot.getValue(String.class);
+
+                        //error handling
+                        if (question == null) {
+                            Log.e(TAG, "Question at "+month+"/"+day+" is unexpectedly null");
+                            Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
+                        }
+                        //if no err, send question
+                        else {
+                            Log.i(TAG, "Question at"+month+"/"+day+" is: "+question);
+                            Intent QoTD = new Intent(SignInRegister.this,QoTD.class);
+                            QoTD.putExtra("question",question);
+                            startActivity(QoTD);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                    }
+                }
+        );
     }
+
     private void startJournal() {
         Intent intent = new Intent(SignInRegister.this,Journal.class);
         startActivity(intent);
@@ -170,7 +190,9 @@ public class SignInRegister extends AppCompatActivity{
                                             //if no err, change the question
                                             else {
                                                 //GOTO MAIN MENU
-                                                //TODO: MAIN MENU INTENT GOES HERE
+                                                Intent mainmenuIntent = new Intent(SignInRegister.this,MainMenuTest.class);
+                                                startActivity(mainmenuIntent);
+                                                finish();
                                             }
                                         }
 

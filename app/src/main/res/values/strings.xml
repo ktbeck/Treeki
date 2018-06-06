@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">Treeki</string>
-    <string name="skip">Skip</string>
-    <string name="cancel">Cancel</string>
+    <string name="skip_qotd">Skip</string>
+    <string name="skip_journal">Skip</string>
     <string name="submit">Submit</string>
     <string name="answer">Answer</string>
+    <string name="journal_answer">Daily Journal</string>
     <string name="question_of_the_day">Question of the Day</string>
     <string name="journal">Journal</string>
+    <string name="logout">Logout</string>
     <string name="today">How was your day?</string>
+    <string name="tags">Tags:</string>
+    <string name="comma_separated">Comma separated</string>
+    <string name="priv">private</string>
 
     <string-array name="rating">
         <item>1</item>
@@ -20,5 +25,6 @@
         <item>9</item>
         <item>10</item>
     </string-array>
+    <string name="title_activity_main_menu_test">MainMenuTest</string>
 
 </resources>
