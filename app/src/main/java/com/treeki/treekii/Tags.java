@@ -26,6 +26,7 @@ public class Tags extends AppCompatActivity {
     private FirebaseUser user;
     private String TAG = "Tags";
     private ArrayList<String> entries_ = new ArrayList<>();
+    String[] entries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,32 +46,23 @@ public class Tags extends AppCompatActivity {
                             String tag = childSnapshot.getKey();
                             entries_.add(tag);
                         }
-                        String[] entries = new String[entries_.size()]; //arraylist -> array
+                        entries = new String[entries_.size()]; //arraylist -> array
                         for(int i = 0; i < entries_.size(); i++) {
                             entries[i] = entries_.get(i);
                         }
                         ArrayAdapter adapter = new ArrayAdapter(Tags.this, android.R.layout.simple_list_item_1,entries); //set listview
                         mListView.setAdapter(adapter);
 
-//                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
-//                            @Override
-//                            public void onItemClick(AdapterView<?> parent, View view, int position,
-//                                                    long id) {
-//
-//                                String date = ((TextView)view).getText().toString().split("\\n")[0];
-//                                //Log.i(TAG,"date: "+date);
-//
-//                                Intent JournalDetail = new Intent(Tags.this,JournalDetail.class);
-//                                String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
-//                                Boolean checked = dataSnapshot.child(date).child("Journal").child("private").getValue(Boolean.class);
-//                                Boolean faved = dataSnapshot.child(date).child("Journal").child("favorite").getValue(Boolean.class);
-//                                JournalDetail.putExtra("date",date);
-//                                JournalDetail.putExtra("content",content);
-//                                JournalDetail.putExtra("private",checked);
-//                                JournalDetail.putExtra("favorite",faved);
-//                                startActivity(JournalDetail);
-//                            }
-//                        });
+                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                    long id) {
+                                Intent TagJournals = new Intent(Tags.this,TagJournals.class);
+                                TagJournals.putExtra("tag",entries[position]);
+                                Log.i(TAG,"Tag: "+entries[position]);
+                                startActivity(TagJournals);
+                            }
+                        });
                     }
 
                     @Override
