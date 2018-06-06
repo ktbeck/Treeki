@@ -36,7 +36,9 @@ public class Journal extends AppCompatActivity {
     private EditText tags_edit;
     private String answer;
     private CheckBox priv;
-    private boolean checked;
+    private CheckBox fav;
+    private boolean priv_check;
+    private boolean fav_check;
     private String tag_string;
     private String[] tags;
     private DatabaseReference mDatabase;
@@ -58,15 +60,16 @@ public class Journal extends AppCompatActivity {
 
         answer_edit = findViewById(R.id.answer);
         tags_edit = findViewById(R.id.tags);
-        priv = (CheckBox) findViewById(R.id.checkBox);
+        priv = (CheckBox) findViewById(R.id.priv);
+        fav = (CheckBox) findViewById(R.id.fav);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     public void submit(View view) {
-        if (priv.isChecked()) checked = true;
-        else checked = false;
+        priv_check = priv.isChecked();
+        fav_check = fav.isChecked();
 
         String date = month+"-"+day+"-"+year;
 
@@ -81,7 +84,8 @@ public class Journal extends AppCompatActivity {
         }
         if (!answer.equals("")) {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
-            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(checked);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(priv_check);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("favorite").setValue(fav_check);
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
                     mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
