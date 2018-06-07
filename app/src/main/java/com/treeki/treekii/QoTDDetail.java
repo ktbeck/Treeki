@@ -167,14 +167,14 @@ public class QoTDDetail extends AppCompatActivity {
         Intent prev;
         Log.i(TAG,"source: "+source);
         if (source.equals("PastQoTD")) {
-            Log.i(TAG, "in pastqotd");
             prev = new Intent(QoTDDetail.this, PastQoTD.class);
         }
         else {
-            Log.i(TAG, "not in pastqotd");
             dates_ = getIntent().getStringArrayListExtra("dates");
             dates_.remove(dates_.size() - 1);
             prev = new Intent(QoTDDetail.this, answeredQoTD.class);
+            prev.putExtra("source","QoTD");
+            prev.putExtra("question",question);
             prev.putStringArrayListExtra("dates", dates_);
         }
         startActivity(prev);

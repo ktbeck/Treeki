@@ -28,10 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Journal extends AppCompatActivity {
 
+    private ArrayList<String> past_dates;
     private EditText answer_edit;
     private EditText tags_edit;
     private String answer;
@@ -44,6 +46,8 @@ public class Journal extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
+    String date;
+    String past_date;
     String month;
     String day;
     String year;
@@ -58,6 +62,7 @@ public class Journal extends AppCompatActivity {
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
+        date = month+"-"+day+"-"+year;
 
         answer_edit = findViewById(R.id.answer);
         tags_edit = findViewById(R.id.tags);
@@ -72,7 +77,6 @@ public class Journal extends AppCompatActivity {
         priv_check = priv.isChecked();
         fav_check = fav.isChecked();
 
-        String date = month+"-"+day+"-"+year;
 
 //        //Save the answer
         answer = answer_edit.getText().toString();
@@ -93,6 +97,7 @@ public class Journal extends AppCompatActivity {
                 }
             }
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+            checkPast();
             startMainMenu();
         }
         else {
@@ -108,6 +113,44 @@ public class Journal extends AppCompatActivity {
     public void skip(View view){
         showNotification("Treeki", "Don't forget to come back and fill in your daily question/journal.");
         startMainMenu();
+    }
+    private void checkPast() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        past_dates = new ArrayList<>();
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            past_date = childSnapshot.getKey();
+                            Log.i(TAG,"past dates: "+past_date);
+                            if (!past_date.equals("tags")) {
+                                if (date.substring(0, date.length() - 5).equals
+                                        (past_date.substring(0, past_date.length() - 5))) {
+                                    past_dates.add(past_date);
+                                }
+                            }
+                        }
+                        if (past_dates.size() > 1) {
+                            String dates = "";
+                            for (String date: past_dates) {
+                                dates+=date+" ";
+                                Log.i(TAG,"j date: "+date);
+                            }
+                            Toast.makeText(Journal.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
+                            Intent answeredQotd = new Intent(Journal.this, answeredQoTD.class);
+                            answeredQotd.putStringArrayListExtra("dates", past_dates);
+                            answeredQotd.putExtra("source","Journal");
+                            startActivity(answeredQotd);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i(TAG,"checkpast cancelled");
+                    }
+                }
+        );
     }
 
     void showNotification(String title, String content) {

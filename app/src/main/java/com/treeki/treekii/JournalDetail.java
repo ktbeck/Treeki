@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class JournalDetail extends AppCompatActivity {
@@ -42,6 +43,8 @@ public class JournalDetail extends AppCompatActivity {
     String today;
     String date;
     String content;
+    String source;
+    ArrayList<String> dates_;
 
 
     @Override
@@ -59,6 +62,7 @@ public class JournalDetail extends AppCompatActivity {
         today = month+"-"+day+"-"+year;
 
         Intent i = getIntent();
+        source = i.getStringExtra("source");
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
         Boolean checked = i.getBooleanExtra("private",false);
@@ -146,8 +150,19 @@ public class JournalDetail extends AppCompatActivity {
     }
     private void back() {
         mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").removeValue();
-        Intent PastJournals = new Intent(JournalDetail.this, PastJournals.class);
-        startActivity(PastJournals);
+        Intent prev;
+        Log.i(TAG,"source: "+source);
+        if (source.equals("answeredQoTD")) {
+            dates_ = getIntent().getStringArrayListExtra("dates");
+            dates_.remove(dates_.size() - 1);
+            prev = new Intent(JournalDetail.this, answeredQoTD.class);
+            prev.putExtra("source","Journal");
+            prev.putStringArrayListExtra("dates", dates_);
+        }
+        else {
+            prev = new Intent(JournalDetail.this, PastJournals.class);
+        }
+        startActivity(prev);
         finish();
     }
 }

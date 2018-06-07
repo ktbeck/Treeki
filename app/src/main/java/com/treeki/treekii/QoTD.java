@@ -143,6 +143,7 @@ public class QoTD extends AppCompatActivity {
                             Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
                             answeredQotd.putStringArrayListExtra("dates", past_dates);
                             answeredQotd.putExtra("question",question);
+                            answeredQotd.putExtra("source","QoTD");
                             Log.i(TAG,"Found past QoTD.");
                             startActivity(answeredQotd);
                         }

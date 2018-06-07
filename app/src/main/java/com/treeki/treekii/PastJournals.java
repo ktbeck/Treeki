@@ -92,6 +92,7 @@ public class PastJournals extends AppCompatActivity {
                                 JournalDetail.putExtra("content",content);
                                 JournalDetail.putExtra("private",priv_.get(position));
                                 JournalDetail.putExtra("favorite",fave_.get(position));
+                                JournalDetail.putExtra("source","PastJournal");
                                 startActivity(JournalDetail);
                             }
                         });

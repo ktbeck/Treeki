@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class answeredQoTD extends AppCompatActivity {
     DatabaseReference ref;
@@ -32,23 +33,43 @@ public class answeredQoTD extends AppCompatActivity {
     String date;
     String[] dates;
     String question;
+    String month;
+    String day;
+    String year;
+    String today;
     ArrayList<String> dates_;
     ArrayList<String> entries_;
     private ArrayList<Boolean> priv_;
     private ArrayList<Boolean> fave_;
-    String QorJ = "QoTD";
+    String QorJ;
+//    String QorJ = "Journal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Calendar cal = Calendar.getInstance();
+        month = Integer.toString(cal.get(Calendar.MONTH) + 1);
+        day = Integer.toString(cal.get(Calendar.DATE));
+        year = Integer.toString(cal.get(Calendar.YEAR));
+        today = month + "-" + day + "-" + year;
+
+        QorJ = getIntent().getStringExtra("source");
+        Log.i(TAG,"source: "+QorJ);
         Log.i(TAG, "in answered QOTD");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_past_qotd);
-        setTitle("Past Answers");
+        if (QorJ.equals("QoTD")) {
+            setContentView(R.layout.activity_past_qotd);
+            setTitle("Past Answers");
 
-        QoTD = findViewById(R.id.QoTD);
-        question = getIntent().getStringExtra("question");
-        Log.i(TAG, "QoTD: " + question);
-        QoTD.setText(question);
+            QoTD = findViewById(R.id.QoTD);
+            question = getIntent().getStringExtra("question");
+            Log.i(TAG, "QoTD: " + question);
+            QoTD.setText(question);
+        }
+        else {
+            setContentView(R.layout.activity_past_journals);
+            setTitle("Past Journals");
+        }
 
         dates_ = getIntent().getStringArrayListExtra("dates");
         dates = new String[dates_.size()];
@@ -71,6 +92,7 @@ public class answeredQoTD extends AppCompatActivity {
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         for (int i = 0; i < dates.length; i++) {
                             date = dates[i];
+                            Log.i(TAG,"aq date: "+date);
                             String answer = dataSnapshot.child(date).child(QorJ).child("answer").getValue(String.class); //get answer
                             Log.i(TAG, "answer: " + answer);
                             String display;
@@ -93,17 +115,23 @@ public class answeredQoTD extends AppCompatActivity {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                                         long id) {
+                                    Intent detailed;
+                                    if(QorJ.equals("QoTD")) {
+                                        detailed = new Intent(answeredQoTD.this, QoTDDetail.class);
+                                        detailed.putExtra("question",question);
+                                    }
+                                    else {
+                                        detailed = new Intent(answeredQoTD.this, JournalDetail.class);
+                                    }
 
-                                    Intent QoTDDetail = new Intent(answeredQoTD.this, QoTDDetail.class);
                                     String content = dataSnapshot.child(dates[position]).child(QorJ).child("answer").getValue(String.class);
-                                    QoTDDetail.putExtra("question",question);
-                                    QoTDDetail.putExtra("date", dates[position]);
-                                    QoTDDetail.putExtra("content", content);
-                                    QoTDDetail.putExtra("private",priv_.get(position));
-                                    QoTDDetail.putExtra("favorite",fave_.get(position));
-                                    QoTDDetail.putExtra("source","answeredQoTD");
-                                    QoTDDetail.putStringArrayListExtra("dates", dates_);
-                                    startActivity(QoTDDetail);
+                                    detailed.putStringArrayListExtra("dates", dates_);
+                                    detailed.putExtra("date", dates[position]);
+                                    detailed.putExtra("content", content);
+                                    detailed.putExtra("private",priv_.get(position));
+                                    detailed.putExtra("favorite",fave_.get(position));
+                                    detailed.putExtra("source","answeredQoTD");
+                                    startActivity(detailed);
                                 }
                             });
                         }
@@ -111,7 +139,7 @@ public class answeredQoTD extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
+                        Log.w(TAG, "get answer onCancelled", databaseError.toException());
                     }
                 }
         );
@@ -122,35 +150,44 @@ public class answeredQoTD extends AppCompatActivity {
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }
+    private void startMain() {
+        Intent mainmenuIntent = new Intent(answeredQoTD.this, MainMenuTest.class);
+        startActivity(mainmenuIntent);
+    }
 
     private void goToNextActivity() {
-        ref.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //get question at /Questions/0101
-                        String answer = dataSnapshot.getValue(String.class);
+        if(QorJ.equals("QoTD")) {
+            ref.child("Users").child(user.getUid()).child(today).child("Journal").child("answer").addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //get question at /Questions/0101
+                            String answer = dataSnapshot.getValue(String.class);
 
-                        //error handling
-                        if (answer == null) {
-                            Log.i(TAG,"User did not journal");
-                            startJournal();
+                            //error handling
+                            if (answer == null) {
+                                Log.i(TAG, "User did not journal");
+                                startJournal();
+                            }
+                            //if no err, change the question
+                            else {
+                                //GOTO MAIN MENU
+                                Log.i(TAG, "User did journal, going to main");
+                                startMain();
+                            }
                         }
-                        //if no err, change the question
-                        else {
-                            //GOTO MAIN MENU
-                            Log.i(TAG,"User did journal, going to main");
-                            Intent mainmenuIntent = new Intent(answeredQoTD.this,MainMenuTest.class);
-                            startActivity(mainmenuIntent);
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
                         }
                     }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
-                    }
-                }
-        );}
+            );
+        }
+        else {
+            startMain();
+        }
+    }
 
 
     // This method will just show the menu item (which is our button "ADD")
