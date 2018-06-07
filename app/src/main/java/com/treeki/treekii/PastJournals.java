@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,16 +28,24 @@ public class PastJournals extends AppCompatActivity {
     private ListView mListView;
     private FirebaseUser user;
     private String TAG = "PastJournals";
-    private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> entries_;
+    private ArrayList<Boolean> fave_;
+    private ArrayList<Boolean> priv_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        setTitle("Past Journals");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i(TAG,"User: "+user.getUid());
-
+        Log.i(TAG, "User: " + user.getUid());
+    }
+    protected void onResume() {
+        super.onResume();
+        entries_ = new ArrayList<>();
+        fave_ = new ArrayList<>();
+        priv_ = new ArrayList<>();
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
@@ -55,6 +66,8 @@ public class PastJournals extends AppCompatActivity {
                                 }
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
+                                priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
                             }
 
                         }
@@ -75,12 +88,11 @@ public class PastJournals extends AppCompatActivity {
 
                                 Intent JournalDetail = new Intent(PastJournals.this,JournalDetail.class);
                                 String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
-                                Boolean checked = dataSnapshot.child(date).child("Journal").child("private").getValue(Boolean.class);
-                                Boolean faved = dataSnapshot.child(date).child("Journal").child("favorite").getValue(Boolean.class);
                                 JournalDetail.putExtra("date",date);
                                 JournalDetail.putExtra("content",content);
-                                JournalDetail.putExtra("private",checked);
-                                JournalDetail.putExtra("favorite",faved);
+                                JournalDetail.putExtra("private",priv_.get(position));
+                                JournalDetail.putExtra("favorite",fave_.get(position));
+                                JournalDetail.putExtra("source","PastJournal");
                                 startActivity(JournalDetail);
                             }
                         });
@@ -93,4 +105,32 @@ public class PastJournals extends AppCompatActivity {
                 }
         );
     }
+    // This method will just show the menu item (which is our button "ADD")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        // the menu being referenced here is the menu.xml from res/menu/menu.xml
+        inflater.inflate(R.menu.qotd, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.d(TAG, String.format("" + item.getItemId()));
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.qotd:
+                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
+                Change Activity here (if that's what you're intending to do, which is probably is).
+                 */
+                Intent i = new Intent(this, PastQoTD.class);
+                startActivity(i);
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+
 }

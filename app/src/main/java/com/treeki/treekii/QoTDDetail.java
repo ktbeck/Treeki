@@ -10,13 +10,18 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class QoTDDetail extends AppCompatActivity {
@@ -44,6 +49,8 @@ public class QoTDDetail extends AppCompatActivity {
     String today;
     String date;
     String content;
+    String source;
+    ArrayList<String> dates_;
 
 
     @Override
@@ -55,25 +62,29 @@ public class QoTDDetail extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Calendar cal = Calendar.getInstance();
-        month = Integer.toString(cal.get(Calendar.MONTH)+1);
+        month = Integer.toString(cal.get(Calendar.MONTH) + 1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        today = month+"-"+day+"-"+year;
+        today = month + "-" + day + "-" + year;
+    }
+    protected void onStart() {
+        super.onStart();
 
         Intent i = getIntent();
+        source = i.getStringExtra("source");
 
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
         question = i.getStringExtra("question");
-        Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
+        Boolean checked = i.getBooleanExtra("private",false);
 
+
+        setTitle(date);
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
-        d = (TextView) findViewById(R.id.dateView);
         q = (TextView) findViewById(R.id.question);
         c.setText(content);
-        d.setText(date);
         q.setText(question);
 
         priv = (CheckBox) findViewById(R.id.priv);
@@ -153,8 +164,21 @@ public class QoTDDetail extends AppCompatActivity {
     }
     private void back() {
         mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").removeValue();
-        Intent PastQoTDs = new Intent(QoTDDetail.this, PastQoTD.class);
-        startActivity(PastQoTDs);
+        Intent prev;
+        Log.i(TAG,"source: "+source);
+        if (source.equals("PastQoTD")) {
+            prev = new Intent(QoTDDetail.this, PastQoTD.class);
+        }
+        else {
+            dates_ = getIntent().getStringArrayListExtra("dates");
+            dates_.remove(dates_.size() - 1);
+            prev = new Intent(QoTDDetail.this, answeredQoTD.class);
+            prev.putExtra("source","QoTD");
+            prev.putExtra("question",question);
+            prev.putStringArrayListExtra("dates", dates_);
+        }
+        startActivity(prev);
+        Log.i(TAG,"Starting prev");
         finish();
     }
 }
