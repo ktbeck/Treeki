@@ -57,7 +57,10 @@
         <activity android:name=".Favorites">
         </activity>
         <activity android:name=".answeredQoTD">
-
+        </activity>
+        <activity android:name=".Tags">
+        </activity>
+        <activity android:name=".TagJournals">
         </activity>
     </application>
 
