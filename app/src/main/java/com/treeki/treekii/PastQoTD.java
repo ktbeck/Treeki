@@ -124,6 +124,7 @@ public class PastQoTD extends AppCompatActivity {
                                                 QoTDDetail.putExtra("content",ans);
                                                 QoTDDetail.putExtra("private",priv_.get(position));
                                                 QoTDDetail.putExtra("favorite",fave_.get(position));
+                                                QoTDDetail.putExtra("source","PastQoTD");
                                                 startActivity(QoTDDetail);
                                             }
                                         });

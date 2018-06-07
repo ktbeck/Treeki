@@ -32,9 +32,11 @@ public class answeredQoTD extends AppCompatActivity {
     String date;
     String[] dates;
     String question;
+    ArrayList<String> dates_;
     ArrayList<String> entries_;
     private ArrayList<Boolean> priv_;
     private ArrayList<Boolean> fave_;
+    String QorJ = "QoTD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,7 @@ public class answeredQoTD extends AppCompatActivity {
         Log.i(TAG, "QoTD: " + question);
         QoTD.setText(question);
 
-        ArrayList<String> dates_ = getIntent().getStringArrayListExtra("dates");
+        dates_ = getIntent().getStringArrayListExtra("dates");
         dates = new String[dates_.size()];
         for (int i = 0; i < dates_.size(); i++) {
             dates[i] = dates_.get(i);
@@ -69,16 +71,16 @@ public class answeredQoTD extends AppCompatActivity {
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         for (int i = 0; i < dates.length; i++) {
                             date = dates[i];
-                            String answer = dataSnapshot.child(date).child("QoTD").child("answer").getValue(String.class); //get answer
+                            String answer = dataSnapshot.child(date).child(QorJ).child("answer").getValue(String.class); //get answer
                             Log.i(TAG, "answer: " + answer);
                             String display;
                             if (answer != null) { //if answer not null ie valid, truncate if >40
-                                display = date + "\n" + answer;
+                                display = date.substring(date.length()-4,date.length()) + "\n" + answer;
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
                             }
-                            priv_.add(dataSnapshot.child(date).child("QoTD").child("private").getValue(Boolean.class));
-                            fave_.add(dataSnapshot.child(date).child("QoTD").child("favorite").getValue(Boolean.class));
+                            priv_.add(dataSnapshot.child(date).child(QorJ).child("private").getValue(Boolean.class));
+                            fave_.add(dataSnapshot.child(date).child(QorJ).child("favorite").getValue(Boolean.class));
                             String[] entries = new String[entries_.size()]; //arraylist -> array
                             for (int j = 0; j < entries_.size(); j++) {
                                 entries[j] = entries_.get(j);
@@ -93,12 +95,14 @@ public class answeredQoTD extends AppCompatActivity {
                                                         long id) {
 
                                     Intent QoTDDetail = new Intent(answeredQoTD.this, QoTDDetail.class);
-                                    String content = dataSnapshot.child(dates[position]).child("QoTD").child("answer").getValue(String.class);
+                                    String content = dataSnapshot.child(dates[position]).child(QorJ).child("answer").getValue(String.class);
                                     QoTDDetail.putExtra("question",question);
                                     QoTDDetail.putExtra("date", dates[position]);
                                     QoTDDetail.putExtra("content", content);
                                     QoTDDetail.putExtra("private",priv_.get(position));
                                     QoTDDetail.putExtra("favorite",fave_.get(position));
+                                    QoTDDetail.putExtra("source","answeredQoTD");
+                                    QoTDDetail.putStringArrayListExtra("dates", dates_);
                                     startActivity(QoTDDetail);
                                 }
                             });

@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class QoTDDetail extends AppCompatActivity {
@@ -48,6 +49,8 @@ public class QoTDDetail extends AppCompatActivity {
     String today;
     String date;
     String content;
+    String source;
+    ArrayList<String> dates_;
 
 
     @Override
@@ -68,6 +71,7 @@ public class QoTDDetail extends AppCompatActivity {
         super.onStart();
 
         Intent i = getIntent();
+        source = i.getStringExtra("source");
 
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
@@ -160,8 +164,21 @@ public class QoTDDetail extends AppCompatActivity {
     }
     private void back() {
         mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").removeValue();
-        Intent PastQoTDs = new Intent(QoTDDetail.this, PastQoTD.class);
-        startActivity(PastQoTDs);
+        Intent prev;
+        Log.i(TAG,"source: "+source);
+        if (source.equals("PastQoTD")) {
+            Log.i(TAG, "in pastqotd");
+            prev = new Intent(QoTDDetail.this, PastQoTD.class);
+        }
+        else {
+            Log.i(TAG, "not in pastqotd");
+            dates_ = getIntent().getStringArrayListExtra("dates");
+            dates_.remove(dates_.size() - 1);
+            prev = new Intent(QoTDDetail.this, answeredQoTD.class);
+            prev.putStringArrayListExtra("dates", dates_);
+        }
+        startActivity(prev);
+        Log.i(TAG,"Starting prev");
         finish();
     }
 }
