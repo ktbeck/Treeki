@@ -49,7 +49,7 @@ public class answeredQoTD extends AppCompatActivity {
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         for (int i = 0; i < dates.length; i++) {
                             date = dates[i];
-                            String journal = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class); //get journal
+                            String journal = dataSnapshot.child(date).child("QoTD").child("answer").getValue(String.class); //get journal
                             Log.i(TAG, "journal: " + journal);
                             String display;
                             if (journal != null) { //if journal not null ie valid, truncate if >40
@@ -57,12 +57,12 @@ public class answeredQoTD extends AppCompatActivity {
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
                             }
-
                             String[] entries = new String[entries_.size()]; //arraylist -> array
                             for (int j = 0; j < entries_.size(); j++) {
-                                entries[i] = entries_.get(i);
+                                entries[j] = entries_.get(j);
+                                Log.i(TAG,"entries["+j+"]="+entries[j]);
                             }
-                            ArrayAdapter adapter = new ArrayAdapter(answeredQoTD.this, android.R.layout.simple_list_item_1, entries); //set listview
+                            ArrayAdapter<String> adapter = new ArrayAdapter<>(answeredQoTD.this, android.R.layout.simple_list_item_1, entries); //set listview
                             mListView.setAdapter(adapter);
 
                             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
@@ -70,14 +70,11 @@ public class answeredQoTD extends AppCompatActivity {
                                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                                         long id) {
 
-                                    String date = ((TextView) view).getText().toString().split("\\n")[0];
-                                    //Log.i(TAG,"date: "+date);
-
                                     Intent JournalDetail = new Intent(answeredQoTD.this, JournalDetail.class);
-                                    String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
-                                    Boolean checked = dataSnapshot.child(date).child("Journal").child("private").getValue(Boolean.class);
-                                    Boolean faved = dataSnapshot.child(date).child("Journal").child("favorite").getValue(Boolean.class);
-                                    JournalDetail.putExtra("date", date);
+                                    String content = dataSnapshot.child(dates[position]).child("QoTD").child("answer").getValue(String.class);
+                                    Boolean checked = dataSnapshot.child(dates[position]).child("QoTD").child("private").getValue(Boolean.class);
+                                    Boolean faved = dataSnapshot.child(dates[position]).child("QoTD").child("favorite").getValue(Boolean.class);
+                                    JournalDetail.putExtra("date", dates[position]);
                                     JournalDetail.putExtra("content", content);
                                     JournalDetail.putExtra("private", checked);
                                     JournalDetail.putExtra("favorite", faved);
