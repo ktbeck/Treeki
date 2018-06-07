@@ -76,14 +76,15 @@ public class QoTD extends AppCompatActivity {
 
 
         QoTD = findViewById(R.id.QoTD);
+        question = getIntent().getStringExtra("question");
+        Log.i(TAG,"QoTD: "+question);
+        QoTD.setText(question);
+
         answer_edit = findViewById(R.id.answer);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        question = getIntent().getStringExtra("question");
-        Log.i(TAG,"QoTD: "+question);
-        QoTD.setText(question);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.rating, android.R.layout.simple_spinner_item);
@@ -126,14 +127,14 @@ public class QoTD extends AppCompatActivity {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             past_date = childSnapshot.getKey();
                             Log.i(TAG,"past dates: "+past_date);
-                            if (!past_date.equals("tags") && !past_date.equals(date)) {
+                            if (!past_date.equals("tags")) {
                                 if (date.substring(0, date.length() - 5).equals
                                         (past_date.substring(0, past_date.length() - 5))) {
                                     past_dates.add(past_date);
                                 }
                             }
                         }
-                        if (past_dates.size() > 0) {
+                        if (past_dates.size() > 1) {
                             String dates = "";
                             for (String date: past_dates) {
                                 dates+=date+" ";
@@ -141,6 +142,7 @@ public class QoTD extends AppCompatActivity {
                             Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
                             Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
                             answeredQotd.putStringArrayListExtra("dates", past_dates);
+                            answeredQotd.putExtra("question",question);
                             Log.i(TAG,"Found past QoTD.");
                             startActivity(answeredQotd);
                         }
@@ -174,7 +176,6 @@ public class QoTD extends AppCompatActivity {
                         Log.i(TAG,"User did journal, going to main");
                         Intent mainmenuIntent = new Intent(QoTD.this,MainMenuTest.class);
                         startActivity(mainmenuIntent);
-                        finish();
                     }
                 }
 

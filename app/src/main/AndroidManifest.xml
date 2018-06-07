@@ -19,7 +19,13 @@
         <activity android:name=".Journal" />
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme.Launcher" />
+            android:theme="@style/AppTheme.Launcher" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
         <activity
@@ -28,11 +34,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".JournalDetail" />
         <activity android:name=".PastJournals" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".PastQoTD">
         </activity>

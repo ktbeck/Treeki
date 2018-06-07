@@ -17,6 +17,7 @@
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="fav">Favorite</string>
+    <string name="contin">Continue</string>
 
 
     <string-array name="rating">

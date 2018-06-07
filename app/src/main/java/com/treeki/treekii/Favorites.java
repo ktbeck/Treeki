@@ -29,8 +29,8 @@ public class Favorites extends AppCompatActivity {
     private ArrayList<String> entries_ = new ArrayList<>();
     String month;
     String day;
-    String JorQ = getIntent().getStringExtra("JorQ");
-//    String JorQ = "QoTD";
+//    String JorQ = getIntent().getStringExtra("JorQ");
+    String JorQ = "QoTD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
