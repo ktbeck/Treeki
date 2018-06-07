@@ -49,8 +49,8 @@ public class PastQoTD extends AppCompatActivity {
         Log.i(TAG, "User: " + user.getUid());
 
     }
-    protected void onStart(){
-        super.onStart();
+    protected void onResume(){
+        super.onResume();
         entries_ = new ArrayList<>();
         fave_ = new ArrayList<>();
         priv_ = new ArrayList<>();

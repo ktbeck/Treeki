@@ -28,7 +28,9 @@ public class PastJournals extends AppCompatActivity {
     private ListView mListView;
     private FirebaseUser user;
     private String TAG = "PastJournals";
-    private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> entries_;
+    private ArrayList<Boolean> fave_;
+    private ArrayList<Boolean> priv_;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,13 @@ public class PastJournals extends AppCompatActivity {
         setTitle("Past Journals");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i(TAG,"User: "+user.getUid());
-
+        Log.i(TAG, "User: " + user.getUid());
+    }
+    protected void onResume() {
+        super.onResume();
+        entries_ = new ArrayList<>();
+        fave_ = new ArrayList<>();
+        priv_ = new ArrayList<>();
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
@@ -59,6 +66,8 @@ public class PastJournals extends AppCompatActivity {
                                 }
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
+                                priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
                             }
 
                         }
@@ -79,12 +88,10 @@ public class PastJournals extends AppCompatActivity {
 
                                 Intent JournalDetail = new Intent(PastJournals.this,JournalDetail.class);
                                 String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
-                                Boolean checked = dataSnapshot.child(date).child("Journal").child("private").getValue(Boolean.class);
-                                Boolean faved = dataSnapshot.child(date).child("Journal").child("favorite").getValue(Boolean.class);
                                 JournalDetail.putExtra("date",date);
                                 JournalDetail.putExtra("content",content);
-                                JournalDetail.putExtra("private",checked);
-                                JournalDetail.putExtra("favorite",faved);
+                                JournalDetail.putExtra("private",priv_.get(position));
+                                JournalDetail.putExtra("favorite",fave_.get(position));
                                 startActivity(JournalDetail);
                             }
                         });
