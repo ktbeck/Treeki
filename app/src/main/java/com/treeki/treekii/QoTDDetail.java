@@ -68,12 +68,11 @@ public class QoTDDetail extends AppCompatActivity {
         Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
 
+        setTitle(date);
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
-        d = (TextView) findViewById(R.id.dateView);
         q = (TextView) findViewById(R.id.question);
         c.setText(content);
-        d.setText(date);
         q.setText(question);
 
         priv = (CheckBox) findViewById(R.id.priv);

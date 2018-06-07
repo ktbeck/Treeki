@@ -51,6 +51,7 @@ public class Journal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal);
+        setTitle("Journal");
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();

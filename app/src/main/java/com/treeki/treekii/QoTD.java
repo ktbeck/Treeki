@@ -60,6 +60,7 @@ public class QoTD extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
+        setTitle("Question of the Day");
 
         priv = (CheckBox) findViewById(R.id.priv);
         fav = (CheckBox) findViewById(R.id.fav);

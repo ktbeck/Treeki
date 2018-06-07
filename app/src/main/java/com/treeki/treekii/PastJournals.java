@@ -31,6 +31,7 @@ public class PastJournals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        setTitle("Past Journals");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"User: "+user.getUid());

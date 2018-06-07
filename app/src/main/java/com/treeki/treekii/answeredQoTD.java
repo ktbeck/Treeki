@@ -33,6 +33,7 @@ public class answeredQoTD extends AppCompatActivity {
         Log.i(TAG,"in answered QOTD");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        setTitle("Past Answers");
         ArrayList<String> dates_ = getIntent().getStringArrayListExtra("dates");
         dates = new String[dates_.size()];
         for (int i = 0; i < dates_.size(); i++){
