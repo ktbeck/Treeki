@@ -10,12 +10,16 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 
@@ -55,18 +59,22 @@ public class QoTDDetail extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         Calendar cal = Calendar.getInstance();
-        month = Integer.toString(cal.get(Calendar.MONTH)+1);
+        month = Integer.toString(cal.get(Calendar.MONTH) + 1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-        today = month+"-"+day+"-"+year;
+        today = month + "-" + day + "-" + year;
+    }
+    protected void onStart() {
+        super.onStart();
 
         Intent i = getIntent();
 
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
         question = i.getStringExtra("question");
-        Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
+        Boolean checked = i.getBooleanExtra("private",false);
+
 
         setTitle(date);
         save = (Button) findViewById(R.id.save);
