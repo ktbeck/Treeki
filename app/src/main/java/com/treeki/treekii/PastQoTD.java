@@ -183,8 +183,10 @@ public class PastQoTD extends AppCompatActivity {
                 Change Activity here (if that's what you're intending to do, which is probably is).
                  */
                 Intent i = new Intent(this, PastJournals.class);
-                i.putExtra("user_id",user_id);
-                i.putExtra("user",user);
+                if(other) {
+                    i.putExtra("user_id", user_id);
+                    i.putExtra("user", user);
+                }
                 startActivity(i);
                 finish();
             default:

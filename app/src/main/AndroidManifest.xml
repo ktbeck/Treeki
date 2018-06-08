@@ -30,16 +30,18 @@
         <activity android:name=".JournalDetail" />
         <activity android:name=".PastJournals">
         </activity>
-        <activity android:name=".PastQoTD"></activity>
-        <activity android:name=".QoTDDetail" />
-        <activity android:name=".Favorites"></activity>
-        <activity android:name=".answeredQoTD"></activity>
-        <activity android:name=".Tags">
+        <activity android:name=".PastQoTD">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".QoTDDetail" />
+        <activity android:name=".Favorites"></activity>
+        <activity android:name=".answeredQoTD"></activity>
+        <activity android:name=".Tags">
         </activity>
         <activity android:name=".TagJournals"></activity>
         <activity android:name=".Friends">
