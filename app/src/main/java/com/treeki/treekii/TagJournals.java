@@ -27,6 +27,7 @@ public class TagJournals extends AppCompatActivity {
     private FirebaseUser user;
     private String TAG = "TagJournals";
     private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> dates_ = new ArrayList<>();
     Boolean checked;
     Boolean faved;
     String display;
@@ -45,6 +46,7 @@ public class TagJournals extends AppCompatActivity {
         super.onResume();
         entries_.clear();
         String tag = getIntent().getStringExtra("tag");
+        setTitle(tag);
 
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -55,6 +57,7 @@ public class TagJournals extends AppCompatActivity {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) { //for all children
                             date = childSnapshot.getKey();
                             Log.i(TAG,"key: "+date);
+                            dates_.add(date);
 
                             DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
                             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").addListenerForSingleValueEvent(
@@ -68,18 +71,15 @@ public class TagJournals extends AppCompatActivity {
 
                                             Log.i(TAG,"journal: "+journal);
                                             if (journal != null) { //if journal not null ie valid, truncate if >40
-                                                if (journal.length() < 40) {
-                                                    display = date + "\n" + journal;
-                                                } else {
-                                                    display = date + "\n" + journal.substring(0, 40)+"...";
+                                                if (journal.length() > 39) {
+                                                    journal = journal.substring(0, 40)+"...";
                                                 }
-                                                Log.i(TAG, "entry: \n" + display); //add to arraylist
-                                                entries_.add(display);
+                                                entries_.add(journal);
                                             }
                                             String[] entries = new String[entries_.size()]; //arraylist -> array
                                             for(int i = 0; i < entries_.size(); i++) {
                                                 Log.i(TAG,"entries[i] = "+entries_.get(i));
-                                                entries[i] = entries_.get(i);
+                                                entries[i] = dates_.get(i)+"\n"+entries_.get(i);
                                             }
                                             ArrayAdapter adapter = new ArrayAdapter(TagJournals.this, android.R.layout.simple_list_item_1,entries); //set listview
                                             mListView.setAdapter(adapter);
