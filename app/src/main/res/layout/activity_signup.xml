@@ -11,8 +11,9 @@
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="52dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="24dp"
         android:text="Registration"
         android:textSize="50dp"
         android:textStyle="normal|bold"
@@ -32,6 +33,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.389" />
+
+    <EditText
+        android:id="@+id/Username"
+        android:layout_width="282dp"
+        android:layout_height="49dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="8dp"
+        android:hint="Username"
+        android:inputType="text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.251" />
 
     <EditText
         android:id="@+id/Password4Signup"

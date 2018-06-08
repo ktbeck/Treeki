@@ -16,16 +16,23 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
     private TextView registration;
     private EditText email;
     private EditText password;
     private EditText password2;
+    private EditText username;
     private Button signin;
     private Button register;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference mDatabase;
+    private FirebaseUser user;
+    String regUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +41,7 @@ public class SignupActivity extends AppCompatActivity {
 
         registration = (TextView) findViewById(R.id.tvRegister);
         email = (EditText) findViewById(R.id.Email4Signup);
+        username = (EditText) findViewById(R.id.Username);
         password = (EditText) findViewById(R.id.Password4Signup);
         password2 = (EditText) findViewById(R.id.Password4Confirm);
         signin = (Button) findViewById(R.id.btnBacktoLogin);
@@ -64,6 +72,7 @@ public class SignupActivity extends AppCompatActivity {
         String regEmail = email.getText().toString().trim(); //trims the end like @gmail.com
         String regPassword = password.getText().toString();
         String regPassword2 = password2.getText().toString();
+        regUsername = username.getText().toString();
 
 //        check if name box and password box is empty.
         if (TextUtils.isEmpty(regEmail)) {
@@ -71,10 +80,14 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        if (TextUtils.isEmpty(regUsername)) {
+            Toast.makeText(this, "Please enter a valid username.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if (TextUtils.isEmpty(regPassword)) {
             Toast.makeText(this, "Please enter a valid password.", Toast.LENGTH_SHORT).show();
             return;
-
         }
 
         if (!regPassword2.equals(regPassword)) {
@@ -102,6 +115,9 @@ public class SignupActivity extends AppCompatActivity {
                             //checking if success
                             if(task.isSuccessful()){
                                 //display some message here
+                                user = FirebaseAuth.getInstance().getCurrentUser();
+                                mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("Users").child(user.getUid()).child("Username").setValue(regUsername);
                                 Toast.makeText(SignupActivity.this,"Successfully registered", Toast.LENGTH_LONG).show();
                                 Intent intent = new Intent(SignupActivity.this,SignInRegister.class);
                                 startActivity(intent);
