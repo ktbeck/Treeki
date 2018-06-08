@@ -39,8 +39,12 @@ public class TagJournals extends AppCompatActivity {
         setContentView(R.layout.activity_past_journals);
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.i(TAG, "User: " + user.getUid());
+    }
+    protected void onResume() {
+        super.onResume();
+        entries_.clear();
         String tag = getIntent().getStringExtra("tag");
-        Log.i(TAG,"User: "+user.getUid());
 
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();

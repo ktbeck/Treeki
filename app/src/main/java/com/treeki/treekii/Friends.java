@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,6 +29,7 @@ public class Friends extends AppCompatActivity {
     private FirebaseUser user;
     private ListView mListView;
     private ArrayList<String> friends_ = new ArrayList<>();
+    private ArrayList<String> friends_id = new ArrayList<>();
     String username;
     String f_user;
     private DatabaseReference mDatabase;
@@ -42,11 +44,14 @@ public class Friends extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.listView);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.i(TAG,"Current: "+user.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
     protected void onResume() {
         super.onResume();
+        friends_.clear();
+        friends_id.clear();
 
         mDatabase.child("Friends").child(user.getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -58,6 +63,7 @@ public class Friends extends AppCompatActivity {
                             String fr_username = childSnapshot.getValue(String.class);
                             Log.i(TAG,"user: "+fr_username);
                             friends_.add(fr_username);
+                            friends_id.add(fr_user);
                         }
                         String[] friends = new String[friends_.size()];
                         for (int i = 0; i < friends.length; i++) {
@@ -65,6 +71,16 @@ public class Friends extends AppCompatActivity {
                         }
                         ArrayAdapter adapter = new ArrayAdapter(Friends.this,android.R.layout.simple_list_item_1,friends);
                         mListView.setAdapter(adapter);
+                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                    long id) {
+                                Intent friend = new Intent(Friends.this,PastJournals.class);
+                                friend.putExtra("user_id",friends_id.get(position));
+                                friend.putExtra("user",friends_.get(position));
+                                startActivity(friend);
+                            }
+                        });
                     }
 
                     @Override

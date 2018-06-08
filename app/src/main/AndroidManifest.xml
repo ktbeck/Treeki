@@ -16,11 +16,6 @@
             android:theme="@style/AppTheme.Launcher"></activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".QoTD"></activity>
         <activity android:name=".Journal"></activity>
@@ -33,12 +28,19 @@
             android:label="@string/title_activity_main_menu_test"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".JournalDetail" />
-        <activity android:name=".PastJournals"></activity>
+        <activity android:name=".PastJournals">
+        </activity>
         <activity android:name=".PastQoTD"></activity>
         <activity android:name=".QoTDDetail" />
         <activity android:name=".Favorites"></activity>
         <activity android:name=".answeredQoTD"></activity>
-        <activity android:name=".Tags"></activity>
+        <activity android:name=".Tags">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".TagJournals"></activity>
         <activity android:name=".Friends">
         </activity>
