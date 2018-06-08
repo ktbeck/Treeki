@@ -3,6 +3,8 @@ package com.treeki.treekii;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.Button;
 
@@ -12,13 +14,27 @@ import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.*;
+import java.util.ArrayList;
+
 import android.view.View;
 import android.content.Intent;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddText extends AppCompatActivity {
 
     public JSONObject jo = null;
     public JSONArray ja = null;
+    private DatabaseReference databaseReference;
+    private FirebaseUser firebaseUser;
+    ArrayList<String>EmailList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Start up the Location Service
@@ -28,9 +44,10 @@ public class AddText extends AppCompatActivity {
 
         final EditText first = findViewById(R.id.editText);
         Button b = findViewById(R.id.btn_add);
-        Button c = (Button)findViewById(R.id.btnBack);
+        Button back = (Button)findViewById(R.id.btnBack);
 
-        // Read the file
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
         try{
@@ -103,7 +120,7 @@ public class AddText extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        c.setOnClickListener(new Button.OnClickListener(){
+        back.setOnClickListener(new Button.OnClickListener(){
             public void onClick(View v){
 
                 //pop the activity off the stack
@@ -113,4 +130,28 @@ public class AddText extends AppCompatActivity {
         });
 
     }
+
+//    private void setAdapter(final String searchedString) {
+//        databaseReference.child("Users").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                int i = 0;
+//                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    String uid = snapshot.getValue(String.class);
+//
+//                    if(uid.contains(searchedString)){
+//                        EmailList.add(uid);
+//                        i++;
+//                    }
+//                    if(i == 5) break;
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//    }
 }
