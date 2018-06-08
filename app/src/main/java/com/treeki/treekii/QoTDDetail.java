@@ -76,6 +76,7 @@ public class QoTDDetail extends AppCompatActivity {
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
         question = i.getStringExtra("question");
+        Boolean other = i.getBooleanExtra("other",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
         Boolean checked = i.getBooleanExtra("private",false);
 
@@ -88,29 +89,31 @@ public class QoTDDetail extends AppCompatActivity {
         q.setText(question);
 
         priv = (CheckBox) findViewById(R.id.priv);
-        priv.setChecked(checked);
-        priv.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            //set onclick handler for checkbox
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
-            {
-                mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(isChecked);
-            }
-        });
-
-
         fav = (CheckBox) findViewById(R.id.fav);
-        fav.setChecked(faved);
-        fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
-        {
-            //set onclick handler for checkbox
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked)
-            {
-                mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(isChecked);
-            }
-        });
+        if(!other) {
+            priv.setChecked(checked);
+            priv.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                //set onclick handler for checkbox
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                    mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(isChecked);
+                }
+            });
+
+
+            fav.setChecked(faved);
+            fav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                //set onclick handler for checkbox
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                    mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(isChecked);
+                }
+            });
+        }
+        else {
+            priv.setVisibility(View.GONE);
+            fav.setVisibility(View.GONE);
+        }
 
 
 

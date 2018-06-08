@@ -92,6 +92,31 @@ public class QoTD extends AppCompatActivity {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        past_dates = new ArrayList<>();
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            past_date = childSnapshot.getKey();
+                            Log.i(TAG,"past dates: "+past_date);
+                            if (!past_date.equals("tags")) {
+                                if (date.substring(0, date.length() - 5).equals
+                                        (past_date.substring(0, past_date.length() - 5))) {
+                                    past_dates.add(past_date);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i(TAG,"checkpast cancelled");
+                    }
+                }
+        );
+
     }
 
     public void submit(View view) {
@@ -118,22 +143,6 @@ public class QoTD extends AppCompatActivity {
     }
 
     private void checkPast() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        past_dates = new ArrayList<>();
-                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
-                            past_date = childSnapshot.getKey();
-                            Log.i(TAG,"past dates: "+past_date);
-                            if (!past_date.equals("tags")) {
-                                if (date.substring(0, date.length() - 5).equals
-                                        (past_date.substring(0, past_date.length() - 5))) {
-                                    past_dates.add(past_date);
-                                }
-                            }
-                        }
                         if (past_dates.size() > 1) {
                             String dates = "";
                             for (String date: past_dates) {
@@ -147,14 +156,6 @@ public class QoTD extends AppCompatActivity {
                             Log.i(TAG,"Found past QoTD.");
                             startActivity(answeredQotd);
                         }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.i(TAG,"checkpast cancelled");
-                    }
-                }
-        );
     }
 
 

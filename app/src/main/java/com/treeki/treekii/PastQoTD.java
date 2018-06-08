@@ -26,11 +26,13 @@ import java.util.Map;
 
 public class PastQoTD extends AppCompatActivity {
     private ListView mListView;
-    private FirebaseUser user;
     private String TAG = "PastQoTD";
     private ArrayList<String> entries_;
     private ArrayList<Boolean> priv_;
     private ArrayList<Boolean> fave_;
+    String user_id;
+    String user;
+    Boolean other = true;
     String qotd;
     String date;
     Boolean priv;
@@ -45,8 +47,14 @@ public class PastQoTD extends AppCompatActivity {
         setContentView(R.layout.activity_past_journals);
         setTitle("QoTD Answers");
         mListView = (ListView) findViewById(R.id.listView);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i(TAG, "User: " + user.getUid());
+        user_id = getIntent().getStringExtra("user_id");
+        user = getIntent().getStringExtra("user");
+        if(user != null)
+            setTitle(user+"'s Answers");
+        if(user_id == null) {
+            user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            other = false;
+        }
 
     }
     protected void onResume(){
@@ -57,7 +65,7 @@ public class PastQoTD extends AppCompatActivity {
         num = 0;
 
         //Get datasnapshot at your "users" root node
-        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+        ref.child("Users").child(user_id).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -65,7 +73,12 @@ public class PastQoTD extends AppCompatActivity {
                             date = childSnapshot.getKey();
                             Log.i(TAG,"key: "+date);
                             qotd = childSnapshot.child("QoTD").child("answer").getValue(String.class); //get qotd answer
-                            if (qotd != null && !date.equals("tags") && !date.equals("favorites")) {
+                            if(other) {
+                                Boolean pri = childSnapshot.child("QoTD").child("private").getValue(Boolean.class);
+                                if (pri!=null && pri) qotd = null;
+                            }
+
+                            if (qotd != null && !date.equals("tags") && !date.equals("Username")) {
                                 if (qotd.length() > 40)
                                     qotd = qotd.substring(0, 40) + "...";
                                 Log.i(TAG,"QOTD: "+qotd);
@@ -120,6 +133,7 @@ public class PastQoTD extends AppCompatActivity {
                                                 Log.i(TAG,"click: checked: "+priv_.get(position));
                                                 Log.i(TAG,"click: faved: "+fave_.get(position));
                                                 QoTDDetail.putExtra("question",question);
+                                                QoTDDetail.putExtra("other",other);
                                                 QoTDDetail.putExtra("date",date);
                                                 QoTDDetail.putExtra("content",ans);
                                                 QoTDDetail.putExtra("private",priv_.get(position));
@@ -169,7 +183,12 @@ public class PastQoTD extends AppCompatActivity {
                 Change Activity here (if that's what you're intending to do, which is probably is).
                  */
                 Intent i = new Intent(this, PastJournals.class);
+                if(other) {
+                    i.putExtra("user_id", user_id);
+                    i.putExtra("user", user);
+                }
                 startActivity(i);
+                finish();
             default:
                 super.onOptionsItemSelected(item);
         }

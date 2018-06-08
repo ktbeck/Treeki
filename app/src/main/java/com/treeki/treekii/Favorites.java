@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -30,13 +33,14 @@ public class Favorites extends AppCompatActivity {
     String month;
     String day;
 //    String JorQ = getIntent().getStringExtra("JorQ");
-    String JorQ = "QoTD";
+//        //TODO: delete this line. for testing only.
+    String JorQ = "Journal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
-        setTitle("Favorites");
+        setTitle(JorQ+" Favorites");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"User: "+user.getUid());
@@ -139,5 +143,39 @@ public class Favorites extends AppCompatActivity {
                     }
                 }
         );
+    }    // This method will just show the menu item (which is our button "ADD")
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        // the menu being referenced here is the menu.xml from res/menu/menu.xml
+        if(JorQ == "QoTD")
+            inflater.inflate(R.menu.journal, menu);
+        else
+            inflater.inflate(R.menu.qotd, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.d(TAG, String.format("" + item.getItemId()));
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.journal:
+                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
+                Change Activity here (if that's what you're intending to do, which is probably is).
+                 */
+                Intent i = new Intent(this, Favorites.class);
+                if(JorQ == "QoTD")
+                    i.putExtra("JorQ","Journal");
+                else
+                    i.putExtra("JorQ","QoTD");
+                startActivity(i);
+                finish();
+            default:
+                super.onOptionsItemSelected(item);
+        }
+        return true;
     }
 }

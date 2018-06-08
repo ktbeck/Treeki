@@ -14,7 +14,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +25,9 @@ import java.util.Map;
 
 public class PastJournals extends AppCompatActivity {
     private ListView mListView;
-    private FirebaseUser user;
+    Boolean other = true;
+    String user_id;
+    String user;
     private String TAG = "PastJournals";
     private ArrayList<String> entries_;
     private ArrayList<Boolean> fave_;
@@ -38,8 +39,16 @@ public class PastJournals extends AppCompatActivity {
         setContentView(R.layout.activity_past_journals);
         setTitle("Past Journals");
         mListView = (ListView) findViewById(R.id.listView);
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i(TAG, "User: " + user.getUid());
+        Intent i = getIntent();
+        user_id = i.getStringExtra("user_id");
+        user = getIntent().getStringExtra("user");
+        if (user != null)
+            setTitle(user+"'s Journals");
+        if(user_id == null) {
+
+            user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            other = false;
+        }
     }
     protected void onResume() {
         super.onResume();
@@ -48,7 +57,7 @@ public class PastJournals extends AppCompatActivity {
         priv_ = new ArrayList<>();
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+        ref.child("Users").child(user_id).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
@@ -56,7 +65,12 @@ public class PastJournals extends AppCompatActivity {
                             String display;
                             String date = childSnapshot.getKey();
 //                            Log.i(TAG,"key: "+date);
-                            String journal = childSnapshot.child("Journal").child("answer").getValue(String.class); //get journal
+                            String journal;
+                            journal = childSnapshot.child("Journal").child("answer").getValue(String.class); //get journal
+                            if(other) {
+                                Boolean pri = childSnapshot.child("Journal").child("private").getValue(Boolean.class);
+                                if (pri!= null && pri) journal = null;
+                            }
 //                            Log.i(TAG,"journal: "+journal);
                             if (journal != null) { //if journal not null ie valid, truncate if >40
                                 if (journal.length() < 40) {
@@ -65,6 +79,7 @@ public class PastJournals extends AppCompatActivity {
                                     display = date + "\n" + journal.substring(0, 40)+"...";
                                 }
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
+
                                 entries_.add(display);
                                 priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
                                 fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
@@ -88,6 +103,7 @@ public class PastJournals extends AppCompatActivity {
 
                                 Intent JournalDetail = new Intent(PastJournals.this,JournalDetail.class);
                                 String content = dataSnapshot.child(date).child("Journal").child("answer").getValue(String.class);
+                                JournalDetail.putExtra("other",other);
                                 JournalDetail.putExtra("date",date);
                                 JournalDetail.putExtra("content",content);
                                 JournalDetail.putExtra("private",priv_.get(position));
@@ -126,7 +142,12 @@ public class PastJournals extends AppCompatActivity {
                 Change Activity here (if that's what you're intending to do, which is probably is).
                  */
                 Intent i = new Intent(this, PastQoTD.class);
+                if(other) {
+                    i.putExtra("user_id", user_id);
+                    i.putExtra("user", user);
+                }
                 startActivity(i);
+                finish();
             default:
                 super.onOptionsItemSelected(item);
         }
