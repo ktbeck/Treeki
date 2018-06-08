@@ -5,8 +5,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,8 @@ public class Friends extends AppCompatActivity {
     private EditText username_;
     private Button search_;
     private FirebaseUser user;
+    private ListView mListView;
+    private ArrayList<String> friends_ = new ArrayList<>();
     String username;
     String f_user;
     private DatabaseReference mDatabase;
@@ -35,9 +39,40 @@ public class Friends extends AppCompatActivity {
 
         username_ = (EditText) findViewById(R.id.Username);
         search_ = (Button) findViewById(R.id.search);
+        mListView = (ListView) findViewById(R.id.listView);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        mDatabase.child("Friends").child(user.getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            String fr_user = childSnapshot.getKey();
+                            Log.i(TAG,"id: "+fr_user);
+                            String fr_username = childSnapshot.getValue(String.class);
+                            Log.i(TAG,"user: "+fr_username);
+                            friends_.add(fr_username);
+                        }
+                        String[] friends = new String[friends_.size()];
+                        for (int i = 0; i < friends.length; i++) {
+                            friends[i] = friends_.get(i);
+                        }
+                        ArrayAdapter adapter = new ArrayAdapter(Friends.this,android.R.layout.simple_list_item_1,friends);
+                        mListView.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i(TAG,"checkpast cancelled");
+                    }
+                }
+        );
     }
 
     public void search(View view) {
@@ -48,12 +83,19 @@ public class Friends extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        Boolean found = false;
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             f_user = childSnapshot.getKey();
                             String f_username = childSnapshot.child("Username").getValue(String.class);
                             if (f_username != null && f_username.equals(username)) {
-                                mDatabase.child("Friends").child(user.getUid()).child(f_user).setValue(true);
+                                mDatabase.child("Friends").child(user.getUid()).child(f_user).setValue(f_username);
+                                found = true;
                             }
+                        }
+
+                        if(!found) {
+                            Toast.makeText(Friends.this,"User not found",Toast.LENGTH_SHORT).show();
+
                         }
                     }
 
