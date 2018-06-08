@@ -76,7 +76,7 @@ public class QoTDDetail extends AppCompatActivity {
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
         question = i.getStringExtra("question");
-        Boolean other = i.getBooleanExtra("other",true);
+        Boolean other = i.getBooleanExtra("other",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
         Boolean checked = i.getBooleanExtra("private",false);
 

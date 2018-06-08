@@ -65,7 +65,7 @@ public class JournalDetail extends AppCompatActivity {
         source = i.getStringExtra("source");
         content = i.getStringExtra("content");
         date = i.getStringExtra("date");
-        Boolean other = i.getBooleanExtra("other",true);
+        Boolean other = i.getBooleanExtra("other",false);
         Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
 
