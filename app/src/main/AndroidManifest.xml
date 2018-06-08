@@ -16,6 +16,11 @@
             android:theme="@style/AppTheme.Launcher"></activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".QoTD"></activity>
         <activity android:name=".Journal"></activity>
@@ -36,11 +41,6 @@
         <activity android:name=".Tags"></activity>
         <activity android:name=".TagJournals"></activity>
         <activity android:name=".Friends">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
