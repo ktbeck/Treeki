@@ -265,7 +265,7 @@ public class QoTD extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                .setSmallIcon(R.drawable.smallerlogo) // notification icon
                 .setContentTitle(title) // title for notification
                 .setContentText(content)// message for notification
                 .setSound(uri) // set alarm sound for notification
