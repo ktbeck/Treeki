@@ -17,7 +17,13 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
         </activity>
-        <activity android:name=".QoTD"></activity>
+        <activity android:name=".QoTD">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Journal"></activity>
 
         <!-- <activity android:name=".FriendsList" /> -->
@@ -34,12 +40,6 @@
         </activity>
         <activity android:name=".QoTDDetail" />
         <activity android:name=".Favorites">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".answeredQoTD"></activity>
         <activity android:name=".Tags">

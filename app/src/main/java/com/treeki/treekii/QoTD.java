@@ -77,13 +77,40 @@ public class QoTD extends AppCompatActivity {
 
         QoTD = findViewById(R.id.QoTD);
         question = getIntent().getStringExtra("question");
+
+        //get Database ref
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        if(question == null) {
+            mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //get question at /Questions/date
+                            question = dataSnapshot.getValue(String.class);
+
+                            //error handling
+                            if (question == null) {
+                                Log.e(TAG, "Question at " + month + "/" + day + " is unexpectedly null");
+                                Toast.makeText(getApplicationContext(), "can't fetch question", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                QoTD.setText(question);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                        }
+                    }
+            );
+        }
+
+
         Log.i(TAG,"QoTD: "+question);
         QoTD.setText(question);
 
         answer_edit = findViewById(R.id.answer);
-
-        //get Database ref
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
