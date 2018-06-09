@@ -11,24 +11,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".QoTD"></activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister" />
         <activity android:name=".Journal"></activity>
+
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.Launcher">
         </activity>
+        
         <!-- <activity android:name=".FriendsList" /> -->
         <!-- <activity android:name=".friendsList"></activity> -->
+
         <activity
             android:name=".MainMenuTest"
             android:label="@string/title_activity_main_menu_test"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".CalendarActivity"
-            android:label="@string/title_activity_calendar"
-            android:theme="@style/AppTheme.NoActionBar">
+
+
+        <activity android:name=".StatisticsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
