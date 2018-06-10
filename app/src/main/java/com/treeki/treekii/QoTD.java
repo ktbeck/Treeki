@@ -215,6 +215,11 @@ public class QoTD extends AppCompatActivity {
         );
     }
 
+    public void skipQoTD(View view){
+        showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
+        startJournal();
+    }
+
     private void startJournal() {showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
 
         Intent journal = new Intent(this,Journal.class);
