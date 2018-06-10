@@ -42,8 +42,8 @@
             android:layout_marginStart="8dp"
             android:fontFamily="casual"
             android:onClick="skipQoTD"
-            android:text="@string/skip_qotd"
             android:textStyle="bold|italic"
+            android:text="@string/skip_qotd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.17"
@@ -77,6 +77,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="40dp"
             android:fontFamily="casual"
+            android:gravity="center"
             android:text="@string/question_of_the_day"
             android:textSize="24sp"
             android:textStyle="bold|italic"
@@ -141,14 +142,15 @@
 
     </android.support.constraint.ConstraintLayout>
 
+
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/fav"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/priv"
+        android:text="@string/fav"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -11,13 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--android:theme="@style/Theme.NoTitleBar">-->
-        <activity android:name=".QoTD">
-        </activity>
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".SignInRegister"></activity>
-        <activity android:name=".Journal">
-        </activity>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -32,6 +25,31 @@
             android:name=".MainMenuTest"
             android:label="@string/title_activity_main_menu_test"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignInRegister">
+        </activity>
+        <activity android:name=".QoTD">
+
+        </activity>
+        <activity android:name=".Journal"></activity>
+
+        <!-- <activity android:name=".FriendsList" /> -->
+        <!-- <activity android:name=".friendsList"></activity> -->
+
+        <activity android:name=".JournalDetail" />
+        <activity android:name=".PastJournals">
+        </activity>
+        <activity android:name=".PastQoTD">
+        </activity>
+        <activity android:name=".QoTDDetail" />
+        <activity android:name=".Favorites">
+        </activity>
+        <activity android:name=".answeredQoTD"></activity>
+        <activity android:name=".Tags">
+        </activity>
+        <activity android:name=".TagJournals"></activity>
+        <activity android:name=".Friends">
+        </activity>
     </application>
 
 </manifest>

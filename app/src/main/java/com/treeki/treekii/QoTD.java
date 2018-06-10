@@ -30,6 +30,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -38,17 +39,22 @@ public class QoTD extends AppCompatActivity {
     //initialize
     private TextView QoTD;
     private EditText answer_edit;
+    private ArrayList<String> past_dates;
     private String answer;
     private CheckBox priv;
-    private boolean checked;
+    private CheckBox fav;
+    private boolean priv_check;
+    private boolean fav_check;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
     private Spinner spinner;
+    String past_date;
     String question;
     String month;
     String day;
     String year;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,25 +62,57 @@ public class QoTD extends AppCompatActivity {
         setContentView(R.layout.activity_qotd);
 
         getSupportActionBar().hide();
-        priv = (CheckBox) findViewById(R.id.checkBox);
+        setTitle("Question of the Day");
+
+        priv = (CheckBox) findViewById(R.id.priv);
+        fav = (CheckBox) findViewById(R.id.fav);
         spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.i(TAG,"User: "+user);
         //get date
         Calendar cal = Calendar.getInstance();
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
-
+        date = month+"-"+day+"-"+year;
 
         QoTD = findViewById(R.id.QoTD);
-        answer_edit = findViewById(R.id.answer);
+        question = getIntent().getStringExtra("question");
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        question = getIntent().getStringExtra("question");
+        if(question == null) {
+            mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
+                    new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            //get question at /Questions/date
+                            question = dataSnapshot.getValue(String.class);
+
+                            //error handling
+                            if (question == null) {
+                                Log.e(TAG, "Question at " + month + "/" + day + " is unexpectedly null");
+                                Toast.makeText(getApplicationContext(), "can't fetch question", Toast.LENGTH_SHORT).show();
+                            }
+                            else
+                                QoTD.setText(question);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                        }
+                    }
+            );
+        }
+
+
         Log.i(TAG,"QoTD: "+question);
         QoTD.setText(question);
+
+        answer_edit = findViewById(R.id.answer);
+
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.rating, android.R.layout.simple_spinner_item);
@@ -82,13 +120,35 @@ public class QoTD extends AppCompatActivity {
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new CustomOnItemSelectedListener());
 
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        past_dates = new ArrayList<>();
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            past_date = childSnapshot.getKey();
+                            Log.i(TAG,"past dates: "+past_date);
+                            if (!past_date.equals("tags")) {
+                                if (date.substring(0, date.length() - 5).equals
+                                        (past_date.substring(0, past_date.length() - 5))) {
+                                    past_dates.add(past_date);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i(TAG,"checkpast cancelled");
+                    }
+                }
+        );
     }
 
     public void submit(View view) {
-        if (priv.isChecked()) checked = true;
-        else checked = false;
-
-        String date = month+"-"+day+"-"+year;
+        priv_check = priv.isChecked();
+        fav_check = fav.isChecked();
         String mood = String.valueOf(spinner.getSelectedItem());
 
         //Save the answer
@@ -96,7 +156,9 @@ public class QoTD extends AppCompatActivity {
         if (!answer.equals("")){
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
-            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(checked);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(priv_check);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(fav_check);
+            checkPast();
             Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
             goToNextActivity();
         }
@@ -106,8 +168,24 @@ public class QoTD extends AppCompatActivity {
 
     }
 
+    private void checkPast() {
+                        if (past_dates.size() > 1) {
+                            String dates = "";
+                            for (String date: past_dates) {
+                                dates+=date+" ";
+                            }
+                            Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG).show();
+                            Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
+                            answeredQotd.putStringArrayListExtra("dates", past_dates);
+                            answeredQotd.putExtra("question",question);
+                            answeredQotd.putExtra("source","QoTD");
+                            Log.i(TAG,"Found past QoTD.");
+                            startActivity(answeredQotd);
+                        }
+    }
+
+
     private void goToNextActivity() {
-        String date = month+"-"+day+"-"+year;
         mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").addListenerForSingleValueEvent(
             new ValueEventListener() {
                 @Override
@@ -126,7 +204,6 @@ public class QoTD extends AppCompatActivity {
                         Log.i(TAG,"User did journal, going to main");
                         Intent mainmenuIntent = new Intent(QoTD.this,MainMenuTest.class);
                         startActivity(mainmenuIntent);
-                        finish();
                     }
                 }
 
@@ -135,14 +212,11 @@ public class QoTD extends AppCompatActivity {
                     Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
                 }
             }
-    );}
-
-    public void skipQoTD(View view){
-        showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
-        startJournal();
+        );
     }
 
-    private void startJournal() {
+    private void startJournal() {showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
+
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }
@@ -187,7 +261,7 @@ public class QoTD extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+                .setSmallIcon(R.drawable.smallerlogo) // notification icon
                 .setContentTitle(title) // title for notification
                 .setContentText(content)// message for notification
                 .setSound(uri) // set alarm sound for notification

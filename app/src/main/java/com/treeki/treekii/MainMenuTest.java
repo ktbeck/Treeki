@@ -34,7 +34,6 @@ public class MainMenuTest extends AppCompatActivity {
     }
     //logout button
     @Override
-
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
@@ -43,7 +42,6 @@ public class MainMenuTest extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
 
     }
-
 
     /* Here is the event handler for the menu button that I forgot in class.
     The value returned by item.getItemID() is
@@ -76,7 +74,6 @@ public class MainMenuTest extends AppCompatActivity {
 
     }
 
-
     public void startJournal(View v) {
         Intent journal = new Intent(this, Journal.class);
         startActivity(journal);
@@ -93,4 +90,5 @@ public class MainMenuTest extends AppCompatActivity {
         Intent i = new Intent(this, SignInRegister.class);
         startActivity(i);
     }
+
 }

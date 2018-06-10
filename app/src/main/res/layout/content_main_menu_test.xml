@@ -8,7 +8,6 @@
     tools:context=".MainMenuTest"
     tools:showIn="@layout/activity_main_menu_test">
 
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="278dp"
@@ -147,4 +146,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="298dp"
+        android:layout_marginEnd="188dp"
+        android:layout_marginLeft="140dp"
+        android:layout_marginRight="188dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="194dp"
+        android:text="Test Main menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 </android.support.constraint.ConstraintLayout>

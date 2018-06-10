@@ -17,9 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,63 +25,85 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Journal extends AppCompatActivity {
 
+
+    private ArrayList<String> past_dates;
     private EditText answer_edit;
     private EditText tags_edit;
     private String answer;
     private CheckBox priv;
-    private boolean checked;
+    private CheckBox fav;
+    private boolean priv_check;
+    private boolean fav_check;
     private String tag_string;
     private String[] tags;
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "QoTD_Activity";
+    String date;
+    String past_date;
     String month;
     String day;
     String year;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
 
-        //Remove notification bar
-
-        //this.getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN, android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-
-        setContentView(R.layout.activity_journal);
-        //android.app.ActionBar actionBar = getActionBar();
-        //actionBar.hide();
         getSupportActionBar().hide();
+        setContentView(R.layout.activity_journal);
+        setTitle("Journal");
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
+        date = month+"-"+day+"-"+year;
 
         answer_edit = findViewById(R.id.answer);
         tags_edit = findViewById(R.id.tags);
-        priv = (CheckBox) findViewById(R.id.checkBox);
+        priv = (CheckBox) findViewById(R.id.priv);
+        fav = (CheckBox) findViewById(R.id.fav);
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //Remove title bar
 
 
-        //set content view AFTER ABOVE sequence (to avoid crash)
-        //this.setContentView(R.layout.activity);
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        past_dates = new ArrayList<>();
+                        for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
+                            past_date = childSnapshot.getKey();
+                            Log.i(TAG,"past dates: "+past_date);
+                            if (!past_date.equals("tags")) {
+                                if (date.substring(0, date.length() - 5).equals
+                                        (past_date.substring(0, past_date.length() - 5))) {
+                                    past_dates.add(past_date);
+                                }
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.i(TAG,"checkpast cancelled");
+                    }
+                }
+        );
     }
 
     public void submit(View view) {
-        if (priv.isChecked()) checked = true;
-        else checked = false;
+        priv_check = priv.isChecked();
+        fav_check = fav.isChecked();
 
-        String date = month+"-"+day+"-"+year;
 
 //        //Save the answer
         answer = answer_edit.getText().toString();
@@ -96,13 +116,17 @@ public class Journal extends AppCompatActivity {
         }
         if (!answer.equals("")) {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
-            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(checked);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(priv_check);
+            mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("favorite").setValue(fav_check);
+
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
                     mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
                 }
             }
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
+            checkPast();
+
             startMainMenu();
         }
         else {
@@ -120,6 +144,21 @@ public class Journal extends AppCompatActivity {
         startMainMenu();
     }
 
+    private void checkPast() {
+        if (past_dates.size() > 1) {
+            String dates = "";
+            for (String date: past_dates) {
+                dates+=date+" ";
+                Log.i(TAG,"j date: "+date);
+            }
+            Toast.makeText(Journal.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
+            Intent answeredQotd = new Intent(Journal.this, answeredQoTD.class);
+            answeredQotd.putStringArrayListExtra("dates", past_dates);
+            answeredQotd.putExtra("source","Journal");
+            startActivity(answeredQotd);
+        }
+    }
+
     void showNotification(String title, String content) {
         Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationManager mNotificationManager =
@@ -131,7 +170,8 @@ public class Journal extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
-                .setSmallIcon(R.mipmap.ic_launcher) // notification icon
+
+                .setSmallIcon(R.drawable.smallerlogo) // notification icon
                 .setContentTitle(title) // title for notification
                 .setContentText(content)// message for notification
                 .setSound(uri) // set alarm sound for notification
