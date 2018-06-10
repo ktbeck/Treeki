@@ -100,9 +100,9 @@ public class answeredQoTD extends AppCompatActivity {
                                 display = date.substring(date.length()-4,date.length()) + "\n" + answer;
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
+                                priv_.add(dataSnapshot.child(date).child(QorJ).child("private").getValue(Boolean.class));
+                                fave_.add(dataSnapshot.child(date).child(QorJ).child("favorite").getValue(Boolean.class));
                             }
-                            priv_.add(dataSnapshot.child(date).child(QorJ).child("private").getValue(Boolean.class));
-                            fave_.add(dataSnapshot.child(date).child(QorJ).child("favorite").getValue(Boolean.class));
                             String[] entries = new String[entries_.size()]; //arraylist -> array
                             for (int j = 0; j < entries_.size(); j++) {
                                 entries[j] = entries_.get(j);

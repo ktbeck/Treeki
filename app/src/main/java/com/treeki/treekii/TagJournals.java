@@ -26,7 +26,9 @@ public class TagJournals extends AppCompatActivity {
     private ListView mListView;
     private FirebaseUser user;
     private String TAG = "TagJournals";
-    private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> entries_;
+    private ArrayList<Boolean> priv_;
+    private ArrayList<Boolean> fave_;
     private ArrayList<String> dates_ = new ArrayList<>();
     Boolean checked;
     Boolean faved;
@@ -44,7 +46,9 @@ public class TagJournals extends AppCompatActivity {
     }
     protected void onResume() {
         super.onResume();
-        entries_.clear();
+        entries_ = new ArrayList<>();
+        fave_ = new ArrayList<>();
+        priv_ = new ArrayList<>();
         String tag = getIntent().getStringExtra("tag");
         setTitle(tag);
 
@@ -75,6 +79,8 @@ public class TagJournals extends AppCompatActivity {
                                                     journal = journal.substring(0, 40)+"...";
                                                 }
                                                 entries_.add(journal);
+                                                fave_.add(faved);
+                                                priv_.add(checked);
                                             }
                                             String[] entries = new String[entries_.size()]; //arraylist -> array
                                             for(int i = 0; i < entries_.size(); i++) {
@@ -94,9 +100,9 @@ public class TagJournals extends AppCompatActivity {
 
                                                     Intent JournalDetail = new Intent(TagJournals.this,JournalDetail.class);
                                                     JournalDetail.putExtra("date",date);
-                                                    JournalDetail.putExtra("content",journal);
-                                                    JournalDetail.putExtra("private",checked);
-                                                    JournalDetail.putExtra("favorite",faved);
+                                                    JournalDetail.putExtra("content",entries_.get(position));
+                                                    JournalDetail.putExtra("private",priv_.get(position));
+                                                    JournalDetail.putExtra("favorite",fave_.get(position));
                                                     startActivity(JournalDetail);
                                                 }
                                             });

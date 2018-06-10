@@ -69,7 +69,7 @@ public class JournalDetail extends AppCompatActivity {
         Boolean checked = i.getBooleanExtra("private",false);
         Boolean faved = i.getBooleanExtra("favorite",false);
 
-        setTitle(date);
+        setTitle(date+" Journal");
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
         c.setText(content);
