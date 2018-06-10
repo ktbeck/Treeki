@@ -44,6 +44,7 @@ public class SignInRegister extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in_register);
+        getSupportActionBar().hide();
         //calling register method on click
         name = (EditText)findViewById(R.id.etName);
         password = (EditText)findViewById(R.id.etPassword);

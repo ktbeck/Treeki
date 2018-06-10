@@ -48,7 +48,17 @@ public class Journal extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //this.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE);
+
+        //Remove notification bar
+
+        //this.getWindow().setFlags(android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN, android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
         setContentView(R.layout.activity_journal);
+        //android.app.ActionBar actionBar = getActionBar();
+        //actionBar.hide();
+        getSupportActionBar().hide();
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
@@ -62,6 +72,11 @@ public class Journal extends AppCompatActivity {
 
         //get Database ref
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        //Remove title bar
+
+
+        //set content view AFTER ABOVE sequence (to avoid crash)
+        //this.setContentView(R.layout.activity);
     }
 
     public void submit(View view) {

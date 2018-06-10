@@ -139,7 +139,6 @@
     <orderEntry type="library" name="Gradle: com.android.support.constraint:constraint-layout-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.core:runtime-1.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-database-0.4.3" level="project" />
     <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-auth-3.2.2" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-database-collection-15.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-tasks-15.0.1" level="project" />
@@ -149,7 +148,6 @@
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-base-11.8.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Gradle: com.android.support.test:runner-1.0.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-v4-27.0.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.firebaseui:firebase-ui-0.4.3" level="project" />
     <orderEntry type="library" name="Gradle: com.google.android.gms:play-services-auth-api-phone-11.8.0" level="project" />
     <orderEntry type="library" name="Gradle: com.google.firebase:firebase-auth-15.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:customtabs-27.0.2" level="project" />

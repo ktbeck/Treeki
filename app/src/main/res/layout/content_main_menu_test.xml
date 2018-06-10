@@ -25,37 +25,38 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:text="Tags"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/button8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button4"
+        app:layout_constraintVertical_bias="0.567" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="wrap_content"
+        android:layout_width="207dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="232dp"
-        android:layout_marginTop="150dp"
+        android:layout_marginBottom="175dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:text="Friends"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
+        app:layout_constraintBottom_toTopOf="@+id/button8"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:text="Favorites"
@@ -69,39 +70,22 @@
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="76dp"
+        android:layout_marginTop="175dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
-        android:text="Monthly View"
+        android:text="Graph View"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button7"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="303dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/pls"
-        android:fontFamily="casual"
-        android:text="Questions"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="24sp"
-        android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.607" />
+        app:layout_constraintTop_toBottomOf="@+id/Jbutton" />
 
     <Button
         android:id="@+id/Jbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="400dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:onClick="makeVisible"
@@ -110,10 +94,10 @@
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
         android:textStyle="bold|italic"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/button8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.007" />
 
     <Button
         android:id="@+id/quesButton"
@@ -140,9 +124,6 @@
         android:id="@+id/jourButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
         android:onClick="startJournal"

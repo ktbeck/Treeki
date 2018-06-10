@@ -55,6 +55,7 @@ public class QoTD extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
 
+        getSupportActionBar().hide();
         priv = (CheckBox) findViewById(R.id.checkBox);
         spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();

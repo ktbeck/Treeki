@@ -32,6 +32,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        getSupportActionBar().hide();
         registration = (TextView) findViewById(R.id.tvRegister);
         email = (EditText) findViewById(R.id.Email4Signup);
         password = (EditText) findViewById(R.id.Password4Signup);
