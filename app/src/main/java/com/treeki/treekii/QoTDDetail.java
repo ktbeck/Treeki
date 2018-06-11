@@ -3,6 +3,7 @@ package com.treeki.treekii;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,7 @@ public class QoTDDetail extends AppCompatActivity {
     TextView c;
     TextView d;
     TextView q;
+    TextView dV;
     EditText edit_content;
 
     String question;
@@ -87,8 +89,11 @@ public class QoTDDetail extends AppCompatActivity {
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
         q = (TextView) findViewById(R.id.question);
+        dV = (TextView) findViewById(R.id.dateView);
+        dV.setText(date);
         c.setText(content);
         q.setText(question);
+        c.setMovementMethod(new ScrollingMovementMethod());
 
         priv = (CheckBox) findViewById(R.id.priv);
         fav = (CheckBox) findViewById(R.id.fav);

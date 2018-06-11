@@ -34,7 +34,8 @@ public class Tags extends AppCompatActivity {
         setContentView(R.layout.activity_past_journals);
         getSupportActionBar().hide();
 
-        setTitle("Tags");
+        TextView title = findViewById(R.id.title);
+        title.setText("Tags");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"User: "+user.getUid());

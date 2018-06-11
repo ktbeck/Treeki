@@ -72,6 +72,8 @@ public class MainMenuTest extends AppCompatActivity {
         if (jour.getVisibility() == View.INVISIBLE){
             jour.setVisibility(View.VISIBLE);
             ques.setVisibility(View.VISIBLE);
+            jour2.setVisibility(View.INVISIBLE);
+            ques2.setVisibility(View.INVISIBLE);
         }
         else {
             jour.setVisibility(View.INVISIBLE);
@@ -84,6 +86,8 @@ public class MainMenuTest extends AppCompatActivity {
         if (jour2.getVisibility() == View.INVISIBLE){
             jour2.setVisibility(View.VISIBLE);
             ques2.setVisibility(View.VISIBLE);
+            jour.setVisibility(View.INVISIBLE);
+            ques.setVisibility(View.INVISIBLE);
         }
         else {
             jour2.setVisibility(View.INVISIBLE);

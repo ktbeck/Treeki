@@ -46,6 +46,8 @@ public class answeredQoTD extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
 
         Calendar cal = Calendar.getInstance();
         month = Integer.toString(cal.get(Calendar.MONTH) + 1);
@@ -56,7 +58,6 @@ public class answeredQoTD extends AppCompatActivity {
         QorJ = getIntent().getStringExtra("source");
         Log.i(TAG,"source: "+QorJ);
         Log.i(TAG, "in answered QOTD");
-        super.onCreate(savedInstanceState);
         if (QorJ.equals("QoTD")) {
             setContentView(R.layout.activity_past_qotd);
             setTitle("Past Answers");
@@ -70,6 +71,7 @@ public class answeredQoTD extends AppCompatActivity {
             setContentView(R.layout.activity_past_journals);
             setTitle("Past Journals");
         }
+        findViewById(R.id.contin).setVisibility(View.VISIBLE);
 
         dates_ = getIntent().getStringArrayListExtra("dates");
         dates = new String[dates_.size()];
@@ -182,6 +184,10 @@ public class answeredQoTD extends AppCompatActivity {
         startActivity(mainmenuIntent);
     }
 
+    public void contin(View view) {
+        goToNextActivity();
+    }
+
     private void goToNextActivity() {
         if(QorJ.equals("QoTD")) {
             ref.child("Users").child(user.getUid()).child(today).child("Journal").child("answer").addListenerForSingleValueEvent(
@@ -216,31 +222,31 @@ public class answeredQoTD extends AppCompatActivity {
         }
     }
 
-
-    // This method will just show the menu item (which is our button "ADD")
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        // the menu being referenced here is the menu.xml from res/menu/menu.xml
-        inflater.inflate(R.menu.past, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        Log.d(TAG, String.format("" + item.getItemId()));
-        // Handle item selection
-        switch (item.getItemId()) {
-            case R.id.contin:
-                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
-                Change Activity here (if that's what you're intending to do, which is probably is).
-                 */
-                goToNextActivity();
-            default:
-                super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
+//
+//    // This method will just show the menu item (which is our button "ADD")
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu items for use in the action bar
+//        MenuInflater inflater = getMenuInflater();
+//        // the menu being referenced here is the menu.xml from res/menu/menu.xml
+//        inflater.inflate(R.menu.past, menu);
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        Log.d(TAG, String.format("" + item.getItemId()));
+//        // Handle item selection
+//        switch (item.getItemId()) {
+//            case R.id.contin:
+//                /*the R.id.action_favorite is the ID of our button (defined in strings.xml).
+//                Change Activity here (if that's what you're intending to do, which is probably is).
+//                 */
+//                goToNextActivity();
+//            default:
+//                super.onOptionsItemSelected(item);
+//        }
+//        return true;
+//    }
 }
