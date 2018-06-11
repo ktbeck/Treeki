@@ -29,6 +29,7 @@ public class PastQoTD extends AppCompatActivity {
     private ListView mListView;
     private String TAG = "PastQoTD";
     private ArrayList<String> entries_;
+    private ArrayList<String> ans_;
     private ArrayList<Boolean> priv_;
     private ArrayList<Boolean> fave_;
     String user_id;
@@ -70,6 +71,7 @@ public class PastQoTD extends AppCompatActivity {
         entries_ = new ArrayList<>();
         fave_ = new ArrayList<>();
         priv_ = new ArrayList<>();
+        ans_ = new ArrayList<>();
         num = 0;
 
         //Get datasnapshot at your "users" root node
@@ -98,7 +100,7 @@ public class PastQoTD extends AppCompatActivity {
                                     month = date.split("-")[0];
                                     index = cur;
                                 }
-
+                                String answer = qotd;
                                 if (qotd.length() > 40)
                                     qotd = qotd.substring(0, 40) + "...";
                                 Log.i(TAG,"QOTD: "+qotd);
@@ -110,12 +112,14 @@ public class PastQoTD extends AppCompatActivity {
                                 cur += 1;
                                 if (date.split("-")[1].length() == 1) {
                                     entries_.add(index, date+"\n"+qotd);
+                                    ans_.add(index,answer);
                                     priv_.add(index,childSnapshot.child("Journal").child("private").getValue(Boolean.class));
                                     fave_.add(index,childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
                                     index += 1;
                                 }
                                 else {
                                     entries_.add(date+"\n"+qotd);
+                                    ans_.add(answer);
                                     priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
                                     fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
                                 }
@@ -164,7 +168,7 @@ public class PastQoTD extends AppCompatActivity {
                                                 QoTDDetail.putExtra("question",question);
                                                 QoTDDetail.putExtra("other",other);
                                                 QoTDDetail.putExtra("date",date);
-                                                QoTDDetail.putExtra("content",ans);
+                                                QoTDDetail.putExtra("content",ans_.get(position));
                                                 QoTDDetail.putExtra("private",priv_.get(position));
                                                 QoTDDetail.putExtra("favorite",fave_.get(position));
                                                 QoTDDetail.putExtra("source","PastQoTD");
