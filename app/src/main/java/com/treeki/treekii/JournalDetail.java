@@ -83,6 +83,8 @@ public class JournalDetail extends AppCompatActivity {
 
         priv = (CheckBox) findViewById(R.id.priv);
         fav = (CheckBox) findViewById(R.id.fav);
+        edit = (Button) findViewById(R.id.edit);
+        delete = (Button) findViewById(R.id.delete);
         if (!other) {
             priv.setChecked(checked);
             priv.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -106,18 +108,18 @@ public class JournalDetail extends AppCompatActivity {
         else{
             priv.setVisibility(View.GONE);
             fav.setVisibility(View.GONE);
+            edit.setVisibility(View.GONE);
+            delete.setVisibility(View.GONE);
         }
 
 
 
-        edit = (Button) findViewById(R.id.edit);
-        delete = (Button) findViewById(R.id.delete);
         //if journal isn't from today, don't let them edit/delete
         if (!date.equals(today)){
             edit.setVisibility(View.INVISIBLE);
             delete.setVisibility(View.INVISIBLE);
         }
-        else {
+        else if(!other){
             //edit onclick listener
             edit.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
