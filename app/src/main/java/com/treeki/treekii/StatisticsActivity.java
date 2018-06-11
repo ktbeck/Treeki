@@ -1,13 +1,9 @@
 package com.treeki.treekii;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,19 +14,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 
 public class StatisticsActivity extends AppCompatActivity {
@@ -50,11 +40,10 @@ public class StatisticsActivity extends AppCompatActivity {
     int moodInt;
     SimpleDateFormat sdf = new SimpleDateFormat("M/d");
     SimpleDateFormat daySDF = new SimpleDateFormat("d");
+    SimpleDateFormat monthSDF = new SimpleDateFormat("MMMM");
     String highString = "";
     String lowString = "";
     long count = 2;
-    long numChildren;
-
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -67,8 +56,12 @@ public class StatisticsActivity extends AppCompatActivity {
         year = Integer.toString(cal.get(Calendar.YEAR));
         date = month + "-" + day + "-" + year;
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-
+        Date now = new Date();
+        String mon = monthSDF.format(now);
+        Log.i(TAG, "mon - " + mon);
+        getSupportActionBar().hide();
+        TextView title = (TextView) findViewById(R.id.title_text);
+        title.setText(mon);
     }
 
     protected void onResume() {
@@ -179,6 +172,7 @@ public class StatisticsActivity extends AppCompatActivity {
                                     graph.getViewport().setXAxisBoundsManual(true);
                                     graph.getGridLabelRenderer().setHumanRounding(true);
                                     graph.addSeries(series);
+                                    Log.i(TAG, "MON = " + month_);
                                 }
                             }
                         }
@@ -216,7 +210,7 @@ public class StatisticsActivity extends AppCompatActivity {
                 }
             }
             for (int i = 0; i < mood.size(); i++) {
-                if (mood.get(i) == (low)) {
+                if (mood.get(i) == low) {
                     array.add(dates.get(i));
                 }
             }
@@ -241,9 +235,6 @@ public class StatisticsActivity extends AppCompatActivity {
 //                    Log.i(TAG, "high" + mood.get(i));
                     array.add(dates.get(i));
                 }
-            }
-            for (int i = 0; i < array.size(); i++) {
-//                Log.i(TAG, "print in high " + array.get(i));
             }
             return array;
         } else {

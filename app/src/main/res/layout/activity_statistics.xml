@@ -7,9 +7,15 @@
     tools:context=".StatisticsActivity">
 
     <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
         android:layout_width="match_parent"
         android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/avg_mood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
     <TextView
         android:id="@+id/avg_mood"
@@ -59,5 +65,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/high_mood" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="212dp"
+        android:layout_height="60dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
