@@ -186,7 +186,6 @@ public class QoTD extends AppCompatActivity {
         answeredQotd.putExtra("source","QoTD");
         Log.i(TAG,"Found past QoTD. "+dates);
         startActivity(answeredQotd);
-        finish();
     }
 
 

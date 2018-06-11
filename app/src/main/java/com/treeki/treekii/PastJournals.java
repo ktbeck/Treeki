@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -43,12 +44,16 @@ public class PastJournals extends AppCompatActivity {
         Intent i = getIntent();
         user_id = i.getStringExtra("user_id");
         user = getIntent().getStringExtra("user");
-        if (user != null)
-            setTitle(user+"'s Journals");
-        if(user_id == null) {
-
+        if(user == null) {
             user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
             other = false;
+        }
+        else {
+            TextView title = findViewById(R.id.title);
+            title.setText(user+" Journals");
+            Button qotd_button = findViewById(R.id.qotd);
+            qotd_button.setText("QoTD");
+            qotd_button.setVisibility(View.VISIBLE);
         }
     }
     protected void onResume() {
@@ -143,6 +148,14 @@ public class PastJournals extends AppCompatActivity {
                 }
         );
     }
+    public void swap(View view){
+        Intent i = new Intent(PastJournals.this,PastQoTD.class);
+        i.putExtra("user",user);
+        i.putExtra("user_id",user_id);
+        startActivity(i);
+        finish();
+    }
+
     // This method will just show the menu item (which is our button "ADD")
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
