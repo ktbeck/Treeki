@@ -68,7 +68,7 @@ public class QoTD extends AppCompatActivity {
         fav = (CheckBox) findViewById(R.id.fav);
         spinner = (Spinner) findViewById(R.id.spinner);
         user = FirebaseAuth.getInstance().getCurrentUser();
-        Log.i(TAG,"User: "+user);
+        Log.i(TAG,"User: "+user.getUid());
         //get date
         Calendar cal = Calendar.getInstance();
         month = Integer.toString(cal.get(Calendar.MONTH)+1);
@@ -129,9 +129,11 @@ public class QoTD extends AppCompatActivity {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             past_date = childSnapshot.getKey();
                             Log.i(TAG,"past dates: "+past_date);
-                            if (!past_date.equals("tags")) {
-                                if (date.substring(0, date.length() - 5).equals
-                                        (past_date.substring(0, past_date.length() - 5))) {
+                            if (!past_date.equals("tags") && !past_date.equals("Username")) {
+                                String t_month = past_date.split("-")[0];
+                                String t_day = past_date.split("-")[1];
+                                if (t_day.equals(day) && t_month.equals(month)) {
+                                    Log.i(TAG,"Adding: "+past_date);
                                     past_dates.add(past_date);
                                 }
                             }
@@ -158,9 +160,13 @@ public class QoTD extends AppCompatActivity {
             mDatabase.child("Users").child(user.getUid()).child(date).child("mood").setValue(mood);
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("private").setValue(priv_check);
             mDatabase.child("Users").child(user.getUid()).child(date).child("QoTD").child("favorite").setValue(fav_check);
-            checkPast();
-            Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
-            goToNextActivity();
+
+            if (past_dates!=null && past_dates.size() > 1)
+                checkPast();
+            else {
+                Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+                goToNextActivity();
+            }
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
@@ -169,19 +175,18 @@ public class QoTD extends AppCompatActivity {
     }
 
     private void checkPast() {
-                        if (past_dates.size() > 1) {
-                            String dates = "";
-                            for (String date: past_dates) {
-                                dates+=date+" ";
-                            }
-                            Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG).show();
-                            Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
-                            answeredQotd.putStringArrayListExtra("dates", past_dates);
-                            answeredQotd.putExtra("question",question);
-                            answeredQotd.putExtra("source","QoTD");
-                            Log.i(TAG,"Found past QoTD.");
-                            startActivity(answeredQotd);
-                        }
+        String dates = "";
+        for (String date: past_dates) {
+            dates+=date+" ";
+        }
+        Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
+        Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
+        answeredQotd.putStringArrayListExtra("dates", past_dates);
+        answeredQotd.putExtra("question",question);
+        answeredQotd.putExtra("source","QoTD");
+        Log.i(TAG,"Found past QoTD. "+dates);
+        startActivity(answeredQotd);
+        finish();
     }
 
 

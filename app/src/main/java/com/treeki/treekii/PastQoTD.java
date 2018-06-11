@@ -72,6 +72,9 @@ public class PastQoTD extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
+                        String month = null;
+                        int index = -1;
+                        int cur = 0;
                         for (final DataSnapshot childSnapshot: dataSnapshot.getChildren()) { //for all children
                             date = childSnapshot.getKey();
                             Log.i(TAG,"key: "+date);
@@ -82,6 +85,15 @@ public class PastQoTD extends AppCompatActivity {
                             }
 
                             if (qotd != null && !date.equals("tags") && !date.equals("Username")) {
+
+                                if (month == null || index == -1) {
+                                    month = date.split("-")[0];
+                                    index = 0;
+                                } else if (!month.equals(date.split("-")[0])) {
+                                    month = date.split("-")[0];
+                                    index = cur;
+                                }
+
                                 if (qotd.length() > 40)
                                     qotd = qotd.substring(0, 40) + "...";
                                 Log.i(TAG,"QOTD: "+qotd);
@@ -90,9 +102,18 @@ public class PastQoTD extends AppCompatActivity {
                                 String month_ = date.split("-")[0];
                                 String day_ = date.split("-")[1];
 
-                                entries_.add(date+"\n"+qotd);
-                                priv_.add(childSnapshot.child("QoTD").child("private").getValue(Boolean.class));
-                                fave_.add(childSnapshot.child("QoTD").child("favorite").getValue(Boolean.class));
+                                cur += 1;
+                                if (date.split("-")[1].length() == 1) {
+                                    entries_.add(index, date+"\n"+qotd);
+                                    priv_.add(index,childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                    fave_.add(index,childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
+                                    index += 1;
+                                }
+                                else {
+                                    entries_.add(date+"\n"+qotd);
+                                    priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                    fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
+                                }
                                 ref.child("Questions").child(month_).child(day_).addValueEventListener(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot2) {

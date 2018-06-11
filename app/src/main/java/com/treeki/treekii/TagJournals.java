@@ -26,7 +26,9 @@ public class TagJournals extends AppCompatActivity {
     private ListView mListView;
     private FirebaseUser user;
     private String TAG = "TagJournals";
-    private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> entries_;
+    private ArrayList<Boolean> priv_;
+    private ArrayList<Boolean> fave_;
     private ArrayList<String> dates_ = new ArrayList<>();
     Boolean checked;
     Boolean faved;
@@ -46,7 +48,9 @@ public class TagJournals extends AppCompatActivity {
     }
     protected void onResume() {
         super.onResume();
-        entries_.clear();
+        entries_ = new ArrayList<>();
+        fave_ = new ArrayList<>();
+        priv_ = new ArrayList<>();
         String tag = getIntent().getStringExtra("tag");
         setTitle(tag);
 
@@ -77,12 +81,41 @@ public class TagJournals extends AppCompatActivity {
                                                     journal = journal.substring(0, 40)+"...";
                                                 }
                                                 entries_.add(journal);
+                                                fave_.add(faved);
+                                                priv_.add(checked);
+                                            }
+
+                                            String month = null;
+                                            int index = -1;
+
+                                            for(int i = 0; i < entries_.size(); i++) {
+                                                String d_month = dates_.get(i).split("-")[0];
+                                                String d_day = dates_.get(i).split("-")[1];
+                                                if (month == null || index == -1) {
+                                                    month = d_month;
+                                                    index = 0;
+                                                } else if (!month.equals(d_month)) {
+                                                    month = d_month;
+                                                    index = i;
+                                                }
+                                                if(d_day.length()==1){
+                                                    dates_.add(index,dates_.get(i));
+                                                    dates_.remove(i+1);
+                                                    entries_.add(index,entries_.get(i));
+                                                    entries_.remove(i+1);
+                                                    priv_.add(index,priv_.get(i));
+                                                    priv_.remove(i+1);
+                                                    fave_.add(index,fave_.get(i));
+                                                    fave_.remove(i+1);
+                                                }
+
                                             }
                                             String[] entries = new String[entries_.size()]; //arraylist -> array
                                             for(int i = 0; i < entries_.size(); i++) {
                                                 Log.i(TAG,"entries[i] = "+entries_.get(i));
                                                 entries[i] = dates_.get(i)+"\n"+entries_.get(i);
                                             }
+
                                             ArrayAdapter adapter = new ArrayAdapter(TagJournals.this, android.R.layout.simple_list_item_1,entries); //set listview
                                             mListView.setAdapter(adapter);
 
@@ -96,9 +129,9 @@ public class TagJournals extends AppCompatActivity {
 
                                                     Intent JournalDetail = new Intent(TagJournals.this,JournalDetail.class);
                                                     JournalDetail.putExtra("date",date);
-                                                    JournalDetail.putExtra("content",journal);
-                                                    JournalDetail.putExtra("private",checked);
-                                                    JournalDetail.putExtra("favorite",faved);
+                                                    JournalDetail.putExtra("content",entries_.get(position));
+                                                    JournalDetail.putExtra("private",priv_.get(position));
+                                                    JournalDetail.putExtra("favorite",fave_.get(position));
                                                     startActivity(JournalDetail);
                                                 }
                                             });

@@ -62,28 +62,49 @@ public class PastJournals extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
+                        String month = null;
+                        int index = -1;
+                        int cur = 0;
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) { //for all children
-                            String display;
-                            String date = childSnapshot.getKey();
-//                            Log.i(TAG,"key: "+date);
-                            String journal;
-                            journal = childSnapshot.child("Journal").child("answer").getValue(String.class); //get journal
-                            if(other) {
-                                Boolean pri = childSnapshot.child("Journal").child("private").getValue(Boolean.class);
-                                if (pri!= null && pri) journal = null;
-                            }
-//                            Log.i(TAG,"journal: "+journal);
-                            if (journal != null) { //if journal not null ie valid, truncate if >40
-                                if (journal.length() < 40) {
-                                    display = date + "\n" + journal;
-                                } else {
-                                    display = date + "\n" + journal.substring(0, 40)+"...";
-                                }
-                                Log.i(TAG, "entry: \n" + display); //add to arraylist
 
-                                entries_.add(display);
-                                priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
-                                fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
+                            String date = childSnapshot.getKey();
+                            if(!date.equals("Username") && !date.equals("tags")) {
+                                if (month == null || index == -1) {
+                                    month = date.split("-")[0];
+                                    index = 0;
+                                } else if (!month.equals(date.split("-")[0])) {
+                                    month = date.split("-")[0];
+                                    index = cur;
+                                }
+                                String display;
+//                            Log.i(TAG,"key: "+date);
+                                String journal;
+                                journal = childSnapshot.child("Journal").child("answer").getValue(String.class); //get journal
+                                if (other) {
+                                    Boolean pri = childSnapshot.child("Journal").child("private").getValue(Boolean.class);
+                                    if (pri != null && pri) journal = null;
+                                }
+//                            Log.i(TAG,"journal: "+journal);
+                                if (journal != null) { //if journal not null ie valid, truncate if >40
+                                    if (journal.length() < 40) {
+                                        display = date + "\n" + journal;
+                                    } else {
+                                        display = date + "\n" + journal.substring(0, 40) + "...";
+                                    }
+                                    Log.i(TAG, "entry: \n" + display); //add to arraylist
+
+                                    cur += 1;
+                                    if (date.split("-")[1].length() == 1) {
+                                        entries_.add(index, display);
+                                        priv_.add(index, childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                        fave_.add(index, childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
+                                        index += 1;
+                                    } else {
+                                        entries_.add(display);
+                                        priv_.add(childSnapshot.child("Journal").child("private").getValue(Boolean.class));
+                                        fave_.add(childSnapshot.child("Journal").child("favorite").getValue(Boolean.class));
+                                    }
+                                }
                             }
 
                         }
