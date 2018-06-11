@@ -60,6 +60,8 @@ public class QoTD extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd);
+
+        getSupportActionBar().hide();
         setTitle("Question of the Day");
 
         priv = (CheckBox) findViewById(R.id.priv);
@@ -73,7 +75,6 @@ public class QoTD extends AppCompatActivity {
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
         date = month+"-"+day+"-"+year;
-
 
         QoTD = findViewById(R.id.QoTD);
         question = getIntent().getStringExtra("question");
@@ -143,13 +144,11 @@ public class QoTD extends AppCompatActivity {
                     }
                 }
         );
-
     }
 
     public void submit(View view) {
         priv_check = priv.isChecked();
         fav_check = fav.isChecked();
-
         String mood = String.valueOf(spinner.getSelectedItem());
 
         //Save the answer
@@ -175,7 +174,7 @@ public class QoTD extends AppCompatActivity {
                             for (String date: past_dates) {
                                 dates+=date+" ";
                             }
-                            Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
+                            Toast.makeText(QoTD.this,"Past answers found from "+dates,Toast.LENGTH_LONG).show();
                             Intent answeredQotd = new Intent(QoTD.this, answeredQoTD.class);
                             answeredQotd.putStringArrayListExtra("dates", past_dates);
                             answeredQotd.putExtra("question",question);
@@ -213,14 +212,16 @@ public class QoTD extends AppCompatActivity {
                     Log.w(TAG, "get Journal answer onCancelled", databaseError.toException());
                 }
             }
-    );}
+        );
+    }
 
     public void skipQoTD(View view){
         showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
         startJournal();
     }
 
-    private void startJournal() {
+    private void startJournal() {showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
+
         Intent journal = new Intent(this,Journal.class);
         startActivity(journal);
     }

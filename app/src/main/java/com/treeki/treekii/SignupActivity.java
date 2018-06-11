@@ -47,6 +47,7 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        getSupportActionBar().hide();
         registration = (TextView) findViewById(R.id.tvRegister);
         email = (EditText) findViewById(R.id.Email4Signup);
         username = (EditText) findViewById(R.id.Username);
@@ -117,12 +118,10 @@ public class SignupActivity extends AppCompatActivity {
 
         else if (TextUtils.isEmpty(regPassword)) {
             Toast.makeText(this, "Please enter a valid password.", Toast.LENGTH_SHORT).show();
-            return;
         }
 
         else if (!regPassword2.equals(regPassword)) {
             Toast.makeText(this, "Your password don't match.", Toast.LENGTH_SHORT).show();
-            return;
         }
         else if(regPassword.length() < 6 || regPassword2.length() < 6){
             Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show();

@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -49,62 +50,6 @@ public class SplashActivity extends Activity {
         day = Integer.toString(cal.get(Calendar.DATE));
         year = Integer.toString(cal.get(Calendar.YEAR));
 
-		//music
-//
-//		int x = 1;
-//
-//        // get serializable file
-//
-//        // Read the file
-//
-//        try{
-//            File f = new File(getFilesDir(), "music.ser");
-//            FileInputStream fi = new FileInputStream(f);
-//            ObjectInputStream o = new ObjectInputStream(fi);
-//            String j = null;
-//            try{
-//                j = (String) o.readObject();
-//                x = (Integer.valueOf(j) % 3) + 1;
-//            }
-//            catch(ClassNotFoundException c){
-//                c.printStackTrace();
-//            }
-//        }
-//        catch(IOException e){
-//            x = 1;
-//        }
-//
-//        //write the file -- ensures same song doesn't play twice in a row
-//
-//        try{
-//            File f = new File(getFilesDir(), "music.ser");
-//            FileOutputStream fo = new FileOutputStream(f);
-//            ObjectOutputStream o = new ObjectOutputStream(fo);
-//            String j = Integer.toString(x);
-//            o.writeObject(j);
-//            o.close();
-//            fo.close();
-//        }
-//        catch(IOException e){
-//            Toast.makeText(SplashActivity.this, "Something went wrong loadig music",
-//                    Toast.LENGTH_LONG).show();
-//        }
-//
-//        mediaPlayer = new MediaPlayer();
-//        try {
-//            AssetFileDescriptor afd = getAssets().openFd("piano" + x + ".ogg");
-//
-//            mediaPlayer.setDataSource(afd.getFileDescriptor(),afd.getStartOffset(),afd.getLength());
-//            mediaPlayer.prepare();
-//            afd.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        mediaPlayer.start();// play the audio
-//        Toast.makeText(SplashActivity.this, "Recording Playing",
-//                Toast.LENGTH_LONG).show();
-//
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             goToNextActivity();
@@ -171,6 +116,7 @@ public class SplashActivity extends Activity {
                         if (answer == null) {
                             Log.i(TAG,"User signed in but has not filled in QoTD.");
                             startQoTD();
+                            finish();
                         }
 
                         else {
@@ -186,6 +132,7 @@ public class SplashActivity extends Activity {
                                             if (answer == null) {
                                                 Log.i(TAG,"User signed in and finished QoTD but not journal");
                                                 startJournal();
+                                                finish();
                                             }
                                             //if no err, change the question
                                             else {

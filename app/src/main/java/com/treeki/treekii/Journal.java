@@ -17,9 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,11 +25,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Journal extends AppCompatActivity {
+
 
     private ArrayList<String> past_dates;
     private EditText answer_edit;
@@ -54,8 +52,11 @@ public class Journal extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_journal);
         setTitle("Journal");
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         //get date
         Calendar cal = Calendar.getInstance();
@@ -117,6 +118,7 @@ public class Journal extends AppCompatActivity {
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("answer").setValue(answer);
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("private").setValue(priv_check);
             mDatabase.child("Users").child(user.getUid()).child(date).child("Journal").child("favorite").setValue(fav_check);
+
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
                     mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
@@ -124,6 +126,7 @@ public class Journal extends AppCompatActivity {
             }
             Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
             checkPast();
+
             startMainMenu();
         }
         else {
@@ -140,6 +143,7 @@ public class Journal extends AppCompatActivity {
         showNotification("Treeki", "Don't forget to come back and fill in your daily question/journal.");
         startMainMenu();
     }
+
     private void checkPast() {
         if (past_dates.size() > 1) {
             String dates = "";
@@ -166,6 +170,7 @@ public class Journal extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext(), "default")
+
                 .setSmallIcon(R.drawable.smallerlogo) // notification icon
                 .setContentTitle(title) // title for notification
                 .setContentText(content)// message for notification
