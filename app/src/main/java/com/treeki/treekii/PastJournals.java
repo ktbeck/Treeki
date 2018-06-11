@@ -43,8 +43,6 @@ public class PastJournals extends AppCompatActivity {
         Intent i = getIntent();
         user_id = i.getStringExtra("user_id");
         user = getIntent().getStringExtra("user");
-        if (user != null)
-            setTitle(user+"'s Journals");
         if(user_id == null) {
 
             user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();

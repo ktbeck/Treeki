@@ -169,5 +169,6 @@ public class JournalDetail extends AppCompatActivity {
         }
         startActivity(prev);
         finish();
+        finish();
     }
 }
