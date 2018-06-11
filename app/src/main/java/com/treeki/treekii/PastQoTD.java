@@ -45,6 +45,7 @@ public class PastQoTD extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        getSupportActionBar().hide();
         setTitle("QoTD Answers");
         mListView = (ListView) findViewById(R.id.listView);
         user_id = getIntent().getStringExtra("user_id");

@@ -126,10 +126,13 @@ public class Journal extends AppCompatActivity {
                     mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
                 }
             }
-            Toast.makeText(getApplicationContext(), "Journal submitted!", Toast.LENGTH_SHORT).show();
-            checkPast();
 
-            startMainMenu();
+            if (past_dates!=null && past_dates.size() > 1)
+                checkPast();
+            else {
+                Toast.makeText(getApplicationContext(), "Answer submitted!", Toast.LENGTH_SHORT).show();
+                startMainMenu();
+            }
         }
         else {
             Toast.makeText(getApplicationContext(), "Please input an answer.", Toast.LENGTH_SHORT).show();
@@ -147,19 +150,16 @@ public class Journal extends AppCompatActivity {
     }
 
     private void checkPast() {
-        if (past_dates.size() > 1) {
-            String dates = "";
-            for (String date: past_dates) {
-                dates+=date+" ";
-                Log.i(TAG,"j date: "+date);
-            }
-            Toast.makeText(Journal.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
-            Intent answeredQotd = new Intent(Journal.this, answeredQoTD.class);
-            answeredQotd.putStringArrayListExtra("dates", past_dates);
-            answeredQotd.putExtra("source","Journal");
-            startActivity(answeredQotd);
-            finish();
+        String dates = "";
+        for (String date: past_dates) {
+            dates+=date+" ";
+            Log.i(TAG,"j date: "+date);
         }
+        Toast.makeText(Journal.this,"Past answers found from "+dates,Toast.LENGTH_LONG);
+        Intent answeredQotd = new Intent(Journal.this, answeredQoTD.class);
+        answeredQotd.putStringArrayListExtra("dates", past_dates);
+        answeredQotd.putExtra("source","Journal");
+        startActivity(answeredQotd);
     }
 
     void showNotification(String title, String content) {
