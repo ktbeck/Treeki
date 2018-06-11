@@ -38,6 +38,8 @@ public class TagJournals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        getSupportActionBar().hide();
+
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG, "User: " + user.getUid());

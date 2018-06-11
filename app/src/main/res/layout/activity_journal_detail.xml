@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".JournalDetail">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="429dp"
+        android:layout_height="509dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/leaf_border4" />
+
     <ViewSwitcher
         android:id="@+id/switcher"
         android:layout_width="match_parent"
@@ -28,7 +37,7 @@
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -37,6 +37,7 @@ public class PastJournals extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        getSupportActionBar().hide();
         setTitle("Past Journals");
         mListView = (ListView) findViewById(R.id.listView);
         Intent i = getIntent();

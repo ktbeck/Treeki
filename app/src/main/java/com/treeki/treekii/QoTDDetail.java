@@ -58,6 +58,8 @@ public class QoTDDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qotd_detail);
 
+        getSupportActionBar().hide();
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

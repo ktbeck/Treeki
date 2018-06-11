@@ -6,4 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".Favorites">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="429dp"
+        android:layout_height="509dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/leaf_border4" />
+
 </android.support.constraint.ConstraintLayout>

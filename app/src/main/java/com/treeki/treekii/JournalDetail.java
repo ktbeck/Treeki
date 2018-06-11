@@ -52,6 +52,8 @@ public class JournalDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal_detail);
 
+        getSupportActionBar().hide();
+
         user = FirebaseAuth.getInstance().getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

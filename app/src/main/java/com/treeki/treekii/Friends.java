@@ -39,6 +39,8 @@ public class Friends extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+        getSupportActionBar().hide();
+
         username_ = (EditText) findViewById(R.id.Username);
         search_ = (Button) findViewById(R.id.search);
         mListView = (ListView) findViewById(R.id.listView);

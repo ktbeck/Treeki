@@ -20,7 +20,9 @@ public class MainMenuTest extends AppCompatActivity {
 
     private static final String TAG = "TestMainMenu";
     Button jour;
+    Button jour2;
     Button ques;
+    Button ques2;
     Button logout;
 
     @Override
@@ -28,9 +30,13 @@ public class MainMenuTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu_test);
         jour = (Button) findViewById(R.id.jourButton);
+        jour2 = (Button) findViewById(R.id.jourButton2);
         ques = (Button) findViewById(R.id.quesButton);
+        ques2 = (Button) findViewById(R.id.quesButton2);
         jour.setVisibility(View.INVISIBLE);
+        jour2.setVisibility(View.INVISIBLE);
         ques.setVisibility(View.INVISIBLE);
+        ques2.setVisibility(View.INVISIBLE);
     }
     //logout button
     @Override
@@ -74,14 +80,48 @@ public class MainMenuTest extends AppCompatActivity {
 
     }
 
-    public void startJournal(View v) {
-        Intent journal = new Intent(this, Journal.class);
-        startActivity(journal);
+    public void makeVisible2(View v) {
+        if (jour2.getVisibility() == View.INVISIBLE){
+            jour2.setVisibility(View.VISIBLE);
+            ques2.setVisibility(View.VISIBLE);
+        }
+        else {
+            jour2.setVisibility(View.INVISIBLE);
+            ques2.setVisibility(View.INVISIBLE);
+        }
+
     }
 
-    public void startQuestion(View v) {
-        Intent Q = new Intent(this, QoTD.class);
-        startActivity(Q);
+    public void pastJournals(View v) {
+        Intent pastJournal = new Intent(this, PastJournals.class);
+        startActivity(pastJournal);
+    }
+
+    public void pastQuestion(View v) {
+        Intent pastQ = new Intent(this, PastQoTD.class);
+        startActivity(pastQ);
+    }
+
+    public void friendPage(View v) {
+        Intent friends = new Intent(this, Friends.class);
+        startActivity(friends);
+    }
+
+    public void favoritePageQ(View v) {
+        Intent favQs = new Intent(this, Favorites.class);
+        favQs.putExtra("JorQ","QoTD");
+        startActivity(favQs);
+    }
+
+    public void favoritePageJ(View v) {
+        Intent favJs = new Intent(this, Favorites.class);
+        favJs.putExtra("JorQ","Journal");
+        startActivity(favJs);
+    }
+
+    public void tagsPage(View v) {
+        Intent tags = new Intent(this, Tags.class);
+        startActivity(tags);
     }
 
     public void logOut(View v) {
