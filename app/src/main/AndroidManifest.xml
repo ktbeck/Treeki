@@ -19,26 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name=".FriendsList" /> -->
-        <!-- <activity android:name=".friendsList"></activity> -->
         <activity
             android:name=".MainMenuTest"
             android:label="@string/title_activity_main_menu_test"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".SignupActivity" />
+        <activity android:name=".SignupActivity"></activity>
         <activity android:name=".SignInRegister">
         </activity>
         <activity android:name=".QoTD">
-
         </activity>
         <activity android:name=".Journal">
-
-
         </activity>
-
-        <!-- <activity android:name=".FriendsList" /> -->
-        <!-- <activity android:name=".friendsList"></activity> -->
-
+        <activity android:name=".StatisticsActivity"></activity>
         <activity android:name=".JournalDetail" />
         <activity android:name=".PastJournals">
         </activity>
