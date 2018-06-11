@@ -6,7 +6,9 @@
     <string name="answer">Answer</string>
     <string name="journal_answer">Daily Journal</string>
     <string name="question_of_the_day">Question of the Day</string>
+
     <string name="qotd">QoTD</string>
+
     <string name="journal">Journal</string>
     <string name="logout">Logout</string>
     <string name="today">How was your day?</string>
@@ -18,6 +20,7 @@
     <string name="save">Save</string>
     <string name="fav">Favorite</string>
     <string name="contin">Continue</string>
+
 
 
     <string-array name="rating">

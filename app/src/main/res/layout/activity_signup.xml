@@ -11,12 +11,13 @@
         android:id="@+id/tvRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="52dp"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="72dp"
+        android:fontFamily="casual"
         android:text="Registration"
         android:textSize="50dp"
-        android:textStyle="normal|bold"
+        android:textStyle="normal|bold|italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,8 +86,9 @@
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        android:layout_marginStart="48dp"
-        android:background="#3E50B4"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:background="#1f401f"
         android:text="Back to Sign In"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -96,11 +98,21 @@
         android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        android:layout_marginEnd="48dp"
-        android:background="#3E50B4"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
+        android:background="#1f401f"
         android:text="Register"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="429dp"
+        android:layout_height="509dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/leaf_border4" />
 
 
 </android.support.constraint.ConstraintLayout>
