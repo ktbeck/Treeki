@@ -35,6 +35,7 @@ public class TagJournals extends AppCompatActivity {
     String display;
     String journal;
     String date;
+    String[] entries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +78,10 @@ public class TagJournals extends AppCompatActivity {
 
                                             Log.i(TAG,"journal: "+journal);
                                             if (journal != null) { //if journal not null ie valid, truncate if >40
+                                                entries_.add(journal);
                                                 if (journal.length() > 39) {
                                                     journal = journal.substring(0, 40)+"...";
                                                 }
-                                                entries_.add(journal);
                                                 fave_.add(faved);
                                                 priv_.add(checked);
                                             }
@@ -110,10 +111,11 @@ public class TagJournals extends AppCompatActivity {
                                                 }
 
                                             }
-                                            String[] entries = new String[entries_.size()]; //arraylist -> array
+                                            entries = new String[entries_.size()]; //arraylist -> array
                                             for(int i = 0; i < entries_.size(); i++) {
                                                 Log.i(TAG,"entries[i] = "+entries_.get(i));
-                                                entries[i] = dates_.get(i)+"\n"+entries_.get(i);
+                                                if (entries_.get(i).length()>39)
+                                                    entries[i] = dates_.get(i)+"\n"+entries_.get(i).substring(0,40)+"...";
                                             }
 
                                             ArrayAdapter adapter = new ArrayAdapter(TagJournals.this, android.R.layout.simple_list_item_1,entries); //set listview
