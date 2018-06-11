@@ -135,4 +135,9 @@ public class MainMenuTest extends AppCompatActivity {
         startActivity(i);
     }
 
+    public void graph(View v) {
+        Intent g = new Intent(this, StatisticsActivity.class);
+        startActivity(g);
+    }
+
 }

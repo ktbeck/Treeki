@@ -24,7 +24,7 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="84dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:onClick="tagsPage"
@@ -33,13 +33,13 @@
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Jbutton" />
+        app:layout_constraintTop_toTopOf="@+id/button4" />
 
     <Button
         android:id="@+id/button4"
         android:layout_width="207dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="72dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:onClick="friendPage"
@@ -54,7 +54,7 @@
         android:id="@+id/button8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="396dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
         android:onClick="makeVisible2"
@@ -63,15 +63,16 @@
         android:textSize="24sp"
         android:textStyle="bold|italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button6" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
+        android:layout_marginTop="84dp"
         android:background="@drawable/pls"
         android:fontFamily="casual"
+        android:onClick="graph"
         android:text="Graph View"
         android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
@@ -116,8 +117,8 @@
         android:id="@+id/quesButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="56dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
@@ -149,8 +150,9 @@
         android:id="@+id/jourButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="92dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
@@ -159,9 +161,10 @@
         android:textAllCaps="false"
         android:textSize="18sp"
         android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button8"
-        app:layout_constraintTop_toTopOf="@+id/button8" />
-
+        app:layout_constraintTop_toBottomOf="@+id/button5"
+        app:layout_constraintVertical_bias="0.861" />
     <Button
         android:id="@+id/button11"
         android:layout_width="88dp"
