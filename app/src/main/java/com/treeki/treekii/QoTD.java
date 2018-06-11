@@ -276,7 +276,7 @@ public class QoTD extends AppCompatActivity {
                 .setContentText(content)// message for notification
                 .setSound(uri) // set alarm sound for notification
                 .setAutoCancel(true); // clear notification after click
-        Intent intent = new Intent(getApplicationContext(), QoTD.class);
+        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
         PendingIntent pi = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pi);
         mNotificationManager.notify(0, mBuilder.build());
