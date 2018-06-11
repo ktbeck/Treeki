@@ -123,7 +123,8 @@ public class Journal extends AppCompatActivity {
 
             if(tags.length>0) {
                 for (int i = 0; i < tags.length; i++) {
-                    mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
+                    if(!tags[i].equals(""))
+                        mDatabase.child("Users").child(user.getUid()).child("tags").child(tags[i]).child(date).setValue(true);
                 }
             }
 
