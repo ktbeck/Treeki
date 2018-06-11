@@ -114,7 +114,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="92dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
         android:onClick="pastQuestion"
@@ -123,6 +123,7 @@
         android:textSize="18sp"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@+id/Jbutton"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -130,7 +131,7 @@
         android:id="@+id/quesButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="40dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
@@ -144,6 +145,7 @@
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toEndOf="@+id/button8" />
 
     <Button
@@ -154,7 +156,7 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
         android:onClick="pastJournals"
@@ -170,10 +172,8 @@
         android:id="@+id/jourButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="88dp"
         android:layout_marginLeft="4dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/medium"
         android:fontFamily="casual"
@@ -183,7 +183,6 @@
         android:textSize="18sp"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button8" />
 
     <Button
@@ -200,7 +199,6 @@
         android:textAllCaps="false"
         android:textStyle="bold|italic"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -89,11 +89,12 @@ public class Favorites extends AppCompatActivity {
                                 //Log.i(TAG,"date: "+date);
 
                                 final Intent JorQDetail;
-                                if (JorQ.equals("Journal"))
-                                    JorQDetail = new Intent(Favorites.this,JournalDetail.class);
-                                else
-                                    JorQDetail = new Intent(Favorites.this,QoTDDetail.class);
-
+                                if (JorQ.equals("Journal")) {
+                                    JorQDetail = new Intent(Favorites.this, JournalDetail.class);
+                                }
+                                else {
+                                    JorQDetail = new Intent(Favorites.this, QoTDDetail.class);
+                                }
                                 String content = dataSnapshot.child(date).child(JorQ).child("answer").getValue(String.class);
                                 Boolean checked = dataSnapshot.child(date).child(JorQ).child("private").getValue(Boolean.class);
                                 Boolean faved = dataSnapshot.child(date).child(JorQ).child("favorite").getValue(Boolean.class);
@@ -103,6 +104,7 @@ public class Favorites extends AppCompatActivity {
                                 JorQDetail.putExtra("favorite",faved);
 
                                 if (JorQ.equals("QoTD")) {
+                                    Log.i(TAG, "HAHAHA");
                                     month = date.split("-")[0];
                                     day = date.split("-")[1];
                                     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -151,10 +153,14 @@ public class Favorites extends AppCompatActivity {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
         // the menu being referenced here is the menu.xml from res/menu/menu.xml
-        if(JorQ == "QoTD")
+        if(JorQ == "QoTD") {
+            Log.i(TAG, "HAHAHA");
             inflater.inflate(R.menu.journal, menu);
-        else
+        }
+        else {
+            Log.i(TAG, "YOYOYO");
             inflater.inflate(R.menu.qotd, menu);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -3,6 +3,7 @@ package com.treeki.treekii;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,7 @@ public class JournalDetail extends AppCompatActivity {
 
     TextView c;
     TextView d;
+    TextView dV;
     EditText edit_content;
 
     String month;
@@ -74,7 +76,10 @@ public class JournalDetail extends AppCompatActivity {
         setTitle(date+" Journal");
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
+        dV = (TextView) findViewById(R.id.dateView);
         c.setText(content);
+        dV.setText(date);
+        c.setMovementMethod(new ScrollingMovementMethod());
 
         priv = (CheckBox) findViewById(R.id.priv);
         fav = (CheckBox) findViewById(R.id.fav);
