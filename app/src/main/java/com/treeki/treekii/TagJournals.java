@@ -82,11 +82,38 @@ public class TagJournals extends AppCompatActivity {
                                                 fave_.add(faved);
                                                 priv_.add(checked);
                                             }
+
+                                            String month = null;
+                                            int index = -1;
+
+                                            for(int i = 0; i < entries_.size(); i++) {
+                                                String d_month = dates_.get(i).split("-")[0];
+                                                String d_day = dates_.get(i).split("-")[1];
+                                                if (month == null || index == -1) {
+                                                    month = d_month;
+                                                    index = 0;
+                                                } else if (!month.equals(d_month)) {
+                                                    month = d_month;
+                                                    index = i;
+                                                }
+                                                if(d_day.length()==1){
+                                                    dates_.add(index,dates_.get(i));
+                                                    dates_.remove(i+1);
+                                                    entries_.add(index,entries_.get(i));
+                                                    entries_.remove(i+1);
+                                                    priv_.add(index,priv_.get(i));
+                                                    priv_.remove(i+1);
+                                                    fave_.add(index,fave_.get(i));
+                                                    fave_.remove(i+1);
+                                                }
+
+                                            }
                                             String[] entries = new String[entries_.size()]; //arraylist -> array
                                             for(int i = 0; i < entries_.size(); i++) {
                                                 Log.i(TAG,"entries[i] = "+entries_.get(i));
                                                 entries[i] = dates_.get(i)+"\n"+entries_.get(i);
                                             }
+
                                             ArrayAdapter adapter = new ArrayAdapter(TagJournals.this, android.R.layout.simple_list_item_1,entries); //set listview
                                             mListView.setAdapter(adapter);
 
