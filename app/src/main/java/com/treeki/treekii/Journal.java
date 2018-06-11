@@ -92,6 +92,8 @@ public class Journal extends AppCompatActivity {
                                 }
                             }
                         }
+                        if (!past_dates.contains(date))
+                            past_dates.add(date);
                     }
 
                     @Override
