@@ -33,6 +33,7 @@ public class Friends extends AppCompatActivity {
     String username;
     String f_user;
     private DatabaseReference mDatabase;
+    ArrayAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +68,7 @@ public class Friends extends AppCompatActivity {
                             friends_.add(fr_username);
                             friends_id.add(fr_user);
                         }
-                        String[] friends = new String[friends_.size()];
-                        for (int i = 0; i < friends.length; i++) {
-                            friends[i] = friends_.get(i);
-                        }
-                        ArrayAdapter adapter = new ArrayAdapter(Friends.this,android.R.layout.simple_list_item_1,friends);
+                        adapter = new ArrayAdapter(Friends.this,android.R.layout.simple_list_item_1,friends_);
                         mListView.setAdapter(adapter);
                         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
                             @Override
@@ -95,7 +92,7 @@ public class Friends extends AppCompatActivity {
 
     public void search(View view) {
         username = username_.getText().toString();
-//        Log.i(TAG,"Username: "+username);
+        Log.i(TAG,"searching username: "+username);
 
         mDatabase.child("Users").addListenerForSingleValueEvent(
                 new ValueEventListener() {
@@ -105,14 +102,20 @@ public class Friends extends AppCompatActivity {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             f_user = childSnapshot.getKey();
                             String f_username = childSnapshot.child("Username").getValue(String.class);
-                            if (f_username != null && f_username.equals(username)) {
+                            Log.i(TAG,"Found user: "+f_username);
+                            if (f_username != null && f_username.toLowerCase().equals(username.toLowerCase())) {
+                                Log.i(TAG,"Added "+f_username);
                                 mDatabase.child("Friends").child(user.getUid()).child(f_user).setValue(f_username);
+                                friends_.add(f_username);
+                                friends_id.add(f_user);
+                                adapter.notifyDataSetChanged();
                                 found = true;
                             }
                         }
 
                         if(!found) {
                             Toast.makeText(Friends.this,"User not found",Toast.LENGTH_SHORT).show();
+                            Log.i(TAG,"couldn't find "+username);
 
                         }
                     }
