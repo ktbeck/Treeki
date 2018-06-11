@@ -32,8 +32,6 @@ public class Favorites extends AppCompatActivity {
     private ArrayList<String> entries_ = new ArrayList<>();
     String month;
     String day;
-////        //TODO: delete this line. for testing only.
-//    String JorQ = "Journal";
     String JorQ;
 
     @Override
@@ -41,6 +39,11 @@ public class Favorites extends AppCompatActivity {
         JorQ = getIntent().getStringExtra("JorQ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        TextView title = findViewById(R.id.title);
+        if(JorQ.equals("Journal"))
+            title.setText("Favorite Journals");
+        else if(JorQ.equals("QoTD"))
+            title.setText("Favorite Q/A");
         getSupportActionBar().hide();
         setTitle(JorQ+" Favorites");
         mListView = (ListView) findViewById(R.id.listView);
