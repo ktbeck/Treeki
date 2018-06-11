@@ -36,6 +36,8 @@ public class StatisticsActivity extends AppCompatActivity {
     double avg;
     private ArrayList<Integer> mood_;
     private ArrayList<Date> dates_;
+    private ArrayList<Date> single;
+    private ArrayList<Date> doubl;
     private ArrayList<Date> high;
     private ArrayList<Date> low;
     int moodInt;
@@ -71,6 +73,8 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onResume();
         mood_ = new ArrayList<>();
         dates_ = new ArrayList<>();
+        single = new ArrayList<>();
+        doubl = new ArrayList<>();
         ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
@@ -97,12 +101,22 @@ public class StatisticsActivity extends AppCompatActivity {
                                     for (int i = 0; i < dates_.size(); i++) {
                                         String dayOfDates = daySDF.format(dates_.get(i));
                                         dayOfDates.replaceFirst("^0*", "");
-                                        if (dayOfDates.length() == 2) {
-                                            dates_.add(dates_.get(i));
-                                            dates_.remove(i);
-                                            mood_.add(mood_.get(i));
-                                            mood_.remove(i);
-                                        }
+                                        if (dayOfDates.length() == 2)
+                                            doubl.add(dates_.get(i));
+                                        else
+                                            single.add(dates_.get(i));
+                                    }
+                                    dates_.clear();
+                                    dates_.addAll(single);
+                                    dates_.addAll(doubl);
+                                    single.clear();
+                                    doubl.clear();
+                                    Log.i(TAG,"finished sort check");
+                                    
+                                    for(int i = 0; i < dates_.size(); i++){
+                                        String dayOfDates = daySDF.format(dates_.get(i));
+                                        dayOfDates.replaceFirst("^0*", "");
+                                        Log.i(TAG,"POTATO val: "+dayOfDates);
                                     }
 
                                     if (count >= numChildren) {
