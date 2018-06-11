@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".StatisticsActivity">
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:layout_marginBottom="7dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/avg_mood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text" />
+
+    <TextView
+        android:id="@+id/avg_mood"
+        android:layout_width="323dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="204dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="45dp"
+        android:text="TextView"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/graph" />
+
+    <TextView
+        android:id="@+id/high_mood"
+        android:layout_width="323dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginLeft="31dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginTop="29dp"
+        android:text="TextView"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/low_mood"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avg_mood" />
+
+    <TextView
+        android:id="@+id/low_mood"
+        android:layout_width="323dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginLeft="34dp"
+        android:layout_marginRight="27dp"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/high_mood" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="212dp"
+        android:layout_height="60dp"
+        android:text="TextView"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@+id/graph"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
