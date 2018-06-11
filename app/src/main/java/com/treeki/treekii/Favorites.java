@@ -30,22 +30,33 @@ public class Favorites extends AppCompatActivity {
     private FirebaseUser user;
     private String TAG = "Favorites";
     private ArrayList<String> entries_ = new ArrayList<>();
+    private ArrayList<String> ans_ = new ArrayList<>();
+    private ArrayList<String> q_ = new ArrayList<>();
+    private ArrayList<Boolean> priv_ = new ArrayList<>();
+    private ArrayList<Boolean> fave_ = new ArrayList<>();
+    String question;
     String month;
     String day;
-////        //TODO: delete this line. for testing only.
-//    String JorQ = "Journal";
     String JorQ;
+    String[] parts;
+    int i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         JorQ = getIntent().getStringExtra("JorQ");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
+        TextView title = findViewById(R.id.title);
+        if(JorQ.equals("Journal"))
+            title.setText("Favorite Journals");
+        else if(JorQ.equals("QoTD"))
+            title.setText("Favorite Q/A");
         getSupportActionBar().hide();
         setTitle(JorQ+" Favorites");
         mListView = (ListView) findViewById(R.id.listView);
         user = FirebaseAuth.getInstance().getCurrentUser();
         Log.i(TAG,"User: "+user.getUid());
+
 
         //Get datasnapshot at your "users" root node
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -57,8 +68,10 @@ public class Favorites extends AppCompatActivity {
                             String display;
                             String date = childSnapshot.getKey();
 //                            Log.i(TAG,"key: "+date);
-                            Boolean priv = childSnapshot.child(JorQ).child("favorite").getValue(Boolean.class); //get answer
-                            if (priv != null && priv == true) {
+                            Boolean priv = childSnapshot.child(JorQ).child("private").getValue(Boolean.class); //get answer
+                            Boolean fav = childSnapshot.child(JorQ).child("favorite").getValue(Boolean.class); //get answer
+
+                            if (fav != null && fav == true) {
                                 String answer = childSnapshot.child(JorQ).child("answer").getValue(String.class); //get answer
 //                            Log.i(TAG,"answer: "+answer);
                                 if (answer != null) { //if answer not null ie valid, truncate if >40
@@ -69,76 +82,101 @@ public class Favorites extends AppCompatActivity {
                                     }
                                     Log.i(TAG, "entry: \n" + display); //add to arraylist
                                     entries_.add(display);
+                                    priv_.add(priv);
+                                    fave_.add(fav);
+                                    ans_.add(answer);
                                 }
                             }
 
                         }
-                        String[] entries = new String[entries_.size()]; //arraylist -> array
-                        for(int i = 0; i < entries_.size(); i++) {
-                            entries[i] = entries_.get(i);
-                        }
-                        ArrayAdapter adapter = new ArrayAdapter(Favorites.this, android.R.layout.simple_list_item_1,entries); //set listview
-                        mListView.setAdapter(adapter);
 
-                        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                                    long id) {
+                        if(JorQ.equals("QoTD")){
+                                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                                mDatabase.child("Questions").addListenerForSingleValueEvent(
+                                        new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                //get question at /Questions/date
 
-                                String date = ((TextView)view).getText().toString().split("\\n")[0];
-                                //Log.i(TAG,"date: "+date);
-
-                                final Intent JorQDetail;
-                                if (JorQ.equals("Journal")) {
-                                    JorQDetail = new Intent(Favorites.this, JournalDetail.class);
-                                }
-                                else {
-                                    JorQDetail = new Intent(Favorites.this, QoTDDetail.class);
-                                }
-                                String content = dataSnapshot.child(date).child(JorQ).child("answer").getValue(String.class);
-                                Boolean checked = dataSnapshot.child(date).child(JorQ).child("private").getValue(Boolean.class);
-                                Boolean faved = dataSnapshot.child(date).child(JorQ).child("favorite").getValue(Boolean.class);
-                                JorQDetail.putExtra("date",date);
-                                JorQDetail.putExtra("content",content);
-                                JorQDetail.putExtra("private",checked);
-                                JorQDetail.putExtra("favorite",faved);
-
-                                if (JorQ.equals("QoTD")) {
-                                    Log.i(TAG, "HAHAHA");
-                                    month = date.split("-")[0];
-                                    day = date.split("-")[1];
-                                    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                                    mDatabase.child("Questions").child(month).child(day).addListenerForSingleValueEvent(
-                                            new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                                    //get question at /Questions/date
-                                                    String question = dataSnapshot.getValue(String.class);
+                                                for (i = 0; i < entries_.size(); i++) {
+                                                    month = entries_.get(i).split("-")[0];
+                                                    day = entries_.get(i).split("-")[1];
+                                                    question = dataSnapshot.child(month).child(day).getValue(String.class);
 
                                                     //error handling
                                                     if (question == null) {
-                                                        Log.e(TAG, "Question at "+month+"/"+day+" is unexpectedly null");
-                                                        Toast.makeText(getApplicationContext(),"can't fetch question",Toast.LENGTH_SHORT).show();
+                                                        Log.e(TAG, "Question at " + month + "/" + day + " is unexpectedly null");
+                                                        Toast.makeText(getApplicationContext(), "can't fetch question", Toast.LENGTH_SHORT).show();
                                                     }
                                                     //if no err, send question
                                                     else {
-                                                        Log.i(TAG, "Question at"+month+"/"+day+" is: "+question);
-                                                        JorQDetail.putExtra("question",question);
-                                                        startActivity(JorQDetail);
+                                                        Log.i(TAG, "Question at" + month + "/" + day + " is: " + question);
+                                                        parts = entries_.get(i).split("\\n");
+                                                        entries_.set(i, parts[0] + " | " + question +"\n"+parts[1]);
+                                                        q_.add(question);
                                                     }
-                                                }
 
-                                                @Override
-                                                public void onCancelled(DatabaseError databaseError) {
-                                                    Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                                                    ArrayAdapter adapter = new ArrayAdapter(Favorites.this, android.R.layout.simple_list_item_1, entries_); //set listview
+                                                    mListView.setAdapter(adapter);
+
+                                                    mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
+                                                        @Override
+                                                        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                                                long id) {
+
+                                                            String date = parts[0];
+                                                            //Log.i(TAG,"date: "+date);
+
+                                                            Intent JorQDetail = new Intent(Favorites.this, QoTDDetail.class);
+
+                                                            JorQDetail.putExtra("date", date);
+                                                            JorQDetail.putExtra("content", ans_.get(position));
+                                                            JorQDetail.putExtra("private", priv_.get(position));
+                                                            JorQDetail.putExtra("favorite", fave_.get(position));
+                                                            JorQDetail.putExtra("question", q_.get(position));
+                                                            startActivity(JorQDetail);
+                                                        }
+                                                    });
+
                                                 }
                                             }
-                                    );
-                                }
-                                else
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                Log.w(TAG, "get Question onCancelled", databaseError.toException());
+                                            }
+                                        }
+                                );
+
+
+
+                        }
+
+                        else if (JorQ.equals("Journal")) {
+                            ArrayAdapter adapter = new ArrayAdapter(Favorites.this, android.R.layout.simple_list_item_1,entries_); //set listview
+                            mListView.setAdapter(adapter);
+
+                            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() { //listview onclick handler
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                                        long id) {
+
+                                    String date = ((TextView)view).getText().toString().split("\\n")[0];
+                                    //Log.i(TAG,"date: "+date);
+
+                                    Intent JorQDetail = new Intent(Favorites.this,JournalDetail.class);
+
+                                    String content = dataSnapshot.child(date).child(JorQ).child("answer").getValue(String.class);
+                                    Boolean checked = dataSnapshot.child(date).child(JorQ).child("private").getValue(Boolean.class);
+                                    Boolean faved = dataSnapshot.child(date).child(JorQ).child("favorite").getValue(Boolean.class);
+                                    JorQDetail.putExtra("date",date);
+                                    JorQDetail.putExtra("content",content);
+                                    JorQDetail.putExtra("private",checked);
+                                    JorQDetail.putExtra("favorite",faved);
                                     startActivity(JorQDetail);
-                            }
-                        });
+                                }
+                            });
+                        }
                     }
 
                     @Override
