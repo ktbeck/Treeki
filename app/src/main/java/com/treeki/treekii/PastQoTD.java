@@ -46,6 +46,8 @@ public class PastQoTD extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_journals);
 
+        TextView title = findViewById(R.id.title);
+        title.setText("QoTD Answers");
         setTitle("QoTD Answers");
         getSupportActionBar().hide();
         mListView = (ListView) findViewById(R.id.listView);
