@@ -116,6 +116,8 @@ public class TagJournals extends AppCompatActivity {
                                                 Log.i(TAG,"entries[i] = "+entries_.get(i));
                                                 if (entries_.get(i).length()>39)
                                                     entries[i] = dates_.get(i)+"\n"+entries_.get(i).substring(0,40)+"...";
+                                                else
+                                                    entries[i] = dates_.get(i)+"\n"+entries_.get(i);
                                             }
 
                                             ArrayAdapter adapter = new ArrayAdapter(TagJournals.this, android.R.layout.simple_list_item_1,entries); //set listview
@@ -126,11 +128,8 @@ public class TagJournals extends AppCompatActivity {
                                                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                                                         long id) {
 
-                                                    String date = ((TextView)view).getText().toString().split("\\n")[0];
-                                                    //Log.i(TAG,"date: "+date);
-
                                                     Intent JournalDetail = new Intent(TagJournals.this,JournalDetail.class);
-                                                    JournalDetail.putExtra("date",date);
+                                                    JournalDetail.putExtra("date",dates_.get(position));
                                                     JournalDetail.putExtra("content",entries_.get(position));
                                                     JournalDetail.putExtra("private",priv_.get(position));
                                                     JournalDetail.putExtra("favorite",fave_.get(position));
