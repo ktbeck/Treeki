@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,6 +41,7 @@ public class answeredQoTD extends AppCompatActivity {
     ArrayList<String> dates_;
     ArrayList<String> entries_;
     private ArrayList<Boolean> priv_;
+    private ArrayList<String> ans_;
     private ArrayList<Boolean> fave_;
     String QorJ;
 //    String QorJ = "Journal";
@@ -71,7 +73,9 @@ public class answeredQoTD extends AppCompatActivity {
             setContentView(R.layout.activity_past_journals);
             setTitle("Past Journals");
         }
-        findViewById(R.id.contin).setVisibility(View.VISIBLE);
+
+        Button contin = findViewById(R.id.contin);
+        contin.setVisibility(View.VISIBLE);
 
         dates_ = getIntent().getStringArrayListExtra("dates");
         dates = new String[dates_.size()];
@@ -86,6 +90,8 @@ public class answeredQoTD extends AppCompatActivity {
         entries_ = new ArrayList<>();
         fave_ = new ArrayList<>();
         priv_ = new ArrayList<>();
+        ans_ = new ArrayList<>();
+
 
         ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
@@ -102,6 +108,7 @@ public class answeredQoTD extends AppCompatActivity {
                                 display = date.substring(date.length()-4,date.length()) + "\n" + answer;
                                 Log.i(TAG, "entry: \n" + display); //add to arraylist
                                 entries_.add(display);
+                                ans_.add(answer);
                                 priv_.add(dataSnapshot.child(date).child(QorJ).child("private").getValue(Boolean.class));
                                 fave_.add(dataSnapshot.child(date).child(QorJ).child("favorite").getValue(Boolean.class));
                             }
@@ -122,6 +129,8 @@ public class answeredQoTD extends AppCompatActivity {
                                 if(d_day.length()==1){
                                     dates_.add(index,dates_.get(j));
                                     dates_.remove(j+1);
+                                    ans_.add(index,ans_.get(j));
+                                    ans_.remove(j+1);
                                     entries_.add(index,entries_.get(j));
                                     entries_.remove(j+1);
                                     priv_.add(index,priv_.get(j));
@@ -156,7 +165,7 @@ public class answeredQoTD extends AppCompatActivity {
                                     String content = dataSnapshot.child(dates[position]).child(QorJ).child("answer").getValue(String.class);
                                     detailed.putStringArrayListExtra("dates", dates_);
                                     detailed.putExtra("date", dates[position]);
-                                    detailed.putExtra("content", content);
+                                    detailed.putExtra("content", ans_.get(position));
                                     detailed.putExtra("private",priv_.get(position));
                                     detailed.putExtra("favorite",fave_.get(position));
                                     detailed.putExtra("source","answeredQoTD");
