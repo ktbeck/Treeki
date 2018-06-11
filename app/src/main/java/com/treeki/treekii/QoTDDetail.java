@@ -81,7 +81,7 @@ public class QoTDDetail extends AppCompatActivity {
         Boolean checked = i.getBooleanExtra("private",false);
 
 
-        setTitle(date);
+        setTitle(date+" QoTD");
         save = (Button) findViewById(R.id.save);
         c = (TextView) findViewById(R.id.content);
         q = (TextView) findViewById(R.id.question);
