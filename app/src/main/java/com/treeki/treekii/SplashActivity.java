@@ -32,7 +32,7 @@ public class SplashActivity extends Activity {
     private DatabaseReference mDatabase;
     private FirebaseUser user;
     private static final String TAG = "SplashActivity";
-    MediaPlayer mediaPlayer;
+    //MediaPlayer mediaPlayer;
 
     String question;
     String month;
