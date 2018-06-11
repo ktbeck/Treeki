@@ -82,9 +82,11 @@ public class Journal extends AppCompatActivity {
                         for (DataSnapshot childSnapshot: dataSnapshot.getChildren()) {
                             past_date = childSnapshot.getKey();
                             Log.i(TAG,"past dates: "+past_date);
-                            if (!past_date.equals("tags")) {
-                                if (date.substring(0, date.length() - 5).equals
-                                        (past_date.substring(0, past_date.length() - 5))) {
+                            if (!past_date.equals("tags") && !past_date.equals("Username")) {
+                                String t_month = past_date.split("-")[0];
+                                String t_day = past_date.split("-")[1];
+                                if (t_day.equals(day) && t_month.equals(month)) {
+                                    Log.i(TAG,"Adding: "+past_date);
                                     past_dates.add(past_date);
                                 }
                             }
@@ -152,6 +154,7 @@ public class Journal extends AppCompatActivity {
             answeredQotd.putStringArrayListExtra("dates", past_dates);
             answeredQotd.putExtra("source","Journal");
             startActivity(answeredQotd);
+            finish();
         }
     }
 

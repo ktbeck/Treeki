@@ -14,6 +14,10 @@
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.Launcher">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
         <activity android:name=".SignInRegister">
@@ -40,10 +44,6 @@
         </activity>
         <activity android:name=".answeredQoTD"></activity>
         <activity android:name=".Tags">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity android:name=".TagJournals"></activity>
         <activity android:name=".Friends">

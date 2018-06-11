@@ -103,6 +103,33 @@ public class answeredQoTD extends AppCompatActivity {
                                 priv_.add(dataSnapshot.child(date).child(QorJ).child("private").getValue(Boolean.class));
                                 fave_.add(dataSnapshot.child(date).child(QorJ).child("favorite").getValue(Boolean.class));
                             }
+
+                            String month = null;
+                            int index = -1;
+
+                            for(int j = 0; j < entries_.size(); j++) {
+                                String d_month = dates_.get(j).split("-")[0];
+                                String d_day = dates_.get(j).split("-")[1];
+                                if (month == null || index == -1) {
+                                    month = d_month;
+                                    index = 0;
+                                } else if (!month.equals(d_month)) {
+                                    month = d_month;
+                                    index = j;
+                                }
+                                if(d_day.length()==1){
+                                    dates_.add(index,dates_.get(j));
+                                    dates_.remove(j+1);
+                                    entries_.add(index,entries_.get(j));
+                                    entries_.remove(j+1);
+                                    priv_.add(index,priv_.get(j));
+                                    priv_.remove(j+1);
+                                    fave_.add(index,fave_.get(j));
+                                    fave_.remove(j+1);
+                                }
+
+                            }
+
                             String[] entries = new String[entries_.size()]; //arraylist -> array
                             for (int j = 0; j < entries_.size(); j++) {
                                 entries[j] = entries_.get(j);
