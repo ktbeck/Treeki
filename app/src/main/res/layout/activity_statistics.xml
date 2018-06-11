@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".StatisticsActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="429dp"
+        android:layout_height="509dp"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_text"
+        app:srcCompat="@drawable/leaf_border4" />
+
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph"
         android:layout_width="match_parent"
@@ -27,10 +39,13 @@
         android:layout_marginRight="27dp"
         android:layout_marginStart="34dp"
         android:layout_marginTop="45dp"
-        android:text="TextView"
         android:gravity="center"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/graph" />
 
@@ -38,34 +53,32 @@
         android:id="@+id/high_mood"
         android:layout_width="323dp"
         android:layout_height="62dp"
-        android:layout_marginBottom="28dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginStart="31dp"
-        android:layout_marginTop="29dp"
-        android:text="TextView"
+        android:layout_marginTop="20dp"
         android:gravity="center"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/avg_mood"
         app:layout_constraintBottom_toTopOf="@+id/low_mood"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avg_mood" />
+        tools:layout_editor_absoluteX="31dp" />
 
     <TextView
         android:id="@+id/low_mood"
         android:layout_width="323dp"
         android:layout_height="62dp"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginEnd="27dp"
         android:layout_marginLeft="34dp"
         android:layout_marginRight="27dp"
         android:layout_marginStart="34dp"
         android:layout_marginTop="24dp"
-        android:text="TextView"
         android:gravity="center"
+        android:text="TextView"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/high_mood" />
 
