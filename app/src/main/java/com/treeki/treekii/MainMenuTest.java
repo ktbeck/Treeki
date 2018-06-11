@@ -133,6 +133,7 @@ public class MainMenuTest extends AppCompatActivity {
         Toast.makeText(getApplicationContext(),"Signed out", Toast.LENGTH_SHORT).show();
         Intent i = new Intent(this, SignInRegister.class);
         startActivity(i);
+        finish();
     }
 
     public void graph(View v) {
