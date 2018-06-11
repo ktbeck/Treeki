@@ -225,9 +225,8 @@ public class QoTD extends AppCompatActivity {
         startJournal();
     }
 
-    private void startJournal() {showNotification("Treeki", "Don't forget to come back and fill in your daily journal/answer.");
-
-        Intent journal = new Intent(this,Journal.class);
+    private void startJournal() {
+        Intent journal = new Intent(this, Journal.class);
         startActivity(journal);
     }
 
