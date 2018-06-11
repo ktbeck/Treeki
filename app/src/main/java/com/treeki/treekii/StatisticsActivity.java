@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,6 +45,8 @@ public class StatisticsActivity extends AppCompatActivity {
     String highString = "";
     String lowString = "";
     long count = 2;
+    int bestMood;
+    int worstMood;
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
     @Override
@@ -66,22 +69,16 @@ public class StatisticsActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
-//        TextView text = (TextView) findViewById(R.id.avg_mood);
-//        Log.i(TAG,"fish user: "+user.getUid());
         mood_ = new ArrayList<>();
         dates_ = new ArrayList<>();
-//        Log.i(TAG,"fish 1");
         ref.child("Users").child(user.getUid()).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(final DataSnapshot dataSnapshot) {
                         long numChildren = dataSnapshot.getChildrenCount();
                         for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) { //if child /date
-//                            Log.i(TAG, "COUNT " + count + " numChildren " +numChildren);
-//                            low = new ArrayList<>();
                             ++count;
                             date = childSnapshot.getKey();
-//                            Log.i(TAG,"key:" + date);
                             mood = childSnapshot.child("mood").getValue(String.class); //get mood
                             if (mood != null) {
                                 moodInt = Integer.valueOf(mood);
@@ -97,11 +94,9 @@ public class StatisticsActivity extends AppCompatActivity {
                                     Date utilDate = date.getTime();
                                     dates_.add(utilDate);
 
-//                                        Log.i(TAG,"FISHMAN \n\n");
                                     for (int i = 0; i < dates_.size(); i++) {
                                         String dayOfDates = daySDF.format(dates_.get(i));
                                         dayOfDates.replaceFirst("^0*", "");
-//                                            Log.i(TAG,"FISHMAN day: "+dayOfDates);
                                         if (dayOfDates.length() == 2) {
                                             dates_.add(dates_.get(i));
                                             dates_.remove(i);
@@ -114,6 +109,8 @@ public class StatisticsActivity extends AppCompatActivity {
                                         avg = averageArr(mood_);
                                         high = bestDay(mood_, dates_);
                                         low = worstDay(mood_, dates_);
+                                        bestMood = highestMood(mood_);
+                                        worstMood = lowestMood(mood_);
                                         int highCount = 0;
                                         int lowCount = 0;
                                         for (int i = 0; i < high.size(); i++) {
@@ -136,15 +133,14 @@ public class StatisticsActivity extends AppCompatActivity {
                                     }
                                 }
 
-//                                GraphView graph = (GraphView) findViewById(R.id.graph);
                                 TextView text = (TextView) findViewById(R.id.avg_mood);
                                 TextView textHigh = (TextView) findViewById(R.id.high_mood);
                                 TextView textLow = (TextView) findViewById(R.id.low_mood);
                                 DecimalFormat df = new DecimalFormat("#.##");
                                 String a = df.format(avg);
                                 text.setText("Monthly Average is currently: " + a);
-                                textHigh.setText("Your best days this month were: " + highString);
-                                textLow.setText("Your worst days this month were: " + lowString);
+                                textHigh.setText("Your highest mood of " + bestMood + " was on these days: " + highString + ".");
+                                textLow.setText("Your lowest mood of " + worstMood + " was on these days: " + lowString + ".");
                                 if (count >= numChildren) {
                                     GraphView graph = (GraphView) findViewById(R.id.graph);
                                     DataPoint[] dp = new DataPoint[mood_.size()];
@@ -172,7 +168,6 @@ public class StatisticsActivity extends AppCompatActivity {
                                     graph.getViewport().setXAxisBoundsManual(true);
                                     graph.getGridLabelRenderer().setHumanRounding(true);
                                     graph.addSeries(series);
-                                    Log.i(TAG, "MON = " + month_);
                                 }
                             }
                         }
@@ -186,7 +181,28 @@ public class StatisticsActivity extends AppCompatActivity {
         );
     }
 
-
+    private int highestMood(ArrayList<Integer> mood){
+        Integer high = 0;
+        if (!mood.isEmpty()) {
+            for (int i = 0; i < mood.size(); i++) {
+                if (mood.get(i) > high) {
+                    high = mood.get(i);
+                }
+            }
+        }
+        return high;
+    }
+    private int lowestMood(ArrayList<Integer> mood){
+        Integer low = 11;
+        if (!mood.isEmpty()) {
+            for (int i = 0; i < mood.size(); i++) {
+                if (mood.get(i) < low) {
+                    low = mood.get(i);
+                }
+            }
+        }
+        return low;
+    }
 
     private double averageArr(ArrayList<Integer> mood) {
         Integer sum = 0;
